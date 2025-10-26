@@ -3,24 +3,29 @@
 
 #include "inttypes.h"
 
-#ifdef __cplusplus
-extern "C" {
+#ifdef TEST_CPP_REALIZATION
+    #include <list>
+    typedef struct {std::list<int32_t>::iterator it; std::list<int32_t> *lst; } iterator_t;
+    #define IS_CORRECT(x) ((x).it != ((x).lst->end()))
+#else
+    typedef int32_t iterator_t;
+    #define IS_CORRECT(x) ((x) != 0)
 #endif
+
+
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
 
 
 struct list_t;
 
-#ifdef __cplusplus
-    typedef std::list<int32_t>::iterator iterator_t;
-#else
-    typedef int32_t iterator_t;
-#endif
 typedef uint64_t result_t;
 
 /* standart initializators */
-result_t list_init(struct list_t *, int32_t capacity);
+struct list_t * list_create(int32_t capacity);
 
-result_t list_from_array(struct list_t *, int32_t *array, int32_t array_len, int32_t capacity);
+struct list_t * list_create_from_array(struct list_t *, int32_t *array, int32_t array_len, int32_t capacity);
 
 result_t list_free(struct list_t *);
 
@@ -37,6 +42,7 @@ iterator_t list_tail(struct list_t *);
 iterator_t list_next(struct list_t *, iterator_t);
 iterator_t list_prev(struct list_t *, iterator_t);
 iterator_t list_move(struct list_t *, iterator_t, int32_t steps); // may be negative
+int32_t list_get(struct list_t *, iterator_t);
 
 
 /* insertion and deletion of elements */
@@ -50,10 +56,10 @@ result_t list_optimize(struct list_t *);
 
 
 /* get element by index */
-result_t list_at(struct list_t *, int32_t index, int32_t *result);
+int32_t list_at(struct list_t *lst, int32_t index);
 
-#ifdef __cplusplus
-} // extern "C"
-#endif
+// #ifdef __cplusplus
+// } // extern "C"
+// #endif
 
 #endif

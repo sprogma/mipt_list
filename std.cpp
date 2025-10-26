@@ -1,5 +1,8 @@
 #include <list>
 #include <iostream>
+#include "assert.h"
+
+#define TEST_CPP_REALIZATION
 
 #include "mylist.h"
 
@@ -10,25 +13,22 @@ struct list_t
 
 
 /* standart initializators */
-result_t list_init(struct list_t *lst, int32_t capacity) 
+list_t *list_create(int32_t capacity) 
 {
     (void)capacity;
-
-    new (lst) std::list<int32_t>();
-    
-    return 0;
+    return new list_t;
 }
 
-result_t list_from_array(struct list_t *lst, int32_t *array, int32_t array_len, int32_t capacity) 
+list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capacity) 
 {
-    list_init(lst, capacity);
+    list_t *lst = list_create(capacity);
     
     for (int32_t i = 0; i < array_len; ++i) 
     {
         lst->x.push_back(array[i]);
     }
     
-    return 0;
+    return lst;
 }
 
 result_t list_free(struct list_t *lst) 
@@ -53,29 +53,26 @@ int32_t list_size(struct list_t *lst)
 /* iterators */
 iterator_t list_head(struct list_t *lst) 
 {
-    return lst->x.begin();
+    return {lst->x.begin(), &lst->x};
 }
 
 iterator_t list_tail(struct list_t *lst) 
 {
-    iterator_t end = lst->x.end();
-    end--;
-    return end;
+    return {std::prev(lst->x.end()), &lst->x};
 }
 
 iterator_t list_next(struct list_t *lst, iterator_t it) 
 {
-    iterator_t res = std::next(it);
-    return (res == lst->x.end() ? it : res);
+    return {std::next(it.it), &lst->x};
 }
 
 iterator_t list_prev(struct list_t *lst, iterator_t it) 
 {
-    if (it == lst->x.begin())
+    if (it.it == lst->x.begin())
     {
-        return it;
+        return {lst->x.end(), &lst->x};
     }
-    return std::prev(it);
+    return {std::prev(it.it), &lst->x};
 }
 
 iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps) {
@@ -99,16 +96,22 @@ iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps) {
     return it;
 }
 
+int32_t list_get(struct list_t *lst, iterator_t it)
+{
+    (void)lst;
+    return *it.it;
+}
+
 /* insertion and deletion of elements */
 result_t list_insert(struct list_t *lst, iterator_t it, int32_t value) 
 {
-    lst->x.insert(it, value);
+    lst->x.insert(it.it, value);
     return 0;
 }
 
 result_t list_delete(struct list_t *lst, iterator_t it) 
 {
-    lst->x.erase(it);
+    lst->x.erase(it.it);
     return 0;
 }
 
@@ -120,9 +123,8 @@ result_t list_optimize(struct list_t *lst)
 }
 
 /* get element by index */
-result_t list_at(struct list_t *lst, int32_t index, int32_t *result) 
+int32_t list_at(struct list_t *lst, int32_t index) 
 {
-    iterator_t it = list_move(lst, lst->x.begin(), index);
-    *result = *it;
-    return 0;
+    iterator_t it = list_move(lst, {lst->x.begin(), &lst->x}, index);
+    return *it.it;
 }
