@@ -1,7 +1,7 @@
 #include "windows.h"
 #include "stdio.h"
 
-#include "stack.h"
+#include "list.h"
 
 LARGE_INTEGER frequency;
 LARGE_INTEGER start_time, end_time;

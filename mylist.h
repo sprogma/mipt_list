@@ -1,11 +1,21 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include "inttypes.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 
 struct list_t;
 
-typedef iterator_t int32_t;
-typedef result_t uint64_t;
+#ifdef __cplusplus
+    typedef std::list<int32_t>::iterator iterator_t;
+#else
+    typedef int32_t iterator_t;
+#endif
+typedef uint64_t result_t;
 
 /* standart initializators */
 result_t list_init(struct list_t *, int32_t capacity);
@@ -40,7 +50,10 @@ result_t list_optimize(struct list_t *);
 
 
 /* get element by index */
-result_t list_at(struct list_t *, int index);
+result_t list_at(struct list_t *, int32_t index, int32_t *result);
 
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif

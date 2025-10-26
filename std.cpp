@@ -1,4 +1,128 @@
-int main()
+#include <list>
+#include <iostream>
+
+#include "mylist.h"
+
+struct list_t
 {
+    std::list<int32_t> x;
+};
+
+
+/* standart initializators */
+result_t list_init(struct list_t *lst, int32_t capacity) 
+{
+    (void)capacity;
+
+    new (lst) std::list<int32_t>();
     
+    return 0;
+}
+
+result_t list_from_array(struct list_t *lst, int32_t *array, int32_t array_len, int32_t capacity) 
+{
+    list_init(lst, capacity);
+    
+    for (int32_t i = 0; i < array_len; ++i) 
+    {
+        lst->x.push_back(array[i]);
+    }
+    
+    return 0;
+}
+
+result_t list_free(struct list_t *lst) 
+{
+    lst->x.clear();
+    return 0;
+}
+
+result_t list_reserve(struct list_t *lst, int32_t capacity) 
+{
+    (void)lst; 
+    (void)capacity;
+    return 0;
+}
+
+/* helping functions */
+int32_t list_size(struct list_t *lst) 
+{
+    return lst->x.size();
+}
+
+/* iterators */
+iterator_t list_head(struct list_t *lst) 
+{
+    return lst->x.begin();
+}
+
+iterator_t list_tail(struct list_t *lst) 
+{
+    iterator_t end = lst->x.end();
+    end--;
+    return end;
+}
+
+iterator_t list_next(struct list_t *lst, iterator_t it) 
+{
+    iterator_t res = std::next(it);
+    return (res == lst->x.end() ? it : res);
+}
+
+iterator_t list_prev(struct list_t *lst, iterator_t it) 
+{
+    if (it == lst->x.begin())
+    {
+        return it;
+    }
+    return std::prev(it);
+}
+
+iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps) {
+    if (steps == 0)
+    {
+        return it;
+    }
+    if (steps < 0)
+    {
+        steps *= -1;
+        for (int i = 0; i < steps; ++i)
+        {
+            it = list_prev(lst, it);
+        }
+        return it;
+    }
+    for (int i = 0; i < steps; ++i)
+    {
+        it = list_next(lst, it);
+    }
+    return it;
+}
+
+/* insertion and deletion of elements */
+result_t list_insert(struct list_t *lst, iterator_t it, int32_t value) 
+{
+    lst->x.insert(it, value);
+    return 0;
+}
+
+result_t list_delete(struct list_t *lst, iterator_t it) 
+{
+    lst->x.erase(it);
+    return 0;
+}
+
+/* call this function at free time, to optimizate structure */
+result_t list_optimize(struct list_t *lst)
+{
+    (void)lst;
+    return 0;
+}
+
+/* get element by index */
+result_t list_at(struct list_t *lst, int32_t index, int32_t *result) 
+{
+    iterator_t it = list_move(lst, lst->x.begin(), index);
+    *result = *it;
+    return 0;
 }
