@@ -1,24 +1,15 @@
 pushd $PSScriptRoot
-$warmup = 0
-$testing = 2
-$times = gci bin | % {
-    $exe = $_
-    $variant = $_.Name-replace".\w*$"
-    Write-Host "Testing $variant"
-    $sw = [System.Diagnostics.Stopwatch]::New()
-    1..$warmup | % {
-        & $exe ./test.txt ./output.txt | oh
+@("std.cpp", "soa_list.c", "aos_list.c") | % {
+    if ($_-match"\.cpp$")
+    {
+        g++ test.cpp $_ -o a.exe -DTEST_CPP_REALIZATION -Ofast -flto
     }
-    $stats = 1..$testing | % {
-        $sw.Restart()
-        & $exe ./test.txt ./output.txt | oh
-        $sw.Stop()
-        $sw.Elapsed.TotalMilliseconds
-    } | measure -AllStats | select A*,M*
-    [pscustomobject]@{
-        Time = $stats
-        Program = $variant
+    else
+    {
+        gcc test.cpp $_ -o a.exe -DTEST_CPP_REALIZATION -Ofast -flto -lstdc++
     }
+    Write-Host "Running $_" -ForegroundColor green
+    ./a.exe
 }
-.\draw.ps1 -Table $times
+
 popd
