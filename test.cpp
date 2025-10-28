@@ -39,6 +39,41 @@ int not_optimize = 0;
 using namespace std;
 
 
+void test_behaviour()
+{
+    #ifndef TEST_CPP_REALIZATION
+    list_t *lst = list_create(0);
+    int res = 0;
+
+    res = list_insert(lst, list_head(lst), 1);
+    // printf("insert at %d\n", res);
+    res = list_insert(lst, list_head(lst), 2);
+    // printf("insert at %d\n", res);
+    res = list_insert(lst, list_head(lst), 3);
+    // printf("insert at %d\n", res);
+
+    res = list_get(lst, list_head(lst));
+    // printf("READ %d\n", res);
+    assert(res == 3);
+    list_remove(lst, list_head(lst));
+
+    res = list_get(lst, list_head(lst));
+    // printf("READ %d\n", res);
+    assert(res == 2);
+    list_remove(lst, list_head(lst));
+    
+    res = list_get(lst, list_head(lst));
+    // printf("READ %d\n", res);
+    assert(res == 1);
+    list_remove(lst, list_head(lst));
+
+    assert(list_size(lst) == 0);
+
+    list_free(lst);
+    #endif
+}
+
+
 const int GraphNodes = 5000;
 
 
@@ -68,22 +103,23 @@ void test1()
     while (!q.empty())
     {
         int v = q.begin()->second;
-        q.erase(q.begin());   
-        if (list_size(graph[v]) != 0)
+        q.erase(q.begin());
+        iterator_t x = list_head(graph[v]);
+        while (IS_CORRECT(x))
         {
-            iterator_t x = list_head(graph[v]);
-            while (IS_CORRECT(x))
+            int value = list_get(graph[v], x);
+            if (dst[value] > dst[v] + 1)
             {
-                int value = list_get(graph[v], x);
-                if (dst[value] > dst[v] + 1)
-                {
-                    q.erase({dst[value], value});
-                    dst[value] = dst[v] + 1;
-                    q.insert({dst[value], value});
-                }
-                x = list_next(graph[v], x);
+                q.erase({dst[value], value});
+                dst[value] = dst[v] + 1;
+                q.insert({dst[value], value});
             }
+            x = list_next(graph[v], x);
         }
+    }
+    for (int i = 0; i < (int)graph.size(); ++i)
+    {
+        list_free(graph[i]);
     }
     measure_end("dejkstra on graph");
     
@@ -91,33 +127,181 @@ void test1()
 }
 
 
-const int Allocations = 10000;
+const int BfsGraphNodes = 5000;
 
 
-/* allocator */
+/* graph representation */
 void test2()
 {
     srand(179);
-
-    vector<int> arr(2 * Allocations);
-    for (int i = 0; i < Allocations; ++i)
+    
+    vector<list_t*> graph(BfsGraphNodes);
+    vector<int> dst(BfsGraphNodes, -1);
+    
+    /* generate graph */
+    measure_start();
+    for (int i = 0; i < (int)graph.size(); ++i)
     {
-        arr[2 * i] = i;
-        arr[2 * i + 1] = ~i;
+        graph[i] = list_create(BfsGraphNodes / 10);
     }
-    std::mt19937 g(179);
-    std::shuffle(arr.begin(), arr.end(), g);
-
-    list_t *lst = list_create(Allocations / 20);
-    for (int i = 0; i < Allocations; ++i)
+    for (int i = 0; i < 5 + BfsGraphNodes * BfsGraphNodes / 10; ++i)
     {
-        if (i > 0)
+        int a = rand() % BfsGraphNodes, b = rand() % BfsGraphNodes;
+        list_insert(graph[a], list_head(graph[a]), b);
+        list_insert(graph[b], list_head(graph[b]), a);
+    }
+    
+    list_t *queue = list_create(BfsGraphNodes);
+    list_insert(queue, list_head(queue), 0);
+    dst[0] = 0;
+    
+    
+    while (list_size(queue) > 0)
+    {
+        int v = list_get(queue, list_head(queue));
+        list_remove(queue, list_head(queue));
+        iterator_t x = list_head(graph[v]);
+        while (IS_CORRECT(x))
         {
-            list_insert();
+            int value = list_get(graph[v], x);
+            if (dst[value] == -1)
+            {        
+                dst[value] = dst[v] + 1;
+                list_insert(queue, list_tail(queue), value);
+            }
+            x = list_next(graph[v], x);
+        }
+    }
+    for (int i = 0; i < (int)graph.size(); ++i)
+    {
+        list_free(graph[i]);
+    }
+    list_free(queue);
+    measure_end("BFS on graph");
+    
+    not_optimize ^= dst[BfsGraphNodes - 1];
+}
+
+
+const int ArrayReverseSize = 10000000;
+
+
+/* graph representation */
+void test3()
+{
+    srand(179);
+
+    measure_start();
+    list_t *lst = list_create(0);
+    for (int i = 0; i < ArrayReverseSize; ++i)
+    {
+        list_insert(lst, list_head(lst), i);
+    }
+    for (int i = 0; i < ArrayReverseSize; ++i)
+    {
+        iterator_t h = list_head(lst);
+        int v = list_get(lst, h);
+        if (v != ArrayReverseSize - i - 1)
+        {
+            fprintf(stderr, "ERROR: list behaviour is broken.\n");
+            return;
+        }
+        list_remove(lst, h);
+    }
+    list_free(lst);
+    measure_end("simlpy reverse big array");
+    // not_optimize ^= lst;
+}
+
+
+const int ArrayReadSize = 100000000; // 3e7
+
+
+/* graph representation */
+void test4()
+{
+    srand(179);
+
+    list_t *lst = list_create(0);
+    for (int i = 0; i < ArrayReadSize; ++i)
+    {
+        if (i % 2 == 0)
+        {
+            list_insert(lst, list_head(lst), i);
+        }
+        else
+        {
+            list_insert(lst, list_tail(lst), i);
         }
     }
     
-    not_optimize ^= dst[GraphNodes - 1];
+    measure_start();
+    {
+        iterator_t h = list_head(lst);
+        int x = ArrayReadSize;
+        int res = 0;
+        while (IS_CORRECT(h))
+        {
+            int v = list_get(lst, h);
+            res += v;
+            h = list_next(lst, h);
+            --x;
+        }
+        if (x != 0)
+        {
+            fprintf(stderr, "ERROR: list behaviour is broken.\n");
+            return;
+        }
+    }
+    measure_end("simlpy read big shuffled array");
+    
+    list_free(lst);
+    // not_optimize ^= lst;
+}
+
+
+/* graph representation */
+void test5()
+{
+    srand(179);
+
+    list_t *lst = list_create(0);
+    for (int i = 0; i < ArrayReadSize; ++i)
+    {
+        if (i % 2 == 0)
+        {
+            list_insert(lst, list_head(lst), i);
+        }
+        else
+        {
+            list_insert(lst, list_tail(lst), i);
+        }
+    }
+    
+    list_optimize(lst);
+    
+    measure_start();
+    {
+        iterator_t h = list_head(lst);
+        int x = ArrayReadSize;
+        int res = 0;
+        while (IS_CORRECT(h))
+        {
+            int v = list_get(lst, h);
+            res += v;
+            h = list_next(lst, h);
+            --x;
+        }
+        if (x != 0)
+        {
+            fprintf(stderr, "ERROR: list behaviour is broken. [x=%d]\n", x);
+            return;
+        }
+    }
+    measure_end("read big shuffled array, after optimization");
+    
+    list_free(lst);
+    // not_optimize ^= lst;
 }
 
 
@@ -125,7 +309,12 @@ void test2()
 int main() 
 {
     
+    test_behaviour();
     test1();
+    test2();
+    test3();
+    test4();
+    test5();
     
     fprintf(stderr, "not_optimize: %d\n", not_optimize);
     return 0;

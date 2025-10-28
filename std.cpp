@@ -2,7 +2,9 @@
 #include <iostream>
 #include "assert.h"
 
-#define TEST_CPP_REALIZATION
+#ifndef TEST_CPP_REALIZATION
+    #define TEST_CPP_REALIZATION
+#endif
 
 #include "mylist.h"
 
@@ -34,6 +36,7 @@ list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capaci
 result_t list_free(struct list_t *lst) 
 {
     lst->x.clear();
+    delete lst;
     return 0;
 }
 
@@ -75,7 +78,8 @@ iterator_t list_prev(struct list_t *lst, iterator_t it)
     return {std::prev(it.it), &lst->x};
 }
 
-iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps) {
+iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps) 
+{
     if (steps == 0)
     {
         return it;
@@ -103,13 +107,13 @@ int32_t list_get(struct list_t *lst, iterator_t it)
 }
 
 /* insertion and deletion of elements */
-result_t list_insert(struct list_t *lst, iterator_t it, int32_t value) 
+iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value) 
 {
     lst->x.insert(it.it, value);
-    return 0;
+    return {std::next(it.it), &lst->x};
 }
 
-result_t list_delete(struct list_t *lst, iterator_t it) 
+result_t list_remove(struct list_t *lst, iterator_t it) 
 {
     lst->x.erase(it.it);
     return 0;

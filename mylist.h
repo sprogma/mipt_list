@@ -9,13 +9,15 @@
     #define IS_CORRECT(x) ((x).it != ((x).lst->end()))
 #else
     typedef int32_t iterator_t;
-    #define IS_CORRECT(x) ((x) != 0)
+    #define IS_CORRECT(x) ((x) > 1)
 #endif
 
 
-// #ifdef __cplusplus
-// extern "C" {
-// #endif
+#ifndef TEST_CPP_REALIZATION
+#ifdef __cplusplus
+extern "C" {
+#endif
+#endif
 
 
 struct list_t;
@@ -25,7 +27,7 @@ typedef uint64_t result_t;
 /* standart initializators */
 struct list_t * list_create(int32_t capacity);
 
-struct list_t * list_create_from_array(struct list_t *, int32_t *array, int32_t array_len, int32_t capacity);
+struct list_t * list_create_from_array(int32_t *array, int32_t array_len, int32_t capacity);
 
 result_t list_free(struct list_t *);
 
@@ -46,9 +48,9 @@ int32_t list_get(struct list_t *, iterator_t);
 
 
 /* insertion and deletion of elements */
-result_t list_insert(struct list_t *, iterator_t, int32_t);
+iterator_t list_insert(struct list_t *, iterator_t, int32_t);
 
-result_t list_delete(struct list_t *, iterator_t);
+result_t list_remove(struct list_t *, iterator_t);
 
 
 /* call this function at free time, to optimizate structure */
@@ -58,8 +60,10 @@ result_t list_optimize(struct list_t *);
 /* get element by index */
 int32_t list_at(struct list_t *lst, int32_t index);
 
-// #ifdef __cplusplus
-// } // extern "C"
-// #endif
+#ifndef TEST_CPP_REALIZATION
+#ifdef __cplusplus
+} // extern "C"
+#endif
+#endif
 
 #endif
