@@ -7,7 +7,7 @@
 #include "mylist.h"
 
 #define NO_PRINF
-// #define NO_VERIFY
+#define NO_VERIFY
 
 #define f_item 0
 #define u_item 1
@@ -58,6 +58,8 @@ int32_t list_is_wrong(struct list_t *lst)
             printf("ERROR: AT i=%d/%d\n", i, lst->size);
             return 1;
         }
+        assert(lst->next[lst->prev[i + 2]] == i + 2);
+        assert(lst->prev[lst->next[i + 2]] == i + 2);
         it = list_next(lst, it);
     }
     return 0;
@@ -279,8 +281,7 @@ static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
         return;
     }
     iterator_t pa, na, pb, nb;
-    nb = lst->next[b];
-    if (nb == a)
+    if (lst->next[b] == a)
     {
         iterator_t tmp = b;
         b = a;
@@ -331,10 +332,15 @@ result_t list_optimize(struct list_t *lst)
     iterator_t it = list_head(lst);
     for (int i = 0; i < lst->size; ++i)
     {
-        int new_it = list_next(lst, it);
         swap_items(lst, it, i + 2);
-        assert(new_it > 1);
+        int new_it = list_next(lst, i + 2);
+        assert(new_it > 1 || i == lst->size - 1);
         it = new_it;
+    }
+    if (list_is_wrong(lst))
+    {
+        printf("structure is bad.\n");
+        abort();
     }
     #ifndef NO_VERIFY
     for (int i = 0; i + 1 < lst->size; ++i)

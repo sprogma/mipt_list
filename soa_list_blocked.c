@@ -16,6 +16,9 @@
 #define u_tail(lst) ((lst)->prev[1])
 #define u_head(lst) ((lst)->next[1])
 
+#define BLOCK_SIZE 16
+#define BLOCK_SEARCH_STEPS 16
+
 struct item
 {
     int value, next, prev;
@@ -51,15 +54,19 @@ int32_t list_is_wrong(struct list_t *lst)
 {    
     iterator_t it;
     it = list_head(lst);
-    for (int i = 0; i < lst->size; ++i)
+    for (int i = 0; i < lst->alloc; ++i)
     {
-        if (it <= 1)
+        if (it <= 1 || it > lst->alloc)
         {
-            printf("ERROR: AT i=%d/%d\n", i, lst->size);
+            printf("ERROR: AT i=%d/%d\n", i, lst->alloc);
             return 1;
         }
+        // printf("%d = %d: <%d %d> <<%d %d>>\n", i + 2, lst->value[i + 2], lst->prev[i + 2], lst->next[i + 2], lst->next[lst->prev[i + 2]], lst->prev[lst->next[i + 2]]);
+        assert(lst->next[TO_PREV(lst->prev[i + 2])] == i + 2);
+        assert(TO_PREV(lst->prev[lst->next[i + 2]]) == i + 2);
         it = list_next(lst, it);
     }
+    
     return 0;
 }
 #endif
@@ -118,7 +125,7 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
     if (capacity > lst->alloc)
     {
         int prev_size = lst->alloc;
-        lst->alloc = 1;
+        lst->alloc = 64;
         while (lst->alloc < capacity)
         {
             lst->alloc *= 2;
@@ -134,8 +141,8 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
         lst->prev = new_prev;
         lst->next = new_next;
         /* mark new nodes as free */
-        // fcairst element
-        lst->prev[prev_size] = f_tail(lst);
+        // first element
+        lst->prev[prev_size] = f_tail(lst); // | FREE_MASK; already with it
         lst->next[f_tail(lst)] = prev_size;
         // last element
         lst->next[lst->alloc - 1] = f_item;
@@ -166,6 +173,55 @@ int32_t list_size(struct list_t *lst)
 }
 
 
+static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
+{
+    if (a == b)
+    {
+        return;
+    }
+    iterator_t pa, na, pb, nb;
+    if (lst->next[b] == a)
+    {
+        iterator_t tmp = b;
+        b = a;
+        a = tmp;
+    }
+    pa = lst->prev[a];
+    na = lst->next[a];
+    pb = lst->prev[b];
+    nb = lst->next[b];
+    if (na == b)
+    {
+        // pa a b nb -> pa b a nb
+        lst->next[pa] = b;
+        lst->next[b] = a;
+        lst->next[a] = nb;
+
+        lst->prev[b] = pa;
+        lst->prev[a] = b;
+        lst->prev[nb] = a;
+    }
+    else
+    {
+        // pa a na   pb b nb    ->    pa b na   pb a nb
+        lst->next[a] = nb;
+        lst->prev[a] = pb;
+        lst->next[b] = na;
+        lst->prev[b] = pa;
+
+        lst->next[pa] = b;
+        lst->prev[na] = b;
+        lst->next[pb] = a;
+        lst->prev[nb] = a;
+    }
+    int tmp = lst->value[a];
+    lst->value[a] = lst->value[b];
+    lst->value[b] = tmp;
+
+    if (list_is_wrong(lst)) { }
+}
+
+
 /* iterators */
 iterator_t list_head(struct list_t *lst)
 {
@@ -179,18 +235,12 @@ iterator_t list_tail(struct list_t *lst)
 
 iterator_t list_next(struct list_t *lst, iterator_t it)
 {
-    iterator_t res = lst->next[it];
-    __builtin_prefetch(&lst->value[res], 0, 2);
-    __builtin_prefetch(&lst->next[lst->next[res]], 0, 2);
-    return res;
+    return lst->next[it];
 }
 
 iterator_t list_prev(struct list_t *lst, iterator_t it)
 {
-    iterator_t res = lst->prev[it];
-    __builtin_prefetch(&lst->value[res], 0, 2);
-    __builtin_prefetch(&lst->prev[lst->prev[res]], 0, 2);
-    return res;
+    return lst->prev[it];
 }
 
 iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps)
@@ -237,6 +287,8 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 
     iterator_t before = lst->prev[it];
 
+    // printf("%d %d %d\n", new_item, it, before);
+
     // x Y z: x next = Y
     lst->next[before] = new_item;
     // x Y z: z prev = Y
@@ -255,6 +307,57 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 
     lst->size++;
 
+    if (list_is_wrong(lst)) { }
+
+    /* go to left 8 times, to find block for this element */
+    for (int i = 0; before % BLOCK_SIZE != 2 && i < BLOCK_SEARCH_STEPS; ++i)
+    {
+        before = lst->prev[before];
+    }
+    if (before % BLOCK_SIZE != 2)
+    {
+        return new_item;
+    }
+    /* optimize: if there is empty element in IT's block - than swap it */
+    int blk_start = ((before - 2) & ~(BLOCK_SIZE - 1)) + 2;
+    int blk_end = blk_start + BLOCK_SIZE;
+    if (blk_start < 0 || blk_end > lst->alloc || (blk_start <= new_item && new_item < blk_end))
+    {
+        return new_item;
+    }
+    // printf("BLOCK %d %d\n", blk_start, blk_end);
+    /* find element not from this block */
+    unsigned char block[BLOCK_SIZE] = {0};
+    // printf("A %d insert %d it=%d bef=%d\n", lst->size, new_item, it, before);
+    {
+        int p = 0;
+        p = before;
+        while (blk_start <= p && p < blk_end)
+        {
+            block[p - blk_start] = 1;
+            p = lst->next[p];
+        }
+    }
+    // printf("B");
+    for (int i = 0; i < BLOCK_SIZE; ++i)
+    {
+        if (block[i] == 0)
+        {
+            // static int t = 0;
+            // t++;
+            // if (t % 1000000 == 0)
+            // {
+            //     fprintf(stderr, "optimizated %d\n", t);
+            // }
+            // assert(blk_start + i != 1);
+            // assert(new_item != 1);
+            swap_items(lst, blk_start + i, new_item);
+            return blk_start + i;
+        }
+    }
+
+    if (list_is_wrong()) {}
+    
     return new_item;
 }
 
@@ -277,54 +380,6 @@ result_t list_remove(struct list_t *lst, iterator_t it)
         
     return 0;
 }
-
-static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
-{
-    if (a == b)
-    {
-        return;
-    }
-    iterator_t pa, na, pb, nb;
-    nb = lst->next[b];
-    if (nb == a)
-    {
-        iterator_t tmp = b;
-        b = a;
-        a = tmp;
-    }
-    pa = lst->prev[a];
-    na = lst->next[a];
-    pb = lst->prev[b];
-    nb = lst->next[b];
-    if (na == b)
-    {
-        // pa a b nb -> pa b a nb
-        lst->next[pa] = b;
-        lst->next[b] = a;
-        lst->next[a] = nb;
-
-        lst->prev[b] = pa;
-        lst->prev[a] = b;
-        lst->prev[nb] = a;
-    }
-    else
-    {
-        /* swap a and b */
-        lst->next[a] = nb;
-        lst->prev[a] = pb;
-        lst->next[b] = na;
-        lst->prev[b] = pa;
-
-        lst->next[pa] = b;
-        lst->prev[na] = b;
-        lst->next[pb] = a;
-        lst->prev[nb] = a;
-    }
-    int tmp = lst->value[a];
-    lst->value[a] = lst->value[b];
-    lst->value[b] = tmp;
-}
-
 
 
 /* call this function at free time, to optimizate structure */

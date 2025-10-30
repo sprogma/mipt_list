@@ -11,10 +11,13 @@
 
 #define f_item 0
 #define u_item 1
-#define f_tail(lst) ((lst)->items[0].prev)
-#define f_head(lst) ((lst)->items[0].next)
-#define u_tail(lst) ((lst)->items[1].prev)
-#define u_head(lst) ((lst)->items[1].next)
+#define f_tail(lst) ((lst)->prev[0])
+#define f_head(lst) ((lst)->next[0])
+#define u_tail(lst) ((lst)->prev[1])
+#define u_head(lst) ((lst)->next[1])
+
+#define FREE_MASK 0x80000000
+#define TO_PREV(x) ((x) & ~FREE_MASK)
 
 struct item
 {
@@ -23,7 +26,9 @@ struct item
 
 struct list_t
 {
-    struct item *items;
+    int *value;
+    int *next;
+    int *prev;
     int alloc;
     int size;
 };
@@ -36,7 +41,7 @@ void dump_to_image(struct list_t *lst)
     printf("node size: %d [%d]\n", lst->size, lst->alloc);
     for (int i = 0; i < lst->alloc; ++i)
     {
-        printf("node[%d] = {v:%d p:%d n:%d}\n", i, lst->items[i].value, lst->items[i].prev, lst->items[i].next);
+        printf("node[%d] = {v:%d p:%d n:%d}\n", i, lst->value[i], lst->prev[i], lst->next[i]);
     }
 }
 #endif
@@ -49,22 +54,39 @@ int32_t list_is_wrong(struct list_t *lst)
 {    
     iterator_t it;
     it = list_head(lst);
-    for (int i = 0; i < lst->size; ++i)
+    for (int i = 0; i < lst->alloc; ++i)
     {
-        if (it <= 1)
+        if (it <= 1 || it > lst->alloc)
         {
-            printf("ERROR: AT i=%d/%d\n", i, lst->size);
+            printf("ERROR: AT i=%d/%d\n", i, lst->alloc);
             return 1;
         }
+        // printf("%d = %d: <%d %d> <<%d %d>>\n", i + 2, lst->value[i + 2], lst->prev[i + 2], lst->next[i + 2], lst->next[lst->prev[i + 2]], lst->prev[lst->next[i + 2]]);
+        assert(lst->next[TO_PREV(lst->prev[i + 2])] == i + 2);
+        assert(TO_PREV(lst->prev[lst->next[i + 2]]) == i + 2);
         it = list_next(lst, it);
     }
+
+    /* check free array */
+    it = 0;
+    do
+    {
+        assert(lst->prev[it] & FREE_MASK);
+        it = list_next(lst, it);
+    } 
+    while (it != 0);
+    
+    it = 1;
+    do
+    {
+        assert((lst->prev[it] & FREE_MASK) == 0);
+        it = list_next(lst, it);
+    } 
+    while (it != 1);
+    
     return 0;
 }
 #endif
-
-
-
-
 
 /* standart initializators */
 struct list_t *list_create(int32_t capacity)
@@ -72,13 +94,17 @@ struct list_t *list_create(int32_t capacity)
     struct list_t *lst = calloc(1, sizeof(*lst));
     
     lst->alloc = 2;
-    lst->items = calloc(2, sizeof(*lst->items));
+    lst->value = calloc(2, sizeof(*lst->prev));
+    lst->next = calloc(2, sizeof(*lst->value));
+    lst->prev = calloc(2, sizeof(*lst->next));
     lst->size = 0;
 
-    lst->items[f_item].value = 0xBEBEBEBE;
-    lst->items[u_item].value = 0xBEBEBEBE;
+    lst->value[f_item] = 0xBEBEBEBE;
+    lst->value[u_item] = 0xBEBEBEBE;
     f_tail(lst) = f_head(lst) = f_item;
     u_tail(lst) = u_head(lst) = u_item;
+    
+    lst->prev[f_item] |= FREE_MASK;
 
     list_reserve(lst, capacity);
 
@@ -102,7 +128,9 @@ struct list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t
 
 result_t list_free(struct list_t *lst)
 {
-    free(lst->items);
+    free(lst->value);
+    free(lst->prev);
+    free(lst->next);
     free(lst);
     return 0;
 }
@@ -116,37 +144,41 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
     if (capacity > lst->alloc)
     {
         int prev_size = lst->alloc;
-        lst->alloc = 1;
+        lst->alloc = 64;
         while (lst->alloc < capacity)
         {
             lst->alloc *= 2;
         }
-        struct item *new_ptr = realloc(lst->items, sizeof(*lst->items) * lst->alloc);
-        if (new_ptr == NULL)
+        int *new_value = realloc(lst->value, sizeof(*lst->value) * lst->alloc);
+        iterator_t *new_prev = realloc(lst->prev, sizeof(*lst->prev) * lst->alloc);
+        iterator_t *new_next = realloc(lst->next, sizeof(*lst->next) * lst->alloc);
+        if (new_value == NULL || new_prev == NULL || new_next == NULL)
         {
             return 1;
         }
-        lst->items = new_ptr;
+        lst->value = new_value;
+        lst->prev = new_prev;
+        lst->next = new_next;
         /* mark new nodes as free */
         // first element
-        lst->items[prev_size].prev = f_tail(lst);
-        lst->items[f_tail(lst)].next = prev_size;
+        lst->prev[prev_size] = f_tail(lst); // | FREE_MASK; already with it
+        lst->next[TO_PREV(f_tail(lst))] = prev_size;
         // last element
-        lst->items[lst->alloc - 1].next = f_item;
-        lst->items[f_item].prev = lst->alloc - 1;
+        lst->next[lst->alloc - 1] = f_item;
+        lst->prev[f_item] = (lst->alloc - 1) | FREE_MASK;
         // other links
         for (int i = prev_size; i < lst->alloc; ++i)
         {
             if (i != lst->alloc - 1)
             {
-                lst->items[i].next = i + 1;
+                lst->next[i] = i + 1;
             }
             if (i != prev_size)
             {
-                lst->items[i].prev = i - 1;
+                lst->prev[i] = (i - 1) | FREE_MASK;
             }
             #ifndef NDEBUG
-            lst->items[i].value = -1;
+            lst->value[i] = -1;
             #endif
         }
     }
@@ -157,6 +189,59 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
 int32_t list_size(struct list_t *lst)
 {
     return lst->size;
+}
+
+
+static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
+{
+    if (a == b)
+    {
+        return;
+    }
+    iterator_t a_mask = a & FREE_MASK;
+    iterator_t b_mask = b & FREE_MASK;
+    iterator_t pa, na, pb, nb;
+    if (lst->next[b] == a)
+    {
+        iterator_t tmp = b;
+        b = a;
+        a = tmp;
+    }
+    pa = TO_PREV(lst->prev[a]);
+    na = lst->next[a];
+    pb = TO_PREV(lst->prev[b]);
+    nb = lst->next[b];
+    iterator_t na_mask = lst->prev[na] & FREE_MASK;
+    iterator_t nb_mask = lst->prev[nb] & FREE_MASK;
+    if (na == b)
+    {
+        // pa a b nb -> pa b a nb
+        lst->next[pa] = b;
+        lst->next[b] = a;
+        lst->next[a] = nb;
+
+        lst->prev[b] = pa | a_mask;
+        lst->prev[a] = b | b_mask;
+        lst->prev[nb] = a | nb_mask;
+    }
+    else
+    {
+        // pa a na   pb b nb    ->    pa b na   pb a nb
+        lst->next[a] = nb;
+        lst->prev[a] = pb | b_mask;
+        lst->next[b] = na;
+        lst->prev[b] = pa | a_mask;
+
+        lst->next[pa] = b;
+        lst->prev[na] = b | na_mask;
+        lst->next[pb] = a;
+        lst->prev[nb] = a | nb_mask;
+    }
+    int tmp = lst->value[a];
+    lst->value[a] = lst->value[b];
+    lst->value[b] = tmp;
+
+    if (list_is_wrong(lst)) { }
 }
 
 
@@ -173,12 +258,13 @@ iterator_t list_tail(struct list_t *lst)
 
 iterator_t list_next(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].next;
+    return lst->next[it];
 }
 
 iterator_t list_prev(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].prev;
+    assert((lst->prev[it] & FREE_MASK) == 0);
+    return lst->prev[it];
 }
 
 iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps)
@@ -205,36 +291,38 @@ iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps)
 
 int32_t list_get(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].value;
+    return lst->value[it];
 }
 
 
 /* insertion and deletion of elements */
 iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 {
-    list_reserve(lst, lst->size + 2);
+    list_reserve(lst, lst->size + 1);
 
     #ifndef NO_PRINF
     printf("insert %d at %d\n", value, it);
     #endif
     dump_to_image(lst);
     
-    int new_item = f_head(lst);
-    lst->items[lst->items[f_head(lst)].next].prev = f_item;
-    f_head(lst) = lst->items[f_head(lst)].next;
+    iterator_t new_item = f_head(lst);
+    lst->prev[lst->next[f_head(lst)]] = f_item | FREE_MASK;
+    f_head(lst) = lst->next[f_head(lst)];
 
-    int before = lst->items[it].prev;
+    iterator_t before = lst->prev[it];
+
+    // printf("%d %d %d\n", new_item, it, before);
 
     // x Y z: x next = Y
-    lst->items[before].next = new_item;
+    lst->next[before] = new_item;
     // x Y z: z prev = Y
-    lst->items[it].prev = new_item;
+    lst->prev[it] = new_item;
     // x Y z: Y next = z
-    lst->items[new_item].next = it;
+    lst->next[new_item] = it;
     // x Y z: Y prev = x
-    lst->items[new_item].prev = before;
+    lst->prev[new_item] = before;
     // set value
-    lst->items[new_item].value = value;
+    lst->value[new_item] = value;
     
     #ifndef NO_PRINF
     printf("after insert:\n");
@@ -243,76 +331,30 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 
     lst->size++;
 
+    if (list_is_wrong(lst)) { }
+    
     return new_item;
 }
 
 result_t list_remove(struct list_t *lst, iterator_t it)
 {
-    int after = lst->items[it].next;
-    int before = lst->items[it].prev;
+    assert((lst->prev[it] & FREE_MASK) == 0);
+    iterator_t after = lst->next[it];
+    iterator_t before = lst->prev[it];
     // x Y z: x next = z
-    lst->items[before].next = after;
+    lst->next[before] = after;
     // x Y z: z prev = x
-    lst->items[after].prev = before;
+    lst->prev[after] = before;
     
     // free node
-    lst->items[it].prev = f_tail(lst);
-    lst->items[it].next = f_item;
-    lst->items[f_tail(lst)].next = it;
-    f_tail(lst) = it;
+    lst->prev[it] = f_tail(lst) | FREE_MASK;
+    lst->next[it] = f_item;
+    lst->next[TO_PREV(f_tail(lst))] = it;
+    f_tail(lst) = it | FREE_MASK;
 
     lst->size--;
         
     return 0;
-}
-
-/* call this function at free time, to optimizate structure */
-
-static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
-{
-    if (a == b)
-    {
-        return;
-    }
-    iterator_t pa, na, pb, nb;
-    if (lst->items[b].next == a)
-    {
-        iterator_t tmp = b;
-        b = a;
-        a = tmp;
-    }
-    pa = lst->items[a].prev;
-    na = lst->items[a].next;
-    pb = lst->items[b].prev;
-    nb = lst->items[b].next;
-    if (na == b)
-    {
-        // pa a b nb -> pa b a nb
-        lst->items[pa].next = b;
-        lst->items[b].next = a;
-        lst->items[a].next = nb;
-
-        lst->items[b].prev = pa;
-        lst->items[a].prev = b;
-        lst->items[nb].prev = a;
-    }
-    else
-    {
-        /* swap a and b */
-        lst->items[a].next = nb;
-        lst->items[a].prev = pb;
-        lst->items[b].next = na;
-        lst->items[b].prev = pa;
-
-        lst->items[pa].next = b;
-        lst->items[na].prev = b;
-        lst->items[pb].next = a;
-        lst->items[nb].prev = a;
-    }
-    
-    int tmp = lst->items[a].value;
-    lst->items[a].value = lst->items[b].value;
-    lst->items[b].value = tmp;
 }
 
 
@@ -347,10 +389,9 @@ result_t list_optimize(struct list_t *lst)
 }
 
 
-
 /* get element by index */
 int32_t list_at(struct list_t *lst, int32_t index)
 {
     iterator_t it = list_move(lst, u_head(lst), index);
-    return lst->items[it].value;
+    return lst->value[it];
 }

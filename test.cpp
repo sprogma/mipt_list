@@ -241,12 +241,12 @@ void test32()
 }
 
 
-const int ArrayReadSize = 100000000; // 3e7
+const int ArrayReadSize = 10000000; // 3e7
 
 
 list_t *build_nonlinear_list(int size)
 { 
-    list_t *lst = list_create(size);
+    list_t *lst = list_create(0);
     for (int i = 0; i < size; ++i)
     {
         #ifdef TEST_CPP_REALIZATION
@@ -265,7 +265,7 @@ list_t *build_nonlinear_list(int size)
         }
         else
         {
-            list_insert(lst, 2 + rand() % (list_tail(lst) - list_head(lst)), i);
+            list_insert(lst, 2 + rand() % i, i);
         }
         #endif
     }
@@ -276,7 +276,7 @@ void print_avr_jump_size(list_t *lst)
 {
     #ifndef TEST_CPP_REALIZATION
     iterator_t h = list_head(lst);
-    float sum = 0;
+    double sum = 0;
     while (IS_CORRECT(h))
     {
         int nh = list_next(lst, h);
@@ -286,7 +286,7 @@ void print_avr_jump_size(list_t *lst)
         }
         h = nh;
     }
-    printf("! average jump size is: %f\n", sum / list_size(lst));
+    fprintf(stderr, "! average jump size is: %f\n", sum / list_size(lst));
     #endif
 }
 
@@ -308,7 +308,7 @@ void test4()
         while (IS_CORRECT(h))
         {
             int v = list_get(lst, h);
-            res += v;
+            res += v * v * v;
             h = list_next(lst, h);
             --x;
         }
@@ -325,14 +325,6 @@ void test4()
 }
 
 
-struct list_t
-{
-    int *value;
-    int *next;
-    int *prev;
-    int alloc;
-    int size;
-};
 /* graph representation */
 void test5()
 {
@@ -340,7 +332,9 @@ void test5()
     
     list_t *lst = build_nonlinear_list(ArrayReadSize);
     
+    measure_start();
     list_optimize(lst);
+    measure_end("optimization used time");
     
     print_avr_jump_size(lst);
     
@@ -352,7 +346,7 @@ void test5()
         while (IS_CORRECT(h))
         {
             int v = list_get(lst, h);
-            res += v;
+            res += v * v * v;
             h = list_next(lst, h);
             --x;
         }
@@ -374,16 +368,12 @@ int main()
 {
     
     test_behaviour();
-    test1();
-    test2();
-    test31();
-    test32();
-    #ifdef TEST_CPP_REALIZATION
-    printf("SKIP TESTS 4 AND 5 BECOUSE OF TOO LARGE MEMORY CONSUMPTION OF CPP CODE\n");
-    #else
+    // test1();
+    // test2();
+    // test31();
+    // test32();
     test4();
     test5();
-    #endif
     
     fprintf(stderr, "not_optimize: %d\n", not_optimize);
     return 0;
