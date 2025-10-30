@@ -187,7 +187,7 @@ const int ArrayReverseSize = 10000000;
 
 
 /* graph representation */
-void test3()
+void test31()
 {
     srand(179);
 
@@ -209,7 +209,34 @@ void test3()
         list_remove(lst, h);
     }
     list_free(lst);
-    measure_end("simlpy reverse big array");
+    measure_end("insert and remove big array, as stack, RESERVE(0%)");
+    // not_optimize ^= lst;
+}
+
+/* graph representation */
+void test32()
+{
+    srand(179);
+
+    measure_start();
+    list_t *lst = list_create(ArrayReverseSize);
+    for (int i = 0; i < ArrayReverseSize; ++i)
+    {
+        list_insert(lst, list_head(lst), i);
+    }
+    for (int i = 0; i < ArrayReverseSize; ++i)
+    {
+        iterator_t h = list_head(lst);
+        int v = list_get(lst, h);
+        if (v != ArrayReverseSize - i - 1)
+        {
+            fprintf(stderr, "ERROR: list behaviour is broken.\n");
+            return;
+        }
+        list_remove(lst, h);
+    }
+    list_free(lst);
+    measure_end("insert and remove big array, as stack, RESERVE(100%)");
     // not_optimize ^= lst;
 }
 
@@ -217,14 +244,12 @@ void test3()
 const int ArrayReadSize = 100000000; // 3e7
 
 
-/* graph representation */
-void test4()
-{
-    srand(179);
-
-    list_t *lst = list_create(0);
-    for (int i = 0; i < ArrayReadSize; ++i)
+list_t *build_nonlinear_list(int size)
+{ 
+    list_t *lst = list_create(size);
+    for (int i = 0; i < size; ++i)
     {
+        #ifdef TEST_CPP_REALIZATION
         if (i % 2 == 0)
         {
             list_insert(lst, list_head(lst), i);
@@ -233,7 +258,47 @@ void test4()
         {
             list_insert(lst, list_tail(lst), i);
         }
+        #else
+        if (i <= 1)
+        {
+            list_insert(lst, list_tail(lst), i);
+        }
+        else
+        {
+            list_insert(lst, 2 + rand() % (list_tail(lst) - list_head(lst)), i);
+        }
+        #endif
     }
+    return lst;
+}
+
+void print_avr_jump_size(list_t *lst)
+{
+    #ifndef TEST_CPP_REALIZATION
+    iterator_t h = list_head(lst);
+    float sum = 0;
+    while (IS_CORRECT(h))
+    {
+        int nh = list_next(lst, h);
+        if (IS_CORRECT(nh))
+        {
+            sum += fabs(h - nh);
+        }
+        h = nh;
+    }
+    printf("! average jump size is: %f\n", sum / list_size(lst));
+    #endif
+}
+
+/* graph representation */
+void test4()
+{
+    srand(179);
+    list_t *lst = build_nonlinear_list(ArrayReadSize);
+
+
+    print_avr_jump_size(lst);
+
     
     measure_start();
     {
@@ -260,25 +325,24 @@ void test4()
 }
 
 
+struct list_t
+{
+    int *value;
+    int *next;
+    int *prev;
+    int alloc;
+    int size;
+};
 /* graph representation */
 void test5()
 {
     srand(179);
-
-    list_t *lst = list_create(0);
-    for (int i = 0; i < ArrayReadSize; ++i)
-    {
-        if (i % 2 == 0)
-        {
-            list_insert(lst, list_head(lst), i);
-        }
-        else
-        {
-            list_insert(lst, list_tail(lst), i);
-        }
-    }
+    
+    list_t *lst = build_nonlinear_list(ArrayReadSize);
     
     list_optimize(lst);
+    
+    print_avr_jump_size(lst);
     
     measure_start();
     {
@@ -312,10 +376,19 @@ int main()
     test_behaviour();
     test1();
     test2();
-    test3();
+    test31();
+    test32();
+    #ifdef TEST_CPP_REALIZATION
+    printf("SKIP TESTS 4 AND 5 BECOUSE OF TOO LARGE MEMORY CONSUMPTION OF CPP CODE\n");
+    #else
     test4();
     test5();
+    #endif
     
     fprintf(stderr, "not_optimize: %d\n", not_optimize);
     return 0;
 }
+
+
+
+

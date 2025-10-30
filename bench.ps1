@@ -1,12 +1,12 @@
 pushd $PSScriptRoot
-@("std.cpp", "soa_list.c", "aos_list.c") | % {
+@("std.cpp", "soa_list.c", "aos_list.c", "soa_list_prefetch.c") | % {
     if ($_-match"\.cpp$")
     {
         g++ test.cpp $_ -o a.exe -DTEST_CPP_REALIZATION -Ofast -flto
     }
     else
     {
-        gcc test.cpp $_ -o a.exe -DTEST_CPP_REALIZATION -Ofast -flto -lstdc++
+        gcc test.cpp $_ -o a.exe -Ofast -flto -lstdc++
     }
     Write-Host "Running $_" -ForegroundColor green
     ./a.exe

@@ -7,7 +7,7 @@
 #include "mylist.h"
 
 #define NO_PRINF
-#define NO_VERIFY
+// #define NO_VERIFY
 
 #define f_item 0
 #define u_item 1
@@ -53,7 +53,7 @@ int32_t list_is_wrong(struct list_t *lst)
     it = list_head(lst);
     for (int i = 0; i < lst->size; ++i)
     {
-        if (it <= 1)
+        if (it <= 1 || it > lst->size + 2)
         {
             printf("ERROR: AT i=%d/%d\n", i, lst->size);
             return 1;
@@ -272,14 +272,24 @@ result_t list_remove(struct list_t *lst, iterator_t it)
     return 0;
 }
 
-static void swap_items(struct list_t *lst, int a, int b)
+static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
 {
     if (a == b)
     {
         return;
     }
-    iterator_t pa = lst->prev[a], na = lst->next[a];
-    iterator_t pb = lst->prev[b], nb = lst->next[b];
+    iterator_t pa, na, pb, nb;
+    nb = lst->next[b];
+    if (nb == a)
+    {
+        iterator_t tmp = b;
+        b = a;
+        a = tmp;
+    }
+    pa = lst->prev[a];
+    na = lst->next[a];
+    pb = lst->prev[b];
+    nb = lst->next[b];
     if (na == b)
     {
         // pa a b nb -> pa b a nb
@@ -290,17 +300,6 @@ static void swap_items(struct list_t *lst, int a, int b)
         lst->prev[b] = pa;
         lst->prev[a] = b;
         lst->prev[nb] = a;
-    }
-    else if (nb == a)
-    {
-        // pb b a na -> pb a b na
-        lst->next[pb] = a;
-        lst->next[a] = b;
-        lst->next[b] = na;
-
-        lst->prev[a] = pb;
-        lst->prev[b] = a;
-        lst->prev[na] = b;
     }
     else
     {
@@ -315,7 +314,6 @@ static void swap_items(struct list_t *lst, int a, int b)
         lst->next[pb] = a;
         lst->prev[nb] = a;
     }
-    
     int tmp = lst->value[a];
     lst->value[a] = lst->value[b];
     lst->value[b] = tmp;
@@ -338,6 +336,12 @@ result_t list_optimize(struct list_t *lst)
         assert(new_it > 1);
         it = new_it;
     }
+    #ifndef NO_VERIFY
+    for (int i = 0; i + 1 < lst->size; ++i)
+    {
+        assert(lst->next[2 + i] == 2 + i + 1);
+    }
+    #endif
     return 0;
 }
 

@@ -35,7 +35,6 @@ list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capaci
 
 result_t list_free(struct list_t *lst) 
 {
-    lst->x.clear();
     delete lst;
     return 0;
 }
