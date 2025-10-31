@@ -17,7 +17,7 @@ set style histogram clustered gap 1
 set style fill solid 0.8 border -1
 set boxwidth 0.8
 
-set logscale y
+# set logscale y
 
 set style line 1 lc rgb "#666666" lt 1 lw 1
 set grid ytics linestyle 1

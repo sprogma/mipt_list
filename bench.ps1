@@ -5,7 +5,7 @@ $res = [ordered]@{}
 
 $l | %{
     $id = $l.IndexOf($_) + 1
-    Write-Host "Builing $_" -ForegroundColor yellow
+    Write-Progress -Activity "building" -Status "$_" -PercentComplete ([int](100*($id-1)/$l.Count))
     if ($_-match"\.cpp$")
     {
         g++ test.cpp $_ -o "a$id.exe" -DTEST_CPP_REALIZATION -DNDEBUG -Ofast -flto
@@ -13,15 +13,17 @@ $l | %{
     else
     {
         gcc test.cpp $_ -o "a$id.exe" -Ofast -DNDEBUG -flto -lstdc++
-    } 
+    }
+    Write-Host "built $_" -ForegroundColor green
 }
+Write-Progress -Activity "building" -Status "finished" -PercentComplete 100 -Completed
 
 while (1)
 {
     $l | % {
         $id = $l.IndexOf($_) + 1
-        Write-Host "Running $_" -ForegroundColor green
-        $dat = -split(& "./a$id.exe")
+        Write-Progress -Activity "running" -Status "$_" -PercentComplete ([int](100*($id-1)/$l.Count))
+        $dat = -split(& "./a$id.exe" 2>$null)
         if ($res[$_] -eq $null)
         {
             $res[$_] = [pscustomobject]@{name=$_;data=$dat}
@@ -36,8 +38,9 @@ while (1)
         .\draw.ps1 @($res.Values)
         see .\result.png
     }
-    
-    $res.Values | oh
+    Write-Progress -Activity "running" -Status "finished" -PercentComplete 100 -Completed
+    Import-Csv "result.dat" -Delimiter ';' | fl | oh
+    Import-Csv "result.dat" -Delimiter ';' | ft | oh
 }
 
 popd

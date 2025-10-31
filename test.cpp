@@ -368,10 +368,10 @@ int main()
 {
     
     test_behaviour();
-    // test1();
-    // test2();
-    // test31();
-    // test32();
+    test1();
+    test2();
+    test31();
+    test32();
     test4();
     test5();
     
