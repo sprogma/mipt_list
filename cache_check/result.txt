@@ -1,147 +1,1027 @@
-No prefetch                                       UserTime: 58.66 e/us  KernelTime: not measured e/us
-No prefetch-hard                                  UserTime: 11.34 e/us  KernelTime: not measured e/us
-prefetch x1                                       UserTime: 59.83 e/us  KernelTime: not measured e/us
-prefetch-hard x1                                  UserTime: 16.17 e/us  KernelTime: not measured e/us
-prefetch x1 E                                     UserTime: 61.02 e/us  KernelTime: not measured e/us
-prefetch-hard x1 E                                UserTime: 15.93 e/us  KernelTime: not measured e/us
-prefetch x1 NTA                                   UserTime: 38.36 e/us  KernelTime: not measured e/us
-prefetch-hard x1 NTA                              UserTime: 16.26 e/us  KernelTime: not measured e/us
-prefetch x1 E+NTA                                 UserTime: 64.80 e/us  KernelTime: not measured e/us
-prefetch-hard x1 E+NTA                            UserTime: 16.48 e/us  KernelTime: not measured e/us
-prefetch x2                                       UserTime: 58.30 e/us  KernelTime: not measured e/us
-prefetch-hard x2                                  UserTime: 16.33 e/us  KernelTime: not measured e/us
-prefetch x2 E                                     UserTime: 61.63 e/us  KernelTime: not measured e/us
-prefetch-hard x2 E                                UserTime: 16.76 e/us  KernelTime: not measured e/us
-prefetch x2 NTA                                   UserTime: 39.04 e/us  KernelTime: not measured e/us
-prefetch-hard x2 NTA                              UserTime: 16.30 e/us  KernelTime: not measured e/us
-prefetch x2 E+NTA                                 UserTime: 60.35 e/us  KernelTime: not measured e/us
-prefetch-hard x2 E+NTA                            UserTime: 16.23 e/us  KernelTime: not measured e/us
-prefetch x3                                       UserTime: 53.69 e/us  KernelTime: not measured e/us
-prefetch-hard x3                                  UserTime: 16.84 e/us  KernelTime: not measured e/us
-prefetch x3 E                                     UserTime: 60.97 e/us  KernelTime: not measured e/us
-prefetch-hard x3 E                                UserTime: 16.59 e/us  KernelTime: not measured e/us
-prefetch x3 NTA                                   UserTime: 39.96 e/us  KernelTime: not measured e/us
-prefetch-hard x3 NTA                              UserTime: 16.02 e/us  KernelTime: not measured e/us
-prefetch x3 E+NTA                                 UserTime: 61.14 e/us  KernelTime: not measured e/us
-prefetch-hard x3 E+NTA                            UserTime: 17.08 e/us  KernelTime: not measured e/us
-prefetch x4                                       UserTime: 59.94 e/us  KernelTime: not measured e/us
-prefetch-hard x4                                  UserTime: 16.68 e/us  KernelTime: not measured e/us
-prefetch x4 E                                     UserTime: 65.68 e/us  KernelTime: not measured e/us
-prefetch-hard x4 E                                UserTime: 16.43 e/us  KernelTime: not measured e/us
-prefetch x4 NTA                                   UserTime: 39.83 e/us  KernelTime: not measured e/us
-prefetch-hard x4 NTA                              UserTime: 16.21 e/us  KernelTime: not measured e/us
-prefetch x4 E+NTA                                 UserTime: 65.72 e/us  KernelTime: not measured e/us
-prefetch-hard x4 E+NTA                            UserTime: 16.41 e/us  KernelTime: not measured e/us
-prefetch x5                                       UserTime: 62.31 e/us  KernelTime: not measured e/us
-prefetch-hard x5                                  UserTime: 16.80 e/us  KernelTime: not measured e/us
-prefetch x5 E                                     UserTime: 62.75 e/us  KernelTime: not measured e/us
-prefetch-hard x5 E                                UserTime: 17.80 e/us  KernelTime: not measured e/us
-prefetch x5 NTA                                   UserTime: 40.71 e/us  KernelTime: not measured e/us
-prefetch-hard x5 NTA                              UserTime: 16.20 e/us  KernelTime: not measured e/us
-prefetch x5 E+NTA                                 UserTime: 62.60 e/us  KernelTime: not measured e/us
-prefetch-hard x5 E+NTA                            UserTime: 17.59 e/us  KernelTime: not measured e/us
-prefetch x6                                       UserTime: 59.45 e/us  KernelTime: not measured e/us
-prefetch-hard x6                                  UserTime: 17.70 e/us  KernelTime: not measured e/us
-prefetch x6 E                                     UserTime: 64.21 e/us  KernelTime: not measured e/us
-prefetch-hard x6 E                                UserTime: 17.51 e/us  KernelTime: not measured e/us
-prefetch x6 NTA                                   UserTime: 40.04 e/us  KernelTime: not measured e/us
-prefetch-hard x6 NTA                              UserTime: 16.56 e/us  KernelTime: not measured e/us
-prefetch x6 E+NTA                                 UserTime: 66.38 e/us  KernelTime: not measured e/us
-prefetch-hard x6 E+NTA                            UserTime: 17.56 e/us  KernelTime: not measured e/us
-prefetch x7                                       UserTime: 61.44 e/us  KernelTime: not measured e/us
-prefetch-hard x7                                  UserTime: 19.49 e/us  KernelTime: not measured e/us
-prefetch x7 E                                     UserTime: 63.23 e/us  KernelTime: not measured e/us
-prefetch-hard x7 E                                UserTime: 19.23 e/us  KernelTime: not measured e/us
-prefetch x7 NTA                                   UserTime: 41.91 e/us  KernelTime: not measured e/us
-prefetch-hard x7 NTA                              UserTime: 16.50 e/us  KernelTime: not measured e/us
-prefetch x7 E+NTA                                 UserTime: 67.73 e/us  KernelTime: not measured e/us
-prefetch-hard x7 E+NTA                            UserTime: 19.50 e/us  KernelTime: not measured e/us
-prefetch x8                                       UserTime: 61.72 e/us  KernelTime: not measured e/us
-prefetch-hard x8                                  UserTime: 19.12 e/us  KernelTime: not measured e/us
-prefetch x8 E                                     UserTime: 64.47 e/us  KernelTime: not measured e/us
-prefetch-hard x8 E                                UserTime: 18.42 e/us  KernelTime: not measured e/us
-prefetch x8 NTA                                   UserTime: 39.97 e/us  KernelTime: not measured e/us
-prefetch-hard x8 NTA                              UserTime: 15.13 e/us  KernelTime: not measured e/us
-prefetch x8 E+NTA                                 UserTime: 68.23 e/us  KernelTime: not measured e/us
-prefetch-hard x8 E+NTA                            UserTime: 18.10 e/us  KernelTime: not measured e/us
-prefetch x10                                      UserTime: 60.17 e/us  KernelTime: not measured e/us
-prefetch-hard x10                                 UserTime: 18.21 e/us  KernelTime: not measured e/us
-prefetch x10 E                                    UserTime: 57.15 e/us  KernelTime: not measured e/us
-prefetch-hard x10 E                               UserTime: 17.88 e/us  KernelTime: not measured e/us
-prefetch x10 NTA                                  UserTime: 38.22 e/us  KernelTime: not measured e/us
-prefetch-hard x10 NTA                             UserTime: 13.93 e/us  KernelTime: not measured e/us
-prefetch x10 E+NTA                                UserTime: 54.69 e/us  KernelTime: not measured e/us
-prefetch-hard x10 E+NTA                           UserTime: 17.94 e/us  KernelTime: not measured e/us
-prefetch x12                                      UserTime: 58.23 e/us  KernelTime: not measured e/us
-prefetch-hard x12                                 UserTime: 18.43 e/us  KernelTime: not measured e/us
-prefetch x12 E                                    UserTime: 54.94 e/us  KernelTime: not measured e/us
-prefetch-hard x12 E                               UserTime: 18.45 e/us  KernelTime: not measured e/us
-prefetch x12 NTA                                  UserTime: 35.27 e/us  KernelTime: not measured e/us
-prefetch-hard x12 NTA                             UserTime: 13.82 e/us  KernelTime: not measured e/us
-prefetch x12 E+NTA                                UserTime: 62.13 e/us  KernelTime: not measured e/us
-prefetch-hard x12 E+NTA                           UserTime: 18.33 e/us  KernelTime: not measured e/us
-prefetch x14                                      UserTime: 61.06 e/us  KernelTime: not measured e/us
-prefetch-hard x14                                 UserTime: 18.22 e/us  KernelTime: not measured e/us
-prefetch x14 E                                    UserTime: 61.00 e/us  KernelTime: not measured e/us
-prefetch-hard x14 E                               UserTime: 18.18 e/us  KernelTime: not measured e/us
-prefetch x14 NTA                                  UserTime: 36.08 e/us  KernelTime: not measured e/us
-prefetch-hard x14 NTA                             UserTime: 14.78 e/us  KernelTime: not measured e/us
-prefetch x14 E+NTA                                UserTime: 60.70 e/us  KernelTime: not measured e/us
-prefetch-hard x14 E+NTA                           UserTime: 18.56 e/us  KernelTime: not measured e/us
-prefetch x16                                      UserTime: 61.87 e/us  KernelTime: not measured e/us
-prefetch-hard x16                                 UserTime: 19.07 e/us  KernelTime: not measured e/us
-prefetch x16 E                                    UserTime: 63.00 e/us  KernelTime: not measured e/us
-prefetch-hard x16 E                               UserTime: 18.86 e/us  KernelTime: not measured e/us
-prefetch x16 NTA                                  UserTime: 38.51 e/us  KernelTime: not measured e/us
-prefetch-hard x16 NTA                             UserTime: 14.67 e/us  KernelTime: not measured e/us
-prefetch x16 E+NTA                                UserTime: 58.86 e/us  KernelTime: not measured e/us
-prefetch-hard x16 E+NTA                           UserTime: 17.63 e/us  KernelTime: not measured e/us
-prefetch x24                                      UserTime: 65.06 e/us  KernelTime: not measured e/us
-prefetch-hard x24                                 UserTime: 19.09 e/us  KernelTime: not measured e/us
-prefetch x24 E                                    UserTime: 61.07 e/us  KernelTime: not measured e/us
-prefetch-hard x24 E                               UserTime: 19.37 e/us  KernelTime: not measured e/us
-prefetch x24 NTA                                  UserTime: 36.35 e/us  KernelTime: not measured e/us
-prefetch-hard x24 NTA                             UserTime: 14.56 e/us  KernelTime: not measured e/us
-prefetch x24 E+NTA                                UserTime: 56.56 e/us  KernelTime: not measured e/us
-prefetch-hard x24 E+NTA                           UserTime: 18.26 e/us  KernelTime: not measured e/us
-prefetch x32                                      UserTime: 55.21 e/us  KernelTime: not measured e/us
-prefetch-hard x32                                 UserTime: 17.84 e/us  KernelTime: not measured e/us
-prefetch x32 E                                    UserTime: 59.16 e/us  KernelTime: not measured e/us
-prefetch-hard x32 E                               UserTime: 18.00 e/us  KernelTime: not measured e/us
-prefetch x32 NTA                                  UserTime: 39.99 e/us  KernelTime: not measured e/us
-prefetch-hard x32 NTA                             UserTime: 15.13 e/us  KernelTime: not measured e/us
-prefetch x32 E+NTA                                UserTime: 60.73 e/us  KernelTime: not measured e/us
-prefetch-hard x32 E+NTA                           UserTime: 19.13 e/us  KernelTime: not measured e/us
-prefetch x48                                      UserTime: 66.88 e/us  KernelTime: not measured e/us
-prefetch-hard x48                                 UserTime: 18.94 e/us  KernelTime: not measured e/us
-prefetch x48 E                                    UserTime: 63.69 e/us  KernelTime: not measured e/us
-prefetch-hard x48 E                               UserTime: 19.24 e/us  KernelTime: not measured e/us
-prefetch x48 NTA                                  UserTime: 44.89 e/us  KernelTime: not measured e/us
-prefetch-hard x48 NTA                             UserTime: 14.78 e/us  KernelTime: not measured e/us
-prefetch x48 E+NTA                                UserTime: 61.89 e/us  KernelTime: not measured e/us
-prefetch-hard x48 E+NTA                           UserTime: 18.28 e/us  KernelTime: not measured e/us
-prefetch x64                                      UserTime: 65.10 e/us  KernelTime: not measured e/us
-prefetch-hard x64                                 UserTime: 18.50 e/us  KernelTime: not measured e/us
-prefetch x64 E                                    UserTime: 59.01 e/us  KernelTime: not measured e/us
-prefetch-hard x64 E                               UserTime: 17.99 e/us  KernelTime: not measured e/us
-prefetch x64 NTA                                  UserTime: 43.34 e/us  KernelTime: not measured e/us
-prefetch-hard x64 NTA                             UserTime: 11.75 e/us  KernelTime: not measured e/us
-prefetch x64 E+NTA                                UserTime: 64.90 e/us  KernelTime: not measured e/us
-prefetch-hard x64 E+NTA                           UserTime: 18.34 e/us  KernelTime: not measured e/us
-prefetch x96                                      UserTime: 53.79 e/us  KernelTime: not measured e/us
-prefetch-hard x96                                 UserTime: 19.02 e/us  KernelTime: not measured e/us
-prefetch x96 E                                    UserTime: 50.37 e/us  KernelTime: not measured e/us
-prefetch-hard x96 E                               UserTime: 18.88 e/us  KernelTime: not measured e/us
-prefetch x96 NTA                                  UserTime: 40.55 e/us  KernelTime: not measured e/us
-prefetch-hard x96 NTA                             UserTime: 11.11 e/us  KernelTime: not measured e/us
-prefetch x96 E+NTA                                UserTime: 56.66 e/us  KernelTime: not measured e/us
-prefetch-hard x96 E+NTA                           UserTime: 18.69 e/us  KernelTime: not measured e/us
-prefetch x128                                     UserTime: 52.12 e/us  KernelTime: not measured e/us
-prefetch-hard x128                                UserTime: 18.18 e/us  KernelTime: not measured e/us
-prefetch x128 E                                   UserTime: 52.48 e/us  KernelTime: not measured e/us
-prefetch-hard x128 E                              UserTime: 18.77 e/us  KernelTime: not measured e/us
-prefetch x128 NTA                                 UserTime: 28.55 e/us  KernelTime: not measured e/us
-prefetch-hard x128 NTA                            UserTime: 11.33 e/us  KernelTime: not measured e/us
-prefetch x128 E+NTA                               UserTime: 52.53 e/us  KernelTime: not measured e/us
-prefetch-hard x128 E+NTA                          UserTime: 18.64 e/us  KernelTime: not measured e/us
+No prefetch                                       UserTime: 67.92 e/us  KernelTime: not measured e/us
+No prefetch-hard                                  UserTime: 11.80 e/us  KernelTime: not measured e/us
+prefetch x1                                       UserTime: 59.25 e/us  KernelTime: not measured e/us
+prefetch-hard x1                                  UserTime: 16.69 e/us  KernelTime: not measured e/us
+prefetch x1 E                                     UserTime: 62.20 e/us  KernelTime: not measured e/us
+prefetch-hard x1 E                                UserTime: 16.73 e/us  KernelTime: not measured e/us
+prefetch x1 NTA                                   UserTime: 39.72 e/us  KernelTime: not measured e/us
+prefetch-hard x1 NTA                              UserTime: 16.23 e/us  KernelTime: not measured e/us
+prefetch x1 E+NTA                                 UserTime: 62.19 e/us  KernelTime: not measured e/us
+prefetch-hard x1 E+NTA                            UserTime: 16.42 e/us  KernelTime: not measured e/us
+prefetch x2                                       UserTime: 57.57 e/us  KernelTime: not measured e/us
+prefetch-hard x2                                  UserTime: 17.58 e/us  KernelTime: not measured e/us
+prefetch x2 E                                     UserTime: 61.66 e/us  KernelTime: not measured e/us
+prefetch-hard x2 E                                UserTime: 16.80 e/us  KernelTime: not measured e/us
+prefetch x2 NTA                                   UserTime: 40.97 e/us  KernelTime: not measured e/us
+prefetch-hard x2 NTA                              UserTime: 17.65 e/us  KernelTime: not measured e/us
+prefetch x2 E+NTA                                 UserTime: 61.34 e/us  KernelTime: not measured e/us
+prefetch-hard x2 E+NTA                            UserTime: 16.64 e/us  KernelTime: not measured e/us
+prefetch x3                                       UserTime: 60.55 e/us  KernelTime: not measured e/us
+prefetch-hard x3                                  UserTime: 16.80 e/us  KernelTime: not measured e/us
+prefetch x3 E                                     UserTime: 64.26 e/us  KernelTime: not measured e/us
+prefetch-hard x3 E                                UserTime: 16.40 e/us  KernelTime: not measured e/us
+prefetch x3 NTA                                   UserTime: 39.69 e/us  KernelTime: not measured e/us
+prefetch-hard x3 NTA                              UserTime: 16.58 e/us  KernelTime: not measured e/us
+prefetch x3 E+NTA                                 UserTime: 65.08 e/us  KernelTime: not measured e/us
+prefetch-hard x3 E+NTA                            UserTime: 16.75 e/us  KernelTime: not measured e/us
+prefetch x4                                       UserTime: 59.87 e/us  KernelTime: not measured e/us
+prefetch-hard x4                                  UserTime: 17.37 e/us  KernelTime: not measured e/us
+prefetch x4 E                                     UserTime: 62.28 e/us  KernelTime: not measured e/us
+prefetch-hard x4 E                                UserTime: 17.07 e/us  KernelTime: not measured e/us
+prefetch x4 NTA                                   UserTime: 40.23 e/us  KernelTime: not measured e/us
+prefetch-hard x4 NTA                              UserTime: 17.27 e/us  KernelTime: not measured e/us
+prefetch x4 E+NTA                                 UserTime: 62.19 e/us  KernelTime: not measured e/us
+prefetch-hard x4 E+NTA                            UserTime: 17.29 e/us  KernelTime: not measured e/us
+prefetch x5                                       UserTime: 60.03 e/us  KernelTime: not measured e/us
+prefetch-hard x5                                  UserTime: 17.23 e/us  KernelTime: not measured e/us
+prefetch x5 E                                     UserTime: 62.73 e/us  KernelTime: not measured e/us
+prefetch-hard x5 E                                UserTime: 17.17 e/us  KernelTime: not measured e/us
+prefetch x5 NTA                                   UserTime: 40.32 e/us  KernelTime: not measured e/us
+prefetch-hard x5 NTA                              UserTime: 16.87 e/us  KernelTime: not measured e/us
+prefetch x5 E+NTA                                 UserTime: 64.04 e/us  KernelTime: not measured e/us
+prefetch-hard x5 E+NTA                            UserTime: 17.12 e/us  KernelTime: not measured e/us
+prefetch x6                                       UserTime: 59.56 e/us  KernelTime: not measured e/us
+prefetch-hard x6                                  UserTime: 18.81 e/us  KernelTime: not measured e/us
+prefetch x6 E                                     UserTime: 61.87 e/us  KernelTime: not measured e/us
+prefetch-hard x6 E                                UserTime: 18.35 e/us  KernelTime: not measured e/us
+prefetch x6 NTA                                   UserTime: 41.75 e/us  KernelTime: not measured e/us
+prefetch-hard x6 NTA                              UserTime: 16.38 e/us  KernelTime: not measured e/us
+prefetch x6 E+NTA                                 UserTime: 61.88 e/us  KernelTime: not measured e/us
+prefetch-hard x6 E+NTA                            UserTime: 17.58 e/us  KernelTime: not measured e/us
+prefetch x7                                       UserTime: 64.05 e/us  KernelTime: not measured e/us
+prefetch-hard x7                                  UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x7 E                                     UserTime: 62.49 e/us  KernelTime: not measured e/us
+prefetch-hard x7 E                                UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x7 NTA                                   UserTime: 41.57 e/us  KernelTime: not measured e/us
+prefetch-hard x7 NTA                              UserTime: 16.61 e/us  KernelTime: not measured e/us
+prefetch x7 E+NTA                                 UserTime: 61.17 e/us  KernelTime: not measured e/us
+prefetch-hard x7 E+NTA                            UserTime: 18.30 e/us  KernelTime: not measured e/us
+prefetch x8                                       UserTime: 62.69 e/us  KernelTime: not measured e/us
+prefetch-hard x8                                  UserTime: 18.40 e/us  KernelTime: not measured e/us
+prefetch x8 E                                     UserTime: 60.16 e/us  KernelTime: not measured e/us
+prefetch-hard x8 E                                UserTime: 18.96 e/us  KernelTime: not measured e/us
+prefetch x8 NTA                                   UserTime: 40.77 e/us  KernelTime: not measured e/us
+prefetch-hard x8 NTA                              UserTime: 15.46 e/us  KernelTime: not measured e/us
+prefetch x8 E+NTA                                 UserTime: 62.19 e/us  KernelTime: not measured e/us
+prefetch-hard x8 E+NTA                            UserTime: 19.10 e/us  KernelTime: not measured e/us
+prefetch x9                                       UserTime: 59.58 e/us  KernelTime: not measured e/us
+prefetch-hard x9                                  UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x9 E                                     UserTime: 63.74 e/us  KernelTime: not measured e/us
+prefetch-hard x9 E                                UserTime: 18.80 e/us  KernelTime: not measured e/us
+prefetch x9 NTA                                   UserTime: 40.99 e/us  KernelTime: not measured e/us
+prefetch-hard x9 NTA                              UserTime: 15.37 e/us  KernelTime: not measured e/us
+prefetch x9 E+NTA                                 UserTime: 62.43 e/us  KernelTime: not measured e/us
+prefetch-hard x9 E+NTA                            UserTime: 18.77 e/us  KernelTime: not measured e/us
+prefetch x10                                      UserTime: 60.84 e/us  KernelTime: not measured e/us
+prefetch-hard x10                                 UserTime: 18.88 e/us  KernelTime: not measured e/us
+prefetch x10 E                                    UserTime: 65.09 e/us  KernelTime: not measured e/us
+prefetch-hard x10 E                               UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x10 NTA                                  UserTime: 39.84 e/us  KernelTime: not measured e/us
+prefetch-hard x10 NTA                             UserTime: 14.99 e/us  KernelTime: not measured e/us
+prefetch x10 E+NTA                                UserTime: 65.13 e/us  KernelTime: not measured e/us
+prefetch-hard x10 E+NTA                           UserTime: 18.68 e/us  KernelTime: not measured e/us
+prefetch x11                                      UserTime: 61.19 e/us  KernelTime: not measured e/us
+prefetch-hard x11                                 UserTime: 19.23 e/us  KernelTime: not measured e/us
+prefetch x11 E                                    UserTime: 61.77 e/us  KernelTime: not measured e/us
+prefetch-hard x11 E                               UserTime: 18.36 e/us  KernelTime: not measured e/us
+prefetch x11 NTA                                  UserTime: 40.19 e/us  KernelTime: not measured e/us
+prefetch-hard x11 NTA                             UserTime: 15.69 e/us  KernelTime: not measured e/us
+prefetch x11 E+NTA                                UserTime: 61.02 e/us  KernelTime: not measured e/us
+prefetch-hard x11 E+NTA                           UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x12                                      UserTime: 63.54 e/us  KernelTime: not measured e/us
+prefetch-hard x12                                 UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x12 E                                    UserTime: 60.33 e/us  KernelTime: not measured e/us
+prefetch-hard x12 E                               UserTime: 19.11 e/us  KernelTime: not measured e/us
+prefetch x12 NTA                                  UserTime: 38.29 e/us  KernelTime: not measured e/us
+prefetch-hard x12 NTA                             UserTime: 15.14 e/us  KernelTime: not measured e/us
+prefetch x12 E+NTA                                UserTime: 60.41 e/us  KernelTime: not measured e/us
+prefetch-hard x12 E+NTA                           UserTime: 18.97 e/us  KernelTime: not measured e/us
+prefetch x13                                      UserTime: 61.06 e/us  KernelTime: not measured e/us
+prefetch-hard x13                                 UserTime: 18.40 e/us  KernelTime: not measured e/us
+prefetch x13 E                                    UserTime: 64.00 e/us  KernelTime: not measured e/us
+prefetch-hard x13 E                               UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x13 NTA                                  UserTime: 37.14 e/us  KernelTime: not measured e/us
+prefetch-hard x13 NTA                             UserTime: 14.62 e/us  KernelTime: not measured e/us
+prefetch x13 E+NTA                                UserTime: 60.52 e/us  KernelTime: not measured e/us
+prefetch-hard x13 E+NTA                           UserTime: 18.72 e/us  KernelTime: not measured e/us
+prefetch x14                                      UserTime: 61.52 e/us  KernelTime: not measured e/us
+prefetch-hard x14                                 UserTime: 18.84 e/us  KernelTime: not measured e/us
+prefetch x14 E                                    UserTime: 61.61 e/us  KernelTime: not measured e/us
+prefetch-hard x14 E                               UserTime: 18.92 e/us  KernelTime: not measured e/us
+prefetch x14 NTA                                  UserTime: 38.50 e/us  KernelTime: not measured e/us
+prefetch-hard x14 NTA                             UserTime: 14.99 e/us  KernelTime: not measured e/us
+prefetch x14 E+NTA                                UserTime: 60.29 e/us  KernelTime: not measured e/us
+prefetch-hard x14 E+NTA                           UserTime: 18.92 e/us  KernelTime: not measured e/us
+prefetch x15                                      UserTime: 61.04 e/us  KernelTime: not measured e/us
+prefetch-hard x15                                 UserTime: 18.51 e/us  KernelTime: not measured e/us
+prefetch x15 E                                    UserTime: 63.40 e/us  KernelTime: not measured e/us
+prefetch-hard x15 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x15 NTA                                  UserTime: 37.46 e/us  KernelTime: not measured e/us
+prefetch-hard x15 NTA                             UserTime: 14.92 e/us  KernelTime: not measured e/us
+prefetch x15 E+NTA                                UserTime: 62.91 e/us  KernelTime: not measured e/us
+prefetch-hard x15 E+NTA                           UserTime: 18.36 e/us  KernelTime: not measured e/us
+prefetch x16                                      UserTime: 61.16 e/us  KernelTime: not measured e/us
+prefetch-hard x16                                 UserTime: 19.13 e/us  KernelTime: not measured e/us
+prefetch x16 E                                    UserTime: 60.37 e/us  KernelTime: not measured e/us
+prefetch-hard x16 E                               UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x16 NTA                                  UserTime: 38.82 e/us  KernelTime: not measured e/us
+prefetch-hard x16 NTA                             UserTime: 15.56 e/us  KernelTime: not measured e/us
+prefetch x16 E+NTA                                UserTime: 60.69 e/us  KernelTime: not measured e/us
+prefetch-hard x16 E+NTA                           UserTime: 18.74 e/us  KernelTime: not measured e/us
+prefetch x17                                      UserTime: 60.99 e/us  KernelTime: not measured e/us
+prefetch-hard x17                                 UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x17 E                                    UserTime: 61.05 e/us  KernelTime: not measured e/us
+prefetch-hard x17 E                               UserTime: 18.75 e/us  KernelTime: not measured e/us
+prefetch x17 NTA                                  UserTime: 37.81 e/us  KernelTime: not measured e/us
+prefetch-hard x17 NTA                             UserTime: 14.82 e/us  KernelTime: not measured e/us
+prefetch x17 E+NTA                                UserTime: 63.47 e/us  KernelTime: not measured e/us
+prefetch-hard x17 E+NTA                           UserTime: 18.93 e/us  KernelTime: not measured e/us
+prefetch x18                                      UserTime: 61.35 e/us  KernelTime: not measured e/us
+prefetch-hard x18                                 UserTime: 18.97 e/us  KernelTime: not measured e/us
+prefetch x18 E                                    UserTime: 59.89 e/us  KernelTime: not measured e/us
+prefetch-hard x18 E                               UserTime: 18.67 e/us  KernelTime: not measured e/us
+prefetch x18 NTA                                  UserTime: 38.81 e/us  KernelTime: not measured e/us
+prefetch-hard x18 NTA                             UserTime: 15.28 e/us  KernelTime: not measured e/us
+prefetch x18 E+NTA                                UserTime: 60.56 e/us  KernelTime: not measured e/us
+prefetch-hard x18 E+NTA                           UserTime: 18.64 e/us  KernelTime: not measured e/us
+prefetch x19                                      UserTime: 62.89 e/us  KernelTime: not measured e/us
+prefetch-hard x19                                 UserTime: 18.18 e/us  KernelTime: not measured e/us
+prefetch x19 E                                    UserTime: 60.41 e/us  KernelTime: not measured e/us
+prefetch-hard x19 E                               UserTime: 19.20 e/us  KernelTime: not measured e/us
+prefetch x19 NTA                                  UserTime: 38.47 e/us  KernelTime: not measured e/us
+prefetch-hard x19 NTA                             UserTime: 14.98 e/us  KernelTime: not measured e/us
+prefetch x19 E+NTA                                UserTime: 60.40 e/us  KernelTime: not measured e/us
+prefetch-hard x19 E+NTA                           UserTime: 18.99 e/us  KernelTime: not measured e/us
+prefetch x20                                      UserTime: 61.39 e/us  KernelTime: not measured e/us
+prefetch-hard x20                                 UserTime: 18.68 e/us  KernelTime: not measured e/us
+prefetch x20 E                                    UserTime: 64.00 e/us  KernelTime: not measured e/us
+prefetch-hard x20 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x20 NTA                                  UserTime: 37.49 e/us  KernelTime: not measured e/us
+prefetch-hard x20 NTA                             UserTime: 15.00 e/us  KernelTime: not measured e/us
+prefetch x20 E+NTA                                UserTime: 64.11 e/us  KernelTime: not measured e/us
+prefetch-hard x20 E+NTA                           UserTime: 18.94 e/us  KernelTime: not measured e/us
+prefetch x21                                      UserTime: 60.89 e/us  KernelTime: not measured e/us
+prefetch-hard x21                                 UserTime: 19.32 e/us  KernelTime: not measured e/us
+prefetch x21 E                                    UserTime: 61.80 e/us  KernelTime: not measured e/us
+prefetch-hard x21 E                               UserTime: 18.77 e/us  KernelTime: not measured e/us
+prefetch x21 NTA                                  UserTime: 38.97 e/us  KernelTime: not measured e/us
+prefetch-hard x21 NTA                             UserTime: 15.73 e/us  KernelTime: not measured e/us
+prefetch x21 E+NTA                                UserTime: 60.98 e/us  KernelTime: not measured e/us
+prefetch-hard x21 E+NTA                           UserTime: 18.70 e/us  KernelTime: not measured e/us
+prefetch x22                                      UserTime: 62.25 e/us  KernelTime: not measured e/us
+prefetch-hard x22                                 UserTime: 18.89 e/us  KernelTime: not measured e/us
+prefetch x22 E                                    UserTime: 61.55 e/us  KernelTime: not measured e/us
+prefetch-hard x22 E                               UserTime: 19.16 e/us  KernelTime: not measured e/us
+prefetch x22 NTA                                  UserTime: 38.20 e/us  KernelTime: not measured e/us
+prefetch-hard x22 NTA                             UserTime: 14.86 e/us  KernelTime: not measured e/us
+prefetch x22 E+NTA                                UserTime: 58.54 e/us  KernelTime: not measured e/us
+prefetch-hard x22 E+NTA                           UserTime: 18.51 e/us  KernelTime: not measured e/us
+prefetch x23                                      UserTime: 60.38 e/us  KernelTime: not measured e/us
+prefetch-hard x23                                 UserTime: 18.89 e/us  KernelTime: not measured e/us
+prefetch x23 E                                    UserTime: 64.63 e/us  KernelTime: not measured e/us
+prefetch-hard x23 E                               UserTime: 18.94 e/us  KernelTime: not measured e/us
+prefetch x23 NTA                                  UserTime: 38.08 e/us  KernelTime: not measured e/us
+prefetch-hard x23 NTA                             UserTime: 14.91 e/us  KernelTime: not measured e/us
+prefetch x23 E+NTA                                UserTime: 61.95 e/us  KernelTime: not measured e/us
+prefetch-hard x23 E+NTA                           UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x24                                      UserTime: 60.69 e/us  KernelTime: not measured e/us
+prefetch-hard x24                                 UserTime: 19.15 e/us  KernelTime: not measured e/us
+prefetch x24 E                                    UserTime: 60.66 e/us  KernelTime: not measured e/us
+prefetch-hard x24 E                               UserTime: 18.11 e/us  KernelTime: not measured e/us
+prefetch x24 NTA                                  UserTime: 38.13 e/us  KernelTime: not measured e/us
+prefetch-hard x24 NTA                             UserTime: 15.78 e/us  KernelTime: not measured e/us
+prefetch x24 E+NTA                                UserTime: 61.21 e/us  KernelTime: not measured e/us
+prefetch-hard x24 E+NTA                           UserTime: 18.72 e/us  KernelTime: not measured e/us
+prefetch x25                                      UserTime: 64.85 e/us  KernelTime: not measured e/us
+prefetch-hard x25                                 UserTime: 18.25 e/us  KernelTime: not measured e/us
+prefetch x25 E                                    UserTime: 59.96 e/us  KernelTime: not measured e/us
+prefetch-hard x25 E                               UserTime: 19.06 e/us  KernelTime: not measured e/us
+prefetch x25 NTA                                  UserTime: 37.80 e/us  KernelTime: not measured e/us
+prefetch-hard x25 NTA                             UserTime: 14.98 e/us  KernelTime: not measured e/us
+prefetch x25 E+NTA                                UserTime: 61.17 e/us  KernelTime: not measured e/us
+prefetch-hard x25 E+NTA                           UserTime: 19.09 e/us  KernelTime: not measured e/us
+prefetch x26                                      UserTime: 60.16 e/us  KernelTime: not measured e/us
+prefetch-hard x26                                 UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x26 E                                    UserTime: 63.51 e/us  KernelTime: not measured e/us
+prefetch-hard x26 E                               UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x26 NTA                                  UserTime: 38.00 e/us  KernelTime: not measured e/us
+prefetch-hard x26 NTA                             UserTime: 14.73 e/us  KernelTime: not measured e/us
+prefetch x26 E+NTA                                UserTime: 59.26 e/us  KernelTime: not measured e/us
+prefetch-hard x26 E+NTA                           UserTime: 18.40 e/us  KernelTime: not measured e/us
+prefetch x27                                      UserTime: 61.64 e/us  KernelTime: not measured e/us
+prefetch-hard x27                                 UserTime: 18.83 e/us  KernelTime: not measured e/us
+prefetch x27 E                                    UserTime: 61.71 e/us  KernelTime: not measured e/us
+prefetch-hard x27 E                               UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x27 NTA                                  UserTime: 40.73 e/us  KernelTime: not measured e/us
+prefetch-hard x27 NTA                             UserTime: 15.78 e/us  KernelTime: not measured e/us
+prefetch x27 E+NTA                                UserTime: 60.99 e/us  KernelTime: not measured e/us
+prefetch-hard x27 E+NTA                           UserTime: 18.84 e/us  KernelTime: not measured e/us
+prefetch x28                                      UserTime: 63.97 e/us  KernelTime: not measured e/us
+prefetch-hard x28                                 UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x28 E                                    UserTime: 61.81 e/us  KernelTime: not measured e/us
+prefetch-hard x28 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x28 NTA                                  UserTime: 39.57 e/us  KernelTime: not measured e/us
+prefetch-hard x28 NTA                             UserTime: 14.99 e/us  KernelTime: not measured e/us
+prefetch x28 E+NTA                                UserTime: 60.93 e/us  KernelTime: not measured e/us
+prefetch-hard x28 E+NTA                           UserTime: 18.97 e/us  KernelTime: not measured e/us
+prefetch x29                                      UserTime: 62.27 e/us  KernelTime: not measured e/us
+prefetch-hard x29                                 UserTime: 18.92 e/us  KernelTime: not measured e/us
+prefetch x29 E                                    UserTime: 60.82 e/us  KernelTime: not measured e/us
+prefetch-hard x29 E                               UserTime: 18.60 e/us  KernelTime: not measured e/us
+prefetch x29 NTA                                  UserTime: 40.15 e/us  KernelTime: not measured e/us
+prefetch-hard x29 NTA                             UserTime: 15.11 e/us  KernelTime: not measured e/us
+prefetch x29 E+NTA                                UserTime: 60.58 e/us  KernelTime: not measured e/us
+prefetch-hard x29 E+NTA                           UserTime: 19.05 e/us  KernelTime: not measured e/us
+prefetch x30                                      UserTime: 62.14 e/us  KernelTime: not measured e/us
+prefetch-hard x30                                 UserTime: 19.12 e/us  KernelTime: not measured e/us
+prefetch x30 E                                    UserTime: 65.89 e/us  KernelTime: not measured e/us
+prefetch-hard x30 E                               UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x30 NTA                                  UserTime: 40.87 e/us  KernelTime: not measured e/us
+prefetch-hard x30 NTA                             UserTime: 15.08 e/us  KernelTime: not measured e/us
+prefetch x30 E+NTA                                UserTime: 62.30 e/us  KernelTime: not measured e/us
+prefetch-hard x30 E+NTA                           UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x31                                      UserTime: 61.32 e/us  KernelTime: not measured e/us
+prefetch-hard x31                                 UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x31 E                                    UserTime: 64.73 e/us  KernelTime: not measured e/us
+prefetch-hard x31 E                               UserTime: 18.70 e/us  KernelTime: not measured e/us
+prefetch x31 NTA                                  UserTime: 41.36 e/us  KernelTime: not measured e/us
+prefetch-hard x31 NTA                             UserTime: 14.83 e/us  KernelTime: not measured e/us
+prefetch x31 E+NTA                                UserTime: 60.99 e/us  KernelTime: not measured e/us
+prefetch-hard x31 E+NTA                           UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x32                                      UserTime: 61.23 e/us  KernelTime: not measured e/us
+prefetch-hard x32                                 UserTime: 18.80 e/us  KernelTime: not measured e/us
+prefetch x32 E                                    UserTime: 64.79 e/us  KernelTime: not measured e/us
+prefetch-hard x32 E                               UserTime: 18.78 e/us  KernelTime: not measured e/us
+prefetch x32 NTA                                  UserTime: 41.32 e/us  KernelTime: not measured e/us
+prefetch-hard x32 NTA                             UserTime: 15.09 e/us  KernelTime: not measured e/us
+prefetch x32 E+NTA                                UserTime: 64.64 e/us  KernelTime: not measured e/us
+prefetch-hard x32 E+NTA                           UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x33                                      UserTime: 60.16 e/us  KernelTime: not measured e/us
+prefetch-hard x33                                 UserTime: 18.74 e/us  KernelTime: not measured e/us
+prefetch x33 E                                    UserTime: 59.67 e/us  KernelTime: not measured e/us
+prefetch-hard x33 E                               UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x33 NTA                                  UserTime: 43.04 e/us  KernelTime: not measured e/us
+prefetch-hard x33 NTA                             UserTime: 14.89 e/us  KernelTime: not measured e/us
+prefetch x33 E+NTA                                UserTime: 60.35 e/us  KernelTime: not measured e/us
+prefetch-hard x33 E+NTA                           UserTime: 18.55 e/us  KernelTime: not measured e/us
+prefetch x34                                      UserTime: 63.30 e/us  KernelTime: not measured e/us
+prefetch-hard x34                                 UserTime: 18.43 e/us  KernelTime: not measured e/us
+prefetch x34 E                                    UserTime: 61.16 e/us  KernelTime: not measured e/us
+prefetch-hard x34 E                               UserTime: 18.62 e/us  KernelTime: not measured e/us
+prefetch x34 NTA                                  UserTime: 43.59 e/us  KernelTime: not measured e/us
+prefetch-hard x34 NTA                             UserTime: 15.80 e/us  KernelTime: not measured e/us
+prefetch x34 E+NTA                                UserTime: 60.54 e/us  KernelTime: not measured e/us
+prefetch-hard x34 E+NTA                           UserTime: 18.34 e/us  KernelTime: not measured e/us
+prefetch x35                                      UserTime: 64.09 e/us  KernelTime: not measured e/us
+prefetch-hard x35                                 UserTime: 18.24 e/us  KernelTime: not measured e/us
+prefetch x35 E                                    UserTime: 60.93 e/us  KernelTime: not measured e/us
+prefetch-hard x35 E                               UserTime: 18.43 e/us  KernelTime: not measured e/us
+prefetch x35 NTA                                  UserTime: 41.76 e/us  KernelTime: not measured e/us
+prefetch-hard x35 NTA                             UserTime: 15.16 e/us  KernelTime: not measured e/us
+prefetch x35 E+NTA                                UserTime: 61.83 e/us  KernelTime: not measured e/us
+prefetch-hard x35 E+NTA                           UserTime: 18.95 e/us  KernelTime: not measured e/us
+prefetch x36                                      UserTime: 60.41 e/us  KernelTime: not measured e/us
+prefetch-hard x36                                 UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x36 E                                    UserTime: 62.25 e/us  KernelTime: not measured e/us
+prefetch-hard x36 E                               UserTime: 18.70 e/us  KernelTime: not measured e/us
+prefetch x36 NTA                                  UserTime: 41.36 e/us  KernelTime: not measured e/us
+prefetch-hard x36 NTA                             UserTime: 15.37 e/us  KernelTime: not measured e/us
+prefetch x36 E+NTA                                UserTime: 60.61 e/us  KernelTime: not measured e/us
+prefetch-hard x36 E+NTA                           UserTime: 18.74 e/us  KernelTime: not measured e/us
+prefetch x37                                      UserTime: 61.30 e/us  KernelTime: not measured e/us
+prefetch-hard x37                                 UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x37 E                                    UserTime: 66.13 e/us  KernelTime: not measured e/us
+prefetch-hard x37 E                               UserTime: 18.82 e/us  KernelTime: not measured e/us
+prefetch x37 NTA                                  UserTime: 42.14 e/us  KernelTime: not measured e/us
+prefetch-hard x37 NTA                             UserTime: 15.27 e/us  KernelTime: not measured e/us
+prefetch x37 E+NTA                                UserTime: 61.29 e/us  KernelTime: not measured e/us
+prefetch-hard x37 E+NTA                           UserTime: 18.53 e/us  KernelTime: not measured e/us
+prefetch x38                                      UserTime: 61.10 e/us  KernelTime: not measured e/us
+prefetch-hard x38                                 UserTime: 18.33 e/us  KernelTime: not measured e/us
+prefetch x38 E                                    UserTime: 65.01 e/us  KernelTime: not measured e/us
+prefetch-hard x38 E                               UserTime: 18.21 e/us  KernelTime: not measured e/us
+prefetch x38 NTA                                  UserTime: 42.48 e/us  KernelTime: not measured e/us
+prefetch-hard x38 NTA                             UserTime: 15.10 e/us  KernelTime: not measured e/us
+prefetch x38 E+NTA                                UserTime: 65.86 e/us  KernelTime: not measured e/us
+prefetch-hard x38 E+NTA                           UserTime: 18.75 e/us  KernelTime: not measured e/us
+prefetch x39                                      UserTime: 61.65 e/us  KernelTime: not measured e/us
+prefetch-hard x39                                 UserTime: 18.26 e/us  KernelTime: not measured e/us
+prefetch x39 E                                    UserTime: 62.11 e/us  KernelTime: not measured e/us
+prefetch-hard x39 E                               UserTime: 18.76 e/us  KernelTime: not measured e/us
+prefetch x39 NTA                                  UserTime: 43.24 e/us  KernelTime: not measured e/us
+prefetch-hard x39 NTA                             UserTime: 15.42 e/us  KernelTime: not measured e/us
+prefetch x39 E+NTA                                UserTime: 65.30 e/us  KernelTime: not measured e/us
+prefetch-hard x39 E+NTA                           UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x40                                      UserTime: 61.16 e/us  KernelTime: not measured e/us
+prefetch-hard x40                                 UserTime: 18.63 e/us  KernelTime: not measured e/us
+prefetch x40 E                                    UserTime: 62.50 e/us  KernelTime: not measured e/us
+prefetch-hard x40 E                               UserTime: 18.65 e/us  KernelTime: not measured e/us
+prefetch x40 NTA                                  UserTime: 43.20 e/us  KernelTime: not measured e/us
+prefetch-hard x40 NTA                             UserTime: 14.75 e/us  KernelTime: not measured e/us
+prefetch x40 E+NTA                                UserTime: 64.05 e/us  KernelTime: not measured e/us
+prefetch-hard x40 E+NTA                           UserTime: 18.30 e/us  KernelTime: not measured e/us
+prefetch x41                                      UserTime: 62.25 e/us  KernelTime: not measured e/us
+prefetch-hard x41                                 UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x41 E                                    UserTime: 62.70 e/us  KernelTime: not measured e/us
+prefetch-hard x41 E                               UserTime: 18.53 e/us  KernelTime: not measured e/us
+prefetch x41 NTA                                  UserTime: 43.60 e/us  KernelTime: not measured e/us
+prefetch-hard x41 NTA                             UserTime: 14.27 e/us  KernelTime: not measured e/us
+prefetch x41 E+NTA                                UserTime: 62.51 e/us  KernelTime: not measured e/us
+prefetch-hard x41 E+NTA                           UserTime: 18.55 e/us  KernelTime: not measured e/us
+prefetch x42                                      UserTime: 64.59 e/us  KernelTime: not measured e/us
+prefetch-hard x42                                 UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x42 E                                    UserTime: 63.03 e/us  KernelTime: not measured e/us
+prefetch-hard x42 E                               UserTime: 18.69 e/us  KernelTime: not measured e/us
+prefetch x42 NTA                                  UserTime: 44.69 e/us  KernelTime: not measured e/us
+prefetch-hard x42 NTA                             UserTime: 14.77 e/us  KernelTime: not measured e/us
+prefetch x42 E+NTA                                UserTime: 62.21 e/us  KernelTime: not measured e/us
+prefetch-hard x42 E+NTA                           UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x43                                      UserTime: 64.14 e/us  KernelTime: not measured e/us
+prefetch-hard x43                                 UserTime: 18.63 e/us  KernelTime: not measured e/us
+prefetch x43 E                                    UserTime: 62.34 e/us  KernelTime: not measured e/us
+prefetch-hard x43 E                               UserTime: 18.96 e/us  KernelTime: not measured e/us
+prefetch x43 NTA                                  UserTime: 45.85 e/us  KernelTime: not measured e/us
+prefetch-hard x43 NTA                             UserTime: 15.16 e/us  KernelTime: not measured e/us
+prefetch x43 E+NTA                                UserTime: 62.05 e/us  KernelTime: not measured e/us
+prefetch-hard x43 E+NTA                           UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x44                                      UserTime: 65.65 e/us  KernelTime: not measured e/us
+prefetch-hard x44                                 UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x44 E                                    UserTime: 62.41 e/us  KernelTime: not measured e/us
+prefetch-hard x44 E                               UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x44 NTA                                  UserTime: 43.44 e/us  KernelTime: not measured e/us
+prefetch-hard x44 NTA                             UserTime: 15.13 e/us  KernelTime: not measured e/us
+prefetch x44 E+NTA                                UserTime: 61.86 e/us  KernelTime: not measured e/us
+prefetch-hard x44 E+NTA                           UserTime: 18.64 e/us  KernelTime: not measured e/us
+prefetch x45                                      UserTime: 65.09 e/us  KernelTime: not measured e/us
+prefetch-hard x45                                 UserTime: 18.43 e/us  KernelTime: not measured e/us
+prefetch x45 E                                    UserTime: 61.71 e/us  KernelTime: not measured e/us
+prefetch-hard x45 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x45 NTA                                  UserTime: 43.16 e/us  KernelTime: not measured e/us
+prefetch-hard x45 NTA                             UserTime: 15.00 e/us  KernelTime: not measured e/us
+prefetch x45 E+NTA                                UserTime: 61.82 e/us  KernelTime: not measured e/us
+prefetch-hard x45 E+NTA                           UserTime: 18.88 e/us  KernelTime: not measured e/us
+prefetch x46                                      UserTime: 62.78 e/us  KernelTime: not measured e/us
+prefetch-hard x46                                 UserTime: 18.45 e/us  KernelTime: not measured e/us
+prefetch x46 E                                    UserTime: 61.37 e/us  KernelTime: not measured e/us
+prefetch-hard x46 E                               UserTime: 18.63 e/us  KernelTime: not measured e/us
+prefetch x46 NTA                                  UserTime: 44.16 e/us  KernelTime: not measured e/us
+prefetch-hard x46 NTA                             UserTime: 14.43 e/us  KernelTime: not measured e/us
+prefetch x46 E+NTA                                UserTime: 62.40 e/us  KernelTime: not measured e/us
+prefetch-hard x46 E+NTA                           UserTime: 18.83 e/us  KernelTime: not measured e/us
+prefetch x47                                      UserTime: 62.16 e/us  KernelTime: not measured e/us
+prefetch-hard x47                                 UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x47 E                                    UserTime: 65.83 e/us  KernelTime: not measured e/us
+prefetch-hard x47 E                               UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x47 NTA                                  UserTime: 44.83 e/us  KernelTime: not measured e/us
+prefetch-hard x47 NTA                             UserTime: 14.28 e/us  KernelTime: not measured e/us
+prefetch x47 E+NTA                                UserTime: 60.60 e/us  KernelTime: not measured e/us
+prefetch-hard x47 E+NTA                           UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x48                                      UserTime: 62.36 e/us  KernelTime: not measured e/us
+prefetch-hard x48                                 UserTime: 18.61 e/us  KernelTime: not measured e/us
+prefetch x48 E                                    UserTime: 65.74 e/us  KernelTime: not measured e/us
+prefetch-hard x48 E                               UserTime: 18.58 e/us  KernelTime: not measured e/us
+prefetch x48 NTA                                  UserTime: 44.15 e/us  KernelTime: not measured e/us
+prefetch-hard x48 NTA                             UserTime: 13.75 e/us  KernelTime: not measured e/us
+prefetch x48 E+NTA                                UserTime: 64.63 e/us  KernelTime: not measured e/us
+prefetch-hard x48 E+NTA                           UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x49                                      UserTime: 62.00 e/us  KernelTime: not measured e/us
+prefetch-hard x49                                 UserTime: 18.80 e/us  KernelTime: not measured e/us
+prefetch x49 E                                    UserTime: 65.16 e/us  KernelTime: not measured e/us
+prefetch-hard x49 E                               UserTime: 18.02 e/us  KernelTime: not measured e/us
+prefetch x49 NTA                                  UserTime: 43.25 e/us  KernelTime: not measured e/us
+prefetch-hard x49 NTA                             UserTime: 13.35 e/us  KernelTime: not measured e/us
+prefetch x49 E+NTA                                UserTime: 65.54 e/us  KernelTime: not measured e/us
+prefetch-hard x49 E+NTA                           UserTime: 18.35 e/us  KernelTime: not measured e/us
+prefetch x50                                      UserTime: 61.63 e/us  KernelTime: not measured e/us
+prefetch-hard x50                                 UserTime: 18.46 e/us  KernelTime: not measured e/us
+prefetch x50 E                                    UserTime: 62.58 e/us  KernelTime: not measured e/us
+prefetch-hard x50 E                               UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x50 NTA                                  UserTime: 46.34 e/us  KernelTime: not measured e/us
+prefetch-hard x50 NTA                             UserTime: 13.55 e/us  KernelTime: not measured e/us
+prefetch x50 E+NTA                                UserTime: 62.70 e/us  KernelTime: not measured e/us
+prefetch-hard x50 E+NTA                           UserTime: 18.18 e/us  KernelTime: not measured e/us
+prefetch x51                                      UserTime: 62.50 e/us  KernelTime: not measured e/us
+prefetch-hard x51                                 UserTime: 18.20 e/us  KernelTime: not measured e/us
+prefetch x51 E                                    UserTime: 61.80 e/us  KernelTime: not measured e/us
+prefetch-hard x51 E                               UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x51 NTA                                  UserTime: 46.28 e/us  KernelTime: not measured e/us
+prefetch-hard x51 NTA                             UserTime: 13.38 e/us  KernelTime: not measured e/us
+prefetch x51 E+NTA                                UserTime: 62.27 e/us  KernelTime: not measured e/us
+prefetch-hard x51 E+NTA                           UserTime: 18.20 e/us  KernelTime: not measured e/us
+prefetch x52                                      UserTime: 64.98 e/us  KernelTime: not measured e/us
+prefetch-hard x52                                 UserTime: 18.47 e/us  KernelTime: not measured e/us
+prefetch x52 E                                    UserTime: 61.82 e/us  KernelTime: not measured e/us
+prefetch-hard x52 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x52 NTA                                  UserTime: 43.12 e/us  KernelTime: not measured e/us
+prefetch-hard x52 NTA                             UserTime: 13.97 e/us  KernelTime: not measured e/us
+prefetch x52 E+NTA                                UserTime: 61.06 e/us  KernelTime: not measured e/us
+prefetch-hard x52 E+NTA                           UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x53                                      UserTime: 61.99 e/us  KernelTime: not measured e/us
+prefetch-hard x53                                 UserTime: 18.58 e/us  KernelTime: not measured e/us
+prefetch x53 E                                    UserTime: 62.48 e/us  KernelTime: not measured e/us
+prefetch-hard x53 E                               UserTime: 17.84 e/us  KernelTime: not measured e/us
+prefetch x53 NTA                                  UserTime: 43.93 e/us  KernelTime: not measured e/us
+prefetch-hard x53 NTA                             UserTime: 13.39 e/us  KernelTime: not measured e/us
+prefetch x53 E+NTA                                UserTime: 64.74 e/us  KernelTime: not measured e/us
+prefetch-hard x53 E+NTA                           UserTime: 18.43 e/us  KernelTime: not measured e/us
+prefetch x54                                      UserTime: 62.21 e/us  KernelTime: not measured e/us
+prefetch-hard x54                                 UserTime: 18.32 e/us  KernelTime: not measured e/us
+prefetch x54 E                                    UserTime: 62.42 e/us  KernelTime: not measured e/us
+prefetch-hard x54 E                               UserTime: 18.11 e/us  KernelTime: not measured e/us
+prefetch x54 NTA                                  UserTime: 45.40 e/us  KernelTime: not measured e/us
+prefetch-hard x54 NTA                             UserTime: 13.26 e/us  KernelTime: not measured e/us
+prefetch x54 E+NTA                                UserTime: 63.22 e/us  KernelTime: not measured e/us
+prefetch-hard x54 E+NTA                           UserTime: 18.19 e/us  KernelTime: not measured e/us
+prefetch x55                                      UserTime: 62.23 e/us  KernelTime: not measured e/us
+prefetch-hard x55                                 UserTime: 18.57 e/us  KernelTime: not measured e/us
+prefetch x55 E                                    UserTime: 61.32 e/us  KernelTime: not measured e/us
+prefetch-hard x55 E                               UserTime: 18.13 e/us  KernelTime: not measured e/us
+prefetch x55 NTA                                  UserTime: 45.97 e/us  KernelTime: not measured e/us
+prefetch-hard x55 NTA                             UserTime: 13.42 e/us  KernelTime: not measured e/us
+prefetch x55 E+NTA                                UserTime: 62.26 e/us  KernelTime: not measured e/us
+prefetch-hard x55 E+NTA                           UserTime: 18.65 e/us  KernelTime: not measured e/us
+prefetch x56                                      UserTime: 62.43 e/us  KernelTime: not measured e/us
+prefetch-hard x56                                 UserTime: 17.93 e/us  KernelTime: not measured e/us
+prefetch x56 E                                    UserTime: 62.02 e/us  KernelTime: not measured e/us
+prefetch-hard x56 E                               UserTime: 19.05 e/us  KernelTime: not measured e/us
+prefetch x56 NTA                                  UserTime: 46.59 e/us  KernelTime: not measured e/us
+prefetch-hard x56 NTA                             UserTime: 12.68 e/us  KernelTime: not measured e/us
+prefetch x56 E+NTA                                UserTime: 60.52 e/us  KernelTime: not measured e/us
+prefetch-hard x56 E+NTA                           UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x57                                      UserTime: 63.82 e/us  KernelTime: not measured e/us
+prefetch-hard x57                                 UserTime: 16.85 e/us  KernelTime: not measured e/us
+prefetch x57 E                                    UserTime: 60.04 e/us  KernelTime: not measured e/us
+prefetch-hard x57 E                               UserTime: 18.42 e/us  KernelTime: not measured e/us
+prefetch x57 NTA                                  UserTime: 44.85 e/us  KernelTime: not measured e/us
+prefetch-hard x57 NTA                             UserTime: 12.87 e/us  KernelTime: not measured e/us
+prefetch x57 E+NTA                                UserTime: 61.97 e/us  KernelTime: not measured e/us
+prefetch-hard x57 E+NTA                           UserTime: 18.36 e/us  KernelTime: not measured e/us
+prefetch x58                                      UserTime: 62.05 e/us  KernelTime: not measured e/us
+prefetch-hard x58                                 UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x58 E                                    UserTime: 65.60 e/us  KernelTime: not measured e/us
+prefetch-hard x58 E                               UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x58 NTA                                  UserTime: 45.40 e/us  KernelTime: not measured e/us
+prefetch-hard x58 NTA                             UserTime: 12.74 e/us  KernelTime: not measured e/us
+prefetch x58 E+NTA                                UserTime: 65.75 e/us  KernelTime: not measured e/us
+prefetch-hard x58 E+NTA                           UserTime: 18.34 e/us  KernelTime: not measured e/us
+prefetch x59                                      UserTime: 61.95 e/us  KernelTime: not measured e/us
+prefetch-hard x59                                 UserTime: 18.95 e/us  KernelTime: not measured e/us
+prefetch x59 E                                    UserTime: 65.58 e/us  KernelTime: not measured e/us
+prefetch-hard x59 E                               UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x59 NTA                                  UserTime: 44.41 e/us  KernelTime: not measured e/us
+prefetch-hard x59 NTA                             UserTime: 13.26 e/us  KernelTime: not measured e/us
+prefetch x59 E+NTA                                UserTime: 65.49 e/us  KernelTime: not measured e/us
+prefetch-hard x59 E+NTA                           UserTime: 18.77 e/us  KernelTime: not measured e/us
+prefetch x60                                      UserTime: 61.52 e/us  KernelTime: not measured e/us
+prefetch-hard x60                                 UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x60 E                                    UserTime: 60.74 e/us  KernelTime: not measured e/us
+prefetch-hard x60 E                               UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x60 NTA                                  UserTime: 45.17 e/us  KernelTime: not measured e/us
+prefetch-hard x60 NTA                             UserTime: 12.71 e/us  KernelTime: not measured e/us
+prefetch x60 E+NTA                                UserTime: 62.18 e/us  KernelTime: not measured e/us
+prefetch-hard x60 E+NTA                           UserTime: 18.65 e/us  KernelTime: not measured e/us
+prefetch x61                                      UserTime: 60.31 e/us  KernelTime: not measured e/us
+prefetch-hard x61                                 UserTime: 18.10 e/us  KernelTime: not measured e/us
+prefetch x61 E                                    UserTime: 59.07 e/us  KernelTime: not measured e/us
+prefetch-hard x61 E                               UserTime: 18.67 e/us  KernelTime: not measured e/us
+prefetch x61 NTA                                  UserTime: 45.76 e/us  KernelTime: not measured e/us
+prefetch-hard x61 NTA                             UserTime: 13.01 e/us  KernelTime: not measured e/us
+prefetch x61 E+NTA                                UserTime: 60.07 e/us  KernelTime: not measured e/us
+prefetch-hard x61 E+NTA                           UserTime: 18.84 e/us  KernelTime: not measured e/us
+prefetch x62                                      UserTime: 64.25 e/us  KernelTime: not measured e/us
+prefetch-hard x62                                 UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x62 E                                    UserTime: 61.08 e/us  KernelTime: not measured e/us
+prefetch-hard x62 E                               UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x62 NTA                                  UserTime: 44.68 e/us  KernelTime: not measured e/us
+prefetch-hard x62 NTA                             UserTime: 12.45 e/us  KernelTime: not measured e/us
+prefetch x62 E+NTA                                UserTime: 61.11 e/us  KernelTime: not measured e/us
+prefetch-hard x62 E+NTA                           UserTime: 18.25 e/us  KernelTime: not measured e/us
+prefetch x63                                      UserTime: 60.62 e/us  KernelTime: not measured e/us
+prefetch-hard x63                                 UserTime: 18.67 e/us  KernelTime: not measured e/us
+prefetch x63 E                                    UserTime: 64.07 e/us  KernelTime: not measured e/us
+prefetch-hard x63 E                               UserTime: 18.36 e/us  KernelTime: not measured e/us
+prefetch x63 NTA                                  UserTime: 43.51 e/us  KernelTime: not measured e/us
+prefetch-hard x63 NTA                             UserTime: 12.62 e/us  KernelTime: not measured e/us
+prefetch x63 E+NTA                                UserTime: 60.34 e/us  KernelTime: not measured e/us
+prefetch-hard x63 E+NTA                           UserTime: 17.72 e/us  KernelTime: not measured e/us
+prefetch x64                                      UserTime: 59.76 e/us  KernelTime: not measured e/us
+prefetch-hard x64                                 UserTime: 17.72 e/us  KernelTime: not measured e/us
+prefetch x64 E                                    UserTime: 58.78 e/us  KernelTime: not measured e/us
+prefetch-hard x64 E                               UserTime: 18.22 e/us  KernelTime: not measured e/us
+prefetch x64 NTA                                  UserTime: 44.06 e/us  KernelTime: not measured e/us
+prefetch-hard x64 NTA                             UserTime: 14.92 e/us  KernelTime: not measured e/us
+prefetch x64 E+NTA                                UserTime: 60.19 e/us  KernelTime: not measured e/us
+prefetch-hard x64 E+NTA                           UserTime: 18.24 e/us  KernelTime: not measured e/us
+prefetch x65                                      UserTime: 60.60 e/us  KernelTime: not measured e/us
+prefetch-hard x65                                 UserTime: 17.95 e/us  KernelTime: not measured e/us
+prefetch x65 E                                    UserTime: 59.67 e/us  KernelTime: not measured e/us
+prefetch-hard x65 E                               UserTime: 17.79 e/us  KernelTime: not measured e/us
+prefetch x65 NTA                                  UserTime: 43.54 e/us  KernelTime: not measured e/us
+prefetch-hard x65 NTA                             UserTime: 10.64 e/us  KernelTime: not measured e/us
+prefetch x65 E+NTA                                UserTime: 59.44 e/us  KernelTime: not measured e/us
+prefetch-hard x65 E+NTA                           UserTime: 17.98 e/us  KernelTime: not measured e/us
+prefetch x66                                      UserTime: 62.34 e/us  KernelTime: not measured e/us
+prefetch-hard x66                                 UserTime: 18.21 e/us  KernelTime: not measured e/us
+prefetch x66 E                                    UserTime: 60.60 e/us  KernelTime: not measured e/us
+prefetch-hard x66 E                               UserTime: 18.19 e/us  KernelTime: not measured e/us
+prefetch x66 NTA                                  UserTime: 43.81 e/us  KernelTime: not measured e/us
+prefetch-hard x66 NTA                             UserTime: 11.04 e/us  KernelTime: not measured e/us
+prefetch x66 E+NTA                                UserTime: 62.58 e/us  KernelTime: not measured e/us
+prefetch-hard x66 E+NTA                           UserTime: 17.89 e/us  KernelTime: not measured e/us
+prefetch x67                                      UserTime: 59.34 e/us  KernelTime: not measured e/us
+prefetch-hard x67                                 UserTime: 18.58 e/us  KernelTime: not measured e/us
+prefetch x67 E                                    UserTime: 60.42 e/us  KernelTime: not measured e/us
+prefetch-hard x67 E                               UserTime: 18.12 e/us  KernelTime: not measured e/us
+prefetch x67 NTA                                  UserTime: 43.95 e/us  KernelTime: not measured e/us
+prefetch-hard x67 NTA                             UserTime: 10.92 e/us  KernelTime: not measured e/us
+prefetch x67 E+NTA                                UserTime: 59.75 e/us  KernelTime: not measured e/us
+prefetch-hard x67 E+NTA                           UserTime: 18.29 e/us  KernelTime: not measured e/us
+prefetch x68                                      UserTime: 58.66 e/us  KernelTime: not measured e/us
+prefetch-hard x68                                 UserTime: 18.06 e/us  KernelTime: not measured e/us
+prefetch x68 E                                    UserTime: 63.16 e/us  KernelTime: not measured e/us
+prefetch-hard x68 E                               UserTime: 18.34 e/us  KernelTime: not measured e/us
+prefetch x68 NTA                                  UserTime: 43.72 e/us  KernelTime: not measured e/us
+prefetch-hard x68 NTA                             UserTime: 10.97 e/us  KernelTime: not measured e/us
+prefetch x68 E+NTA                                UserTime: 59.23 e/us  KernelTime: not measured e/us
+prefetch-hard x68 E+NTA                           UserTime: 18.10 e/us  KernelTime: not measured e/us
+prefetch x69                                      UserTime: 60.02 e/us  KernelTime: not measured e/us
+prefetch-hard x69                                 UserTime: 18.45 e/us  KernelTime: not measured e/us
+prefetch x69 E                                    UserTime: 60.38 e/us  KernelTime: not measured e/us
+prefetch-hard x69 E                               UserTime: 18.32 e/us  KernelTime: not measured e/us
+prefetch x69 NTA                                  UserTime: 45.85 e/us  KernelTime: not measured e/us
+prefetch-hard x69 NTA                             UserTime: 11.27 e/us  KernelTime: not measured e/us
+prefetch x69 E+NTA                                UserTime: 59.93 e/us  KernelTime: not measured e/us
+prefetch-hard x69 E+NTA                           UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x70                                      UserTime: 59.70 e/us  KernelTime: not measured e/us
+prefetch-hard x70                                 UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x70 E                                    UserTime: 62.77 e/us  KernelTime: not measured e/us
+prefetch-hard x70 E                               UserTime: 18.15 e/us  KernelTime: not measured e/us
+prefetch x70 NTA                                  UserTime: 43.94 e/us  KernelTime: not measured e/us
+prefetch-hard x70 NTA                             UserTime: 13.08 e/us  KernelTime: not measured e/us
+prefetch x70 E+NTA                                UserTime: 63.06 e/us  KernelTime: not measured e/us
+prefetch-hard x70 E+NTA                           UserTime: 18.14 e/us  KernelTime: not measured e/us
+prefetch x71                                      UserTime: 59.67 e/us  KernelTime: not measured e/us
+prefetch-hard x71                                 UserTime: 18.93 e/us  KernelTime: not measured e/us
+prefetch x71 E                                    UserTime: 60.05 e/us  KernelTime: not measured e/us
+prefetch-hard x71 E                               UserTime: 18.57 e/us  KernelTime: not measured e/us
+prefetch x71 NTA                                  UserTime: 46.69 e/us  KernelTime: not measured e/us
+prefetch-hard x71 NTA                             UserTime: 11.11 e/us  KernelTime: not measured e/us
+prefetch x71 E+NTA                                UserTime: 59.30 e/us  KernelTime: not measured e/us
+prefetch-hard x71 E+NTA                           UserTime: 18.84 e/us  KernelTime: not measured e/us
+prefetch x72                                      UserTime: 58.81 e/us  KernelTime: not measured e/us
+prefetch-hard x72                                 UserTime: 18.42 e/us  KernelTime: not measured e/us
+prefetch x72 E                                    UserTime: 59.10 e/us  KernelTime: not measured e/us
+prefetch-hard x72 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x72 NTA                                  UserTime: 43.71 e/us  KernelTime: not measured e/us
+prefetch-hard x72 NTA                             UserTime: 11.01 e/us  KernelTime: not measured e/us
+prefetch x72 E+NTA                                UserTime: 58.81 e/us  KernelTime: not measured e/us
+prefetch-hard x72 E+NTA                           UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x73                                      UserTime: 60.11 e/us  KernelTime: not measured e/us
+prefetch-hard x73                                 UserTime: 17.90 e/us  KernelTime: not measured e/us
+prefetch x73 E                                    UserTime: 58.42 e/us  KernelTime: not measured e/us
+prefetch-hard x73 E                               UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x73 NTA                                  UserTime: 43.57 e/us  KernelTime: not measured e/us
+prefetch-hard x73 NTA                             UserTime: 11.11 e/us  KernelTime: not measured e/us
+prefetch x73 E+NTA                                UserTime: 58.93 e/us  KernelTime: not measured e/us
+prefetch-hard x73 E+NTA                           UserTime: 17.91 e/us  KernelTime: not measured e/us
+prefetch x74                                      UserTime: 58.70 e/us  KernelTime: not measured e/us
+prefetch-hard x74                                 UserTime: 18.70 e/us  KernelTime: not measured e/us
+prefetch x74 E                                    UserTime: 58.93 e/us  KernelTime: not measured e/us
+prefetch-hard x74 E                               UserTime: 18.41 e/us  KernelTime: not measured e/us
+prefetch x74 NTA                                  UserTime: 43.48 e/us  KernelTime: not measured e/us
+prefetch-hard x74 NTA                             UserTime: 10.93 e/us  KernelTime: not measured e/us
+prefetch x74 E+NTA                                UserTime: 58.08 e/us  KernelTime: not measured e/us
+prefetch-hard x74 E+NTA                           UserTime: 18.71 e/us  KernelTime: not measured e/us
+prefetch x75                                      UserTime: 58.49 e/us  KernelTime: not measured e/us
+prefetch-hard x75                                 UserTime: 18.32 e/us  KernelTime: not measured e/us
+prefetch x75 E                                    UserTime: 61.74 e/us  KernelTime: not measured e/us
+prefetch-hard x75 E                               UserTime: 17.93 e/us  KernelTime: not measured e/us
+prefetch x75 NTA                                  UserTime: 42.38 e/us  KernelTime: not measured e/us
+prefetch-hard x75 NTA                             UserTime: 10.82 e/us  KernelTime: not measured e/us
+prefetch x75 E+NTA                                UserTime: 58.03 e/us  KernelTime: not measured e/us
+prefetch-hard x75 E+NTA                           UserTime: 18.23 e/us  KernelTime: not measured e/us
+prefetch x76                                      UserTime: 59.74 e/us  KernelTime: not measured e/us
+prefetch-hard x76                                 UserTime: 17.68 e/us  KernelTime: not measured e/us
+prefetch x76 E                                    UserTime: 57.29 e/us  KernelTime: not measured e/us
+prefetch-hard x76 E                               UserTime: 18.24 e/us  KernelTime: not measured e/us
+prefetch x76 NTA                                  UserTime: 42.31 e/us  KernelTime: not measured e/us
+prefetch-hard x76 NTA                             UserTime: 10.79 e/us  KernelTime: not measured e/us
+prefetch x76 E+NTA                                UserTime: 59.84 e/us  KernelTime: not measured e/us
+prefetch-hard x76 E+NTA                           UserTime: 18.48 e/us  KernelTime: not measured e/us
+prefetch x77                                      UserTime: 58.81 e/us  KernelTime: not measured e/us
+prefetch-hard x77                                 UserTime: 18.18 e/us  KernelTime: not measured e/us
+prefetch x77 E                                    UserTime: 57.99 e/us  KernelTime: not measured e/us
+prefetch-hard x77 E                               UserTime: 18.70 e/us  KernelTime: not measured e/us
+prefetch x77 NTA                                  UserTime: 43.20 e/us  KernelTime: not measured e/us
+prefetch-hard x77 NTA                             UserTime: 10.94 e/us  KernelTime: not measured e/us
+prefetch x77 E+NTA                                UserTime: 60.10 e/us  KernelTime: not measured e/us
+prefetch-hard x77 E+NTA                           UserTime: 18.26 e/us  KernelTime: not measured e/us
+prefetch x78                                      UserTime: 57.39 e/us  KernelTime: not measured e/us
+prefetch-hard x78                                 UserTime: 18.17 e/us  KernelTime: not measured e/us
+prefetch x78 E                                    UserTime: 58.09 e/us  KernelTime: not measured e/us
+prefetch-hard x78 E                               UserTime: 18.18 e/us  KernelTime: not measured e/us
+prefetch x78 NTA                                  UserTime: 45.32 e/us  KernelTime: not measured e/us
+prefetch-hard x78 NTA                             UserTime: 10.97 e/us  KernelTime: not measured e/us
+prefetch x78 E+NTA                                UserTime: 58.89 e/us  KernelTime: not measured e/us
+prefetch-hard x78 E+NTA                           UserTime: 18.55 e/us  KernelTime: not measured e/us
+prefetch x79                                      UserTime: 57.17 e/us  KernelTime: not measured e/us
+prefetch-hard x79                                 UserTime: 18.72 e/us  KernelTime: not measured e/us
+prefetch x79 E                                    UserTime: 57.11 e/us  KernelTime: not measured e/us
+prefetch-hard x79 E                               UserTime: 18.01 e/us  KernelTime: not measured e/us
+prefetch x79 NTA                                  UserTime: 42.71 e/us  KernelTime: not measured e/us
+prefetch-hard x79 NTA                             UserTime: 10.58 e/us  KernelTime: not measured e/us
+prefetch x79 E+NTA                                UserTime: 57.60 e/us  KernelTime: not measured e/us
+prefetch-hard x79 E+NTA                           UserTime: 18.31 e/us  KernelTime: not measured e/us
+prefetch x80                                      UserTime: 57.65 e/us  KernelTime: not measured e/us
+prefetch-hard x80                                 UserTime: 18.72 e/us  KernelTime: not measured e/us
+prefetch x80 E                                    UserTime: 61.06 e/us  KernelTime: not measured e/us
+prefetch-hard x80 E                               UserTime: 18.37 e/us  KernelTime: not measured e/us
+prefetch x80 NTA                                  UserTime: 42.78 e/us  KernelTime: not measured e/us
+prefetch-hard x80 NTA                             UserTime: 10.75 e/us  KernelTime: not measured e/us
+prefetch x80 E+NTA                                UserTime: 56.77 e/us  KernelTime: not measured e/us
+prefetch-hard x80 E+NTA                           UserTime: 18.61 e/us  KernelTime: not measured e/us
+prefetch x81                                      UserTime: 57.18 e/us  KernelTime: not measured e/us
+prefetch-hard x81                                 UserTime: 18.47 e/us  KernelTime: not measured e/us
+prefetch x81 E                                    UserTime: 59.80 e/us  KernelTime: not measured e/us
+prefetch-hard x81 E                               UserTime: 18.35 e/us  KernelTime: not measured e/us
+prefetch x81 NTA                                  UserTime: 41.56 e/us  KernelTime: not measured e/us
+prefetch-hard x81 NTA                             UserTime: 10.68 e/us  KernelTime: not measured e/us
+prefetch x81 E+NTA                                UserTime: 58.15 e/us  KernelTime: not measured e/us
+prefetch-hard x81 E+NTA                           UserTime: 18.35 e/us  KernelTime: not measured e/us
+prefetch x82                                      UserTime: 58.49 e/us  KernelTime: not measured e/us
+prefetch-hard x82                                 UserTime: 18.26 e/us  KernelTime: not measured e/us
+prefetch x82 E                                    UserTime: 58.81 e/us  KernelTime: not measured e/us
+prefetch-hard x82 E                               UserTime: 18.56 e/us  KernelTime: not measured e/us
+prefetch x82 NTA                                  UserTime: 41.93 e/us  KernelTime: not measured e/us
+prefetch-hard x82 NTA                             UserTime: 10.47 e/us  KernelTime: not measured e/us
+prefetch x82 E+NTA                                UserTime: 57.32 e/us  KernelTime: not measured e/us
+prefetch-hard x82 E+NTA                           UserTime: 18.51 e/us  KernelTime: not measured e/us
+prefetch x83                                      UserTime: 57.29 e/us  KernelTime: not measured e/us
+prefetch-hard x83                                 UserTime: 18.49 e/us  KernelTime: not measured e/us
+prefetch x83 E                                    UserTime: 58.45 e/us  KernelTime: not measured e/us
+prefetch-hard x83 E                               UserTime: 19.06 e/us  KernelTime: not measured e/us
+prefetch x83 NTA                                  UserTime: 43.30 e/us  KernelTime: not measured e/us
+prefetch-hard x83 NTA                             UserTime: 10.72 e/us  KernelTime: not measured e/us
+prefetch x83 E+NTA                                UserTime: 58.28 e/us  KernelTime: not measured e/us
+prefetch-hard x83 E+NTA                           UserTime: 18.55 e/us  KernelTime: not measured e/us
+prefetch x84                                      UserTime: 58.30 e/us  KernelTime: not measured e/us
+prefetch-hard x84                                 UserTime: 19.06 e/us  KernelTime: not measured e/us
+prefetch x84 E                                    UserTime: 59.59 e/us  KernelTime: not measured e/us
+prefetch-hard x84 E                               UserTime: 18.35 e/us  KernelTime: not measured e/us
+prefetch x84 NTA                                  UserTime: 31.93 e/us  KernelTime: not measured e/us
+prefetch-hard x84 NTA                             UserTime: 10.85 e/us  KernelTime: not measured e/us
+prefetch x84 E+NTA                                UserTime: 59.64 e/us  KernelTime: not measured e/us
+prefetch-hard x84 E+NTA                           UserTime: 18.36 e/us  KernelTime: not measured e/us
+prefetch x85                                      UserTime: 56.84 e/us  KernelTime: not measured e/us
+prefetch-hard x85                                 UserTime: 18.57 e/us  KernelTime: not measured e/us
+prefetch x85 E                                    UserTime: 58.27 e/us  KernelTime: not measured e/us
+prefetch-hard x85 E                               UserTime: 18.44 e/us  KernelTime: not measured e/us
+prefetch x85 NTA                                  UserTime: 43.76 e/us  KernelTime: not measured e/us
+prefetch-hard x85 NTA                             UserTime: 10.71 e/us  KernelTime: not measured e/us
+prefetch x85 E+NTA                                UserTime: 58.23 e/us  KernelTime: not measured e/us
+prefetch-hard x85 E+NTA                           UserTime: 18.43 e/us  KernelTime: not measured e/us
+prefetch x86                                      UserTime: 56.94 e/us  KernelTime: not measured e/us
+prefetch-hard x86                                 UserTime: 18.37 e/us  KernelTime: not measured e/us
+prefetch x86 E                                    UserTime: 57.34 e/us  KernelTime: not measured e/us
+prefetch-hard x86 E                               UserTime: 18.94 e/us  KernelTime: not measured e/us
+prefetch x86 NTA                                  UserTime: 43.94 e/us  KernelTime: not measured e/us
+prefetch-hard x86 NTA                             UserTime: 10.94 e/us  KernelTime: not measured e/us
+prefetch x86 E+NTA                                UserTime: 60.12 e/us  KernelTime: not measured e/us
+prefetch-hard x86 E+NTA                           UserTime: 19.09 e/us  KernelTime: not measured e/us
+prefetch x87                                      UserTime: 62.24 e/us  KernelTime: not measured e/us
+prefetch-hard x87                                 UserTime: 19.20 e/us  KernelTime: not measured e/us
+prefetch x87 E                                    UserTime: 58.13 e/us  KernelTime: not measured e/us
+prefetch-hard x87 E                               UserTime: 18.62 e/us  KernelTime: not measured e/us
+prefetch x87 NTA                                  UserTime: 41.91 e/us  KernelTime: not measured e/us
+prefetch-hard x87 NTA                             UserTime: 11.43 e/us  KernelTime: not measured e/us
+prefetch x87 E+NTA                                UserTime: 59.66 e/us  KernelTime: not measured e/us
+prefetch-hard x87 E+NTA                           UserTime: 19.24 e/us  KernelTime: not measured e/us
+prefetch x88                                      UserTime: 57.62 e/us  KernelTime: not measured e/us
+prefetch-hard x88                                 UserTime: 18.42 e/us  KernelTime: not measured e/us
+prefetch x88 E                                    UserTime: 59.77 e/us  KernelTime: not measured e/us
+prefetch-hard x88 E                               UserTime: 18.42 e/us  KernelTime: not measured e/us
+prefetch x88 NTA                                  UserTime: 40.56 e/us  KernelTime: not measured e/us
+prefetch-hard x88 NTA                             UserTime: 10.86 e/us  KernelTime: not measured e/us
+prefetch x88 E+NTA                                UserTime: 56.39 e/us  KernelTime: not measured e/us
+prefetch-hard x88 E+NTA                           UserTime: 19.27 e/us  KernelTime: not measured e/us
+prefetch x89                                      UserTime: 55.62 e/us  KernelTime: not measured e/us
+prefetch-hard x89                                 UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x89 E                                    UserTime: 56.01 e/us  KernelTime: not measured e/us
+prefetch-hard x89 E                               UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x89 NTA                                  UserTime: 40.86 e/us  KernelTime: not measured e/us
+prefetch-hard x89 NTA                             UserTime: 10.34 e/us  KernelTime: not measured e/us
+prefetch x89 E+NTA                                UserTime: 55.13 e/us  KernelTime: not measured e/us
+prefetch-hard x89 E+NTA                           UserTime: 19.25 e/us  KernelTime: not measured e/us
+prefetch x90                                      UserTime: 56.22 e/us  KernelTime: not measured e/us
+prefetch-hard x90                                 UserTime: 18.86 e/us  KernelTime: not measured e/us
+prefetch x90 E                                    UserTime: 57.87 e/us  KernelTime: not measured e/us
+prefetch-hard x90 E                               UserTime: 19.10 e/us  KernelTime: not measured e/us
+prefetch x90 NTA                                  UserTime: 40.30 e/us  KernelTime: not measured e/us
+prefetch-hard x90 NTA                             UserTime: 10.69 e/us  KernelTime: not measured e/us
+prefetch x90 E+NTA                                UserTime: 53.40 e/us  KernelTime: not measured e/us
+prefetch-hard x90 E+NTA                           UserTime: 18.62 e/us  KernelTime: not measured e/us
+prefetch x91                                      UserTime: 56.94 e/us  KernelTime: not measured e/us
+prefetch-hard x91                                 UserTime: 19.25 e/us  KernelTime: not measured e/us
+prefetch x91 E                                    UserTime: 55.64 e/us  KernelTime: not measured e/us
+prefetch-hard x91 E                               UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x91 NTA                                  UserTime: 42.33 e/us  KernelTime: not measured e/us
+prefetch-hard x91 NTA                             UserTime: 10.66 e/us  KernelTime: not measured e/us
+prefetch x91 E+NTA                                UserTime: 55.58 e/us  KernelTime: not measured e/us
+prefetch-hard x91 E+NTA                           UserTime: 18.73 e/us  KernelTime: not measured e/us
+prefetch x92                                      UserTime: 55.65 e/us  KernelTime: not measured e/us
+prefetch-hard x92                                 UserTime: 18.90 e/us  KernelTime: not measured e/us
+prefetch x92 E                                    UserTime: 56.22 e/us  KernelTime: not measured e/us
+prefetch-hard x92 E                               UserTime: 19.14 e/us  KernelTime: not measured e/us
+prefetch x92 NTA                                  UserTime: 40.87 e/us  KernelTime: not measured e/us
+prefetch-hard x92 NTA                             UserTime: 11.26 e/us  KernelTime: not measured e/us
+prefetch x92 E+NTA                                UserTime: 58.04 e/us  KernelTime: not measured e/us
+prefetch-hard x92 E+NTA                           UserTime: 19.22 e/us  KernelTime: not measured e/us
+prefetch x93                                      UserTime: 54.82 e/us  KernelTime: not measured e/us
+prefetch-hard x93                                 UserTime: 19.27 e/us  KernelTime: not measured e/us
+prefetch x93 E                                    UserTime: 56.04 e/us  KernelTime: not measured e/us
+prefetch-hard x93 E                               UserTime: 18.53 e/us  KernelTime: not measured e/us
+prefetch x93 NTA                                  UserTime: 43.47 e/us  KernelTime: not measured e/us
+prefetch-hard x93 NTA                             UserTime: 10.66 e/us  KernelTime: not measured e/us
+prefetch x93 E+NTA                                UserTime: 54.28 e/us  KernelTime: not measured e/us
+prefetch-hard x93 E+NTA                           UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x94                                      UserTime: 55.10 e/us  KernelTime: not measured e/us
+prefetch-hard x94                                 UserTime: 19.16 e/us  KernelTime: not measured e/us
+prefetch x94 E                                    UserTime: 57.01 e/us  KernelTime: not measured e/us
+prefetch-hard x94 E                               UserTime: 18.86 e/us  KernelTime: not measured e/us
+prefetch x94 NTA                                  UserTime: 41.29 e/us  KernelTime: not measured e/us
+prefetch-hard x94 NTA                             UserTime: 10.79 e/us  KernelTime: not measured e/us
+prefetch x94 E+NTA                                UserTime: 55.38 e/us  KernelTime: not measured e/us
+prefetch-hard x94 E+NTA                           UserTime: 19.18 e/us  KernelTime: not measured e/us
+prefetch x95                                      UserTime: 55.39 e/us  KernelTime: not measured e/us
+prefetch-hard x95                                 UserTime: 19.17 e/us  KernelTime: not measured e/us
+prefetch x95 E                                    UserTime: 55.97 e/us  KernelTime: not measured e/us
+prefetch-hard x95 E                               UserTime: 19.18 e/us  KernelTime: not measured e/us
+prefetch x95 NTA                                  UserTime: 39.59 e/us  KernelTime: not measured e/us
+prefetch-hard x95 NTA                             UserTime: 11.00 e/us  KernelTime: not measured e/us
+prefetch x95 E+NTA                                UserTime: 55.21 e/us  KernelTime: not measured e/us
+prefetch-hard x95 E+NTA                           UserTime: 19.14 e/us  KernelTime: not measured e/us
+prefetch x96                                      UserTime: 55.80 e/us  KernelTime: not measured e/us
+prefetch-hard x96                                 UserTime: 18.77 e/us  KernelTime: not measured e/us
+prefetch x96 E                                    UserTime: 54.77 e/us  KernelTime: not measured e/us
+prefetch-hard x96 E                               UserTime: 18.62 e/us  KernelTime: not measured e/us
+prefetch x96 NTA                                  UserTime: 41.92 e/us  KernelTime: not measured e/us
+prefetch-hard x96 NTA                             UserTime: 10.50 e/us  KernelTime: not measured e/us
+prefetch x96 E+NTA                                UserTime: 55.45 e/us  KernelTime: not measured e/us
+prefetch-hard x96 E+NTA                           UserTime: 18.38 e/us  KernelTime: not measured e/us
+prefetch x97                                      UserTime: 56.81 e/us  KernelTime: not measured e/us
+prefetch-hard x97                                 UserTime: 18.98 e/us  KernelTime: not measured e/us
+prefetch x97 E                                    UserTime: 55.05 e/us  KernelTime: not measured e/us
+prefetch-hard x97 E                               UserTime: 19.17 e/us  KernelTime: not measured e/us
+prefetch x97 NTA                                  UserTime: 41.14 e/us  KernelTime: not measured e/us
+prefetch-hard x97 NTA                             UserTime: 11.44 e/us  KernelTime: not measured e/us
+prefetch x97 E+NTA                                UserTime: 57.24 e/us  KernelTime: not measured e/us
+prefetch-hard x97 E+NTA                           UserTime: 18.64 e/us  KernelTime: not measured e/us
+prefetch x98                                      UserTime: 54.43 e/us  KernelTime: not measured e/us
+prefetch-hard x98                                 UserTime: 18.39 e/us  KernelTime: not measured e/us
+prefetch x98 E                                    UserTime: 54.58 e/us  KernelTime: not measured e/us
+prefetch-hard x98 E                               UserTime: 19.57 e/us  KernelTime: not measured e/us
+prefetch x98 NTA                                  UserTime: 42.61 e/us  KernelTime: not measured e/us
+prefetch-hard x98 NTA                             UserTime: 10.98 e/us  KernelTime: not measured e/us
+prefetch x98 E+NTA                                UserTime: 55.65 e/us  KernelTime: not measured e/us
+prefetch-hard x98 E+NTA                           UserTime: 19.15 e/us  KernelTime: not measured e/us
+prefetch x99                                      UserTime: 55.27 e/us  KernelTime: not measured e/us
+prefetch-hard x99                                 UserTime: 19.34 e/us  KernelTime: not measured e/us
+prefetch x99 E                                    UserTime: 54.36 e/us  KernelTime: not measured e/us
+prefetch-hard x99 E                               UserTime: 18.82 e/us  KernelTime: not measured e/us
+prefetch x99 NTA                                  UserTime: 41.67 e/us  KernelTime: not measured e/us
+prefetch-hard x99 NTA                             UserTime: 10.79 e/us  KernelTime: not measured e/us
+prefetch x99 E+NTA                                UserTime: 55.46 e/us  KernelTime: not measured e/us
+prefetch-hard x99 E+NTA                           UserTime: 18.78 e/us  KernelTime: not measured e/us
+prefetch x100                                     UserTime: 54.11 e/us  KernelTime: not measured e/us
+prefetch-hard x100                                UserTime: 19.01 e/us  KernelTime: not measured e/us
+prefetch x100 E                                   UserTime: 57.36 e/us  KernelTime: not measured e/us
+prefetch-hard x100 E                              UserTime: 18.59 e/us  KernelTime: not measured e/us
+prefetch x100 NTA                                 UserTime: 41.05 e/us  KernelTime: not measured e/us
+prefetch-hard x100 NTA                            UserTime: 10.95 e/us  KernelTime: not measured e/us
+prefetch x100 E+NTA                               UserTime: 55.72 e/us  KernelTime: not measured e/us
+prefetch-hard x100 E+NTA                          UserTime: 19.44 e/us  KernelTime: not measured e/us
+prefetch x101                                     UserTime: 55.19 e/us  KernelTime: not measured e/us
+prefetch-hard x101                                UserTime: 19.08 e/us  KernelTime: not measured e/us
+prefetch x101 E                                   UserTime: 54.54 e/us  KernelTime: not measured e/us
+prefetch-hard x101 E                              UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x101 NTA                                 UserTime: 38.22 e/us  KernelTime: not measured e/us
+prefetch-hard x101 NTA                            UserTime: 10.62 e/us  KernelTime: not measured e/us
+prefetch x101 E+NTA                               UserTime: 55.04 e/us  KernelTime: not measured e/us
+prefetch-hard x101 E+NTA                          UserTime: 19.56 e/us  KernelTime: not measured e/us
+prefetch x102                                     UserTime: 57.57 e/us  KernelTime: not measured e/us
+prefetch-hard x102                                UserTime: 19.14 e/us  KernelTime: not measured e/us
+prefetch x102 E                                   UserTime: 55.43 e/us  KernelTime: not measured e/us
+prefetch-hard x102 E                              UserTime: 19.14 e/us  KernelTime: not measured e/us
+prefetch x102 NTA                                 UserTime: 40.74 e/us  KernelTime: not measured e/us
+prefetch-hard x102 NTA                            UserTime: 11.00 e/us  KernelTime: not measured e/us
+prefetch x102 E+NTA                               UserTime: 55.48 e/us  KernelTime: not measured e/us
+prefetch-hard x102 E+NTA                          UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x103                                     UserTime: 56.81 e/us  KernelTime: not measured e/us
+prefetch-hard x103                                UserTime: 18.94 e/us  KernelTime: not measured e/us
+prefetch x103 E                                   UserTime: 55.01 e/us  KernelTime: not measured e/us
+prefetch-hard x103 E                              UserTime: 19.38 e/us  KernelTime: not measured e/us
+prefetch x103 NTA                                 UserTime: 40.17 e/us  KernelTime: not measured e/us
+prefetch-hard x103 NTA                            UserTime: 10.86 e/us  KernelTime: not measured e/us
+prefetch x103 E+NTA                               UserTime: 57.51 e/us  KernelTime: not measured e/us
+prefetch-hard x103 E+NTA                          UserTime: 18.88 e/us  KernelTime: not measured e/us
+prefetch x104                                     UserTime: 53.55 e/us  KernelTime: not measured e/us
+prefetch-hard x104                                UserTime: 19.06 e/us  KernelTime: not measured e/us
+prefetch x104 E                                   UserTime: 55.24 e/us  KernelTime: not measured e/us
+prefetch-hard x104 E                              UserTime: 19.53 e/us  KernelTime: not measured e/us
+prefetch x104 NTA                                 UserTime: 42.36 e/us  KernelTime: not measured e/us
+prefetch-hard x104 NTA                            UserTime: 11.39 e/us  KernelTime: not measured e/us
+prefetch x104 E+NTA                               UserTime: 53.65 e/us  KernelTime: not measured e/us
+prefetch-hard x104 E+NTA                          UserTime: 19.08 e/us  KernelTime: not measured e/us
+prefetch x105                                     UserTime: 54.75 e/us  KernelTime: not measured e/us
+prefetch-hard x105                                UserTime: 19.47 e/us  KernelTime: not measured e/us
+prefetch x105 E                                   UserTime: 57.54 e/us  KernelTime: not measured e/us
+prefetch-hard x105 E                              UserTime: 18.95 e/us  KernelTime: not measured e/us
+prefetch x105 NTA                                 UserTime: 40.87 e/us  KernelTime: not measured e/us
+prefetch-hard x105 NTA                            UserTime: 10.61 e/us  KernelTime: not measured e/us
+prefetch x105 E+NTA                               UserTime: 55.08 e/us  KernelTime: not measured e/us
+prefetch-hard x105 E+NTA                          UserTime: 19.47 e/us  KernelTime: not measured e/us
+prefetch x106                                     UserTime: 55.28 e/us  KernelTime: not measured e/us
+prefetch-hard x106                                UserTime: 19.04 e/us  KernelTime: not measured e/us
+prefetch x106 E                                   UserTime: 55.89 e/us  KernelTime: not measured e/us
+prefetch-hard x106 E                              UserTime: 19.01 e/us  KernelTime: not measured e/us
+prefetch x106 NTA                                 UserTime: 40.52 e/us  KernelTime: not measured e/us
+prefetch-hard x106 NTA                            UserTime: 11.05 e/us  KernelTime: not measured e/us
+prefetch x106 E+NTA                               UserTime: 54.93 e/us  KernelTime: not measured e/us
+prefetch-hard x106 E+NTA                          UserTime: 19.19 e/us  KernelTime: not measured e/us
+prefetch x107                                     UserTime: 56.56 e/us  KernelTime: not measured e/us
+prefetch-hard x107                                UserTime: 18.96 e/us  KernelTime: not measured e/us
+prefetch x107 E                                   UserTime: 54.90 e/us  KernelTime: not measured e/us
+prefetch-hard x107 E                              UserTime: 19.03 e/us  KernelTime: not measured e/us
+prefetch x107 NTA                                 UserTime: 39.45 e/us  KernelTime: not measured e/us
+prefetch-hard x107 NTA                            UserTime: 11.03 e/us  KernelTime: not measured e/us
+prefetch x107 E+NTA                               UserTime: 54.85 e/us  KernelTime: not measured e/us
+prefetch-hard x107 E+NTA                          UserTime: 18.98 e/us  KernelTime: not measured e/us
+prefetch x108                                     UserTime: 56.26 e/us  KernelTime: not measured e/us
+prefetch-hard x108                                UserTime: 18.88 e/us  KernelTime: not measured e/us
+prefetch x108 E                                   UserTime: 55.10 e/us  KernelTime: not measured e/us
+prefetch-hard x108 E                              UserTime: 19.25 e/us  KernelTime: not measured e/us
+prefetch x108 NTA                                 UserTime: 40.38 e/us  KernelTime: not measured e/us
+prefetch-hard x108 NTA                            UserTime: 11.59 e/us  KernelTime: not measured e/us
+prefetch x108 E+NTA                               UserTime: 57.07 e/us  KernelTime: not measured e/us
+prefetch-hard x108 E+NTA                          UserTime: 19.04 e/us  KernelTime: not measured e/us
+prefetch x109                                     UserTime: 54.66 e/us  KernelTime: not measured e/us
+prefetch-hard x109                                UserTime: 19.05 e/us  KernelTime: not measured e/us
+prefetch x109 E                                   UserTime: 54.39 e/us  KernelTime: not measured e/us
+prefetch-hard x109 E                              UserTime: 19.01 e/us  KernelTime: not measured e/us
+prefetch x109 NTA                                 UserTime: 39.63 e/us  KernelTime: not measured e/us
+prefetch-hard x109 NTA                            UserTime: 11.04 e/us  KernelTime: not measured e/us
+prefetch x109 E+NTA                               UserTime: 54.89 e/us  KernelTime: not measured e/us
+prefetch-hard x109 E+NTA                          UserTime: 19.06 e/us  KernelTime: not measured e/us
+prefetch x110                                     UserTime: 53.40 e/us  KernelTime: not measured e/us
+prefetch-hard x110                                UserTime: 19.41 e/us  KernelTime: not measured e/us
+prefetch x110 E                                   UserTime: 54.68 e/us  KernelTime: not measured e/us
+prefetch-hard x110 E                              UserTime: 18.85 e/us  KernelTime: not measured e/us
+prefetch x110 NTA                                 UserTime: 41.37 e/us  KernelTime: not measured e/us
+prefetch-hard x110 NTA                            UserTime: 11.64 e/us  KernelTime: not measured e/us
+prefetch x110 E+NTA                               UserTime: 54.90 e/us  KernelTime: not measured e/us
+prefetch-hard x110 E+NTA                          UserTime: 19.41 e/us  KernelTime: not measured e/us
+prefetch x111                                     UserTime: 47.26 e/us  KernelTime: not measured e/us
+prefetch-hard x111                                UserTime: 18.86 e/us  KernelTime: not measured e/us
+prefetch x111 E                                   UserTime: 54.10 e/us  KernelTime: not measured e/us
+prefetch-hard x111 E                              UserTime: 18.63 e/us  KernelTime: not measured e/us
+prefetch x111 NTA                                 UserTime: 41.05 e/us  KernelTime: not measured e/us
+prefetch-hard x111 NTA                            UserTime: 10.78 e/us  KernelTime: not measured e/us
+prefetch x111 E+NTA                               UserTime: 54.78 e/us  KernelTime: not measured e/us
+prefetch-hard x111 E+NTA                          UserTime: 18.87 e/us  KernelTime: not measured e/us
+prefetch x112                                     UserTime: 54.35 e/us  KernelTime: not measured e/us
+prefetch-hard x112                                UserTime: 19.36 e/us  KernelTime: not measured e/us
+prefetch x112 E                                   UserTime: 55.60 e/us  KernelTime: not measured e/us
+prefetch-hard x112 E                              UserTime: 19.03 e/us  KernelTime: not measured e/us
+prefetch x112 NTA                                 UserTime: 39.78 e/us  KernelTime: not measured e/us
+prefetch-hard x112 NTA                            UserTime: 10.84 e/us  KernelTime: not measured e/us
+prefetch x112 E+NTA                               UserTime: 53.04 e/us  KernelTime: not measured e/us
+prefetch-hard x112 E+NTA                          UserTime: 19.05 e/us  KernelTime: not measured e/us
+prefetch x113                                     UserTime: 54.20 e/us  KernelTime: not measured e/us
+prefetch-hard x113                                UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x113 E                                   UserTime: 56.74 e/us  KernelTime: not measured e/us
+prefetch-hard x113 E                              UserTime: 19.02 e/us  KernelTime: not measured e/us
+prefetch x113 NTA                                 UserTime: 38.57 e/us  KernelTime: not measured e/us
+prefetch-hard x113 NTA                            UserTime: 11.17 e/us  KernelTime: not measured e/us
+prefetch x113 E+NTA                               UserTime: 54.53 e/us  KernelTime: not measured e/us
+prefetch-hard x113 E+NTA                          UserTime: 19.40 e/us  KernelTime: not measured e/us
+prefetch x114                                     UserTime: 54.18 e/us  KernelTime: not measured e/us
+prefetch-hard x114                                UserTime: 19.02 e/us  KernelTime: not measured e/us
+prefetch x114 E                                   UserTime: 54.60 e/us  KernelTime: not measured e/us
+prefetch-hard x114 E                              UserTime: 18.99 e/us  KernelTime: not measured e/us
+prefetch x114 NTA                                 UserTime: 39.98 e/us  KernelTime: not measured e/us
+prefetch-hard x114 NTA                            UserTime: 10.51 e/us  KernelTime: not measured e/us
+prefetch x114 E+NTA                               UserTime: 54.93 e/us  KernelTime: not measured e/us
+prefetch-hard x114 E+NTA                          UserTime: 19.02 e/us  KernelTime: not measured e/us
+prefetch x115                                     UserTime: 56.21 e/us  KernelTime: not measured e/us
+prefetch-hard x115                                UserTime: 18.90 e/us  KernelTime: not measured e/us
+prefetch x115 E                                   UserTime: 54.73 e/us  KernelTime: not measured e/us
+prefetch-hard x115 E                              UserTime: 19.05 e/us  KernelTime: not measured e/us
+prefetch x115 NTA                                 UserTime: 39.69 e/us  KernelTime: not measured e/us
+prefetch-hard x115 NTA                            UserTime: 11.40 e/us  KernelTime: not measured e/us
+prefetch x115 E+NTA                               UserTime: 54.10 e/us  KernelTime: not measured e/us
+prefetch-hard x115 E+NTA                          UserTime: 18.97 e/us  KernelTime: not measured e/us
+prefetch x116                                     UserTime: 55.60 e/us  KernelTime: not measured e/us
+prefetch-hard x116                                UserTime: 18.92 e/us  KernelTime: not measured e/us
+prefetch x116 E                                   UserTime: 54.65 e/us  KernelTime: not measured e/us
+prefetch-hard x116 E                              UserTime: 18.95 e/us  KernelTime: not measured e/us
+prefetch x116 NTA                                 UserTime: 39.65 e/us  KernelTime: not measured e/us
+prefetch-hard x116 NTA                            UserTime: 10.34 e/us  KernelTime: not measured e/us
+prefetch x116 E+NTA                               UserTime: 54.33 e/us  KernelTime: not measured e/us
+prefetch-hard x116 E+NTA                          UserTime: 18.76 e/us  KernelTime: not measured e/us
+prefetch x117                                     UserTime: 56.32 e/us  KernelTime: not measured e/us
+prefetch-hard x117                                UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x117 E                                   UserTime: 54.43 e/us  KernelTime: not measured e/us
+prefetch-hard x117 E                              UserTime: 19.03 e/us  KernelTime: not measured e/us
+prefetch x117 NTA                                 UserTime: 39.42 e/us  KernelTime: not measured e/us
+prefetch-hard x117 NTA                            UserTime: 10.38 e/us  KernelTime: not measured e/us
+prefetch x117 E+NTA                               UserTime: 53.32 e/us  KernelTime: not measured e/us
+prefetch-hard x117 E+NTA                          UserTime: 18.87 e/us  KernelTime: not measured e/us
+prefetch x118                                     UserTime: 56.23 e/us  KernelTime: not measured e/us
+prefetch-hard x118                                UserTime: 19.01 e/us  KernelTime: not measured e/us
+prefetch x118 E                                   UserTime: 54.35 e/us  KernelTime: not measured e/us
+prefetch-hard x118 E                              UserTime: 18.97 e/us  KernelTime: not measured e/us
+prefetch x118 NTA                                 UserTime: 38.38 e/us  KernelTime: not measured e/us
+prefetch-hard x118 NTA                            UserTime: 11.32 e/us  KernelTime: not measured e/us
+prefetch x118 E+NTA                               UserTime: 53.44 e/us  KernelTime: not measured e/us
+prefetch-hard x118 E+NTA                          UserTime: 18.86 e/us  KernelTime: not measured e/us
+prefetch x119                                     UserTime: 55.86 e/us  KernelTime: not measured e/us
+prefetch-hard x119                                UserTime: 19.01 e/us  KernelTime: not measured e/us
+prefetch x119 E                                   UserTime: 52.99 e/us  KernelTime: not measured e/us
+prefetch-hard x119 E                              UserTime: 18.80 e/us  KernelTime: not measured e/us
+prefetch x119 NTA                                 UserTime: 39.60 e/us  KernelTime: not measured e/us
+prefetch-hard x119 NTA                            UserTime: 11.53 e/us  KernelTime: not measured e/us
+prefetch x119 E+NTA                               UserTime: 54.30 e/us  KernelTime: not measured e/us
+prefetch-hard x119 E+NTA                          UserTime: 19.02 e/us  KernelTime: not measured e/us
+prefetch x120                                     UserTime: 54.72 e/us  KernelTime: not measured e/us
+prefetch-hard x120                                UserTime: 18.99 e/us  KernelTime: not measured e/us
+prefetch x120 E                                   UserTime: 53.96 e/us  KernelTime: not measured e/us
+prefetch-hard x120 E                              UserTime: 18.80 e/us  KernelTime: not measured e/us
+prefetch x120 NTA                                 UserTime: 39.71 e/us  KernelTime: not measured e/us
+prefetch-hard x120 NTA                            UserTime: 10.85 e/us  KernelTime: not measured e/us
+prefetch x120 E+NTA                               UserTime: 54.30 e/us  KernelTime: not measured e/us
+prefetch-hard x120 E+NTA                          UserTime: 18.31 e/us  KernelTime: not measured e/us
+prefetch x121                                     UserTime: 54.07 e/us  KernelTime: not measured e/us
+prefetch-hard x121                                UserTime: 18.98 e/us  KernelTime: not measured e/us
+prefetch x121 E                                   UserTime: 53.31 e/us  KernelTime: not measured e/us
+prefetch-hard x121 E                              UserTime: 18.88 e/us  KernelTime: not measured e/us
+prefetch x121 NTA                                 UserTime: 39.24 e/us  KernelTime: not measured e/us
+prefetch-hard x121 NTA                            UserTime: 10.53 e/us  KernelTime: not measured e/us
+prefetch x121 E+NTA                               UserTime: 54.18 e/us  KernelTime: not measured e/us
+prefetch-hard x121 E+NTA                          UserTime: 18.89 e/us  KernelTime: not measured e/us
+prefetch x122                                     UserTime: 55.83 e/us  KernelTime: not measured e/us
+prefetch-hard x122                                UserTime: 18.52 e/us  KernelTime: not measured e/us
+prefetch x122 E                                   UserTime: 53.59 e/us  KernelTime: not measured e/us
+prefetch-hard x122 E                              UserTime: 19.00 e/us  KernelTime: not measured e/us
+prefetch x122 NTA                                 UserTime: 39.56 e/us  KernelTime: not measured e/us
+prefetch-hard x122 NTA                            UserTime: 10.57 e/us  KernelTime: not measured e/us
+prefetch x122 E+NTA                               UserTime: 53.71 e/us  KernelTime: not measured e/us
+prefetch-hard x122 E+NTA                          UserTime: 18.87 e/us  KernelTime: not measured e/us
+prefetch x123                                     UserTime: 55.01 e/us  KernelTime: not measured e/us
+prefetch-hard x123                                UserTime: 18.82 e/us  KernelTime: not measured e/us
+prefetch x123 E                                   UserTime: 54.06 e/us  KernelTime: not measured e/us
+prefetch-hard x123 E                              UserTime: 18.77 e/us  KernelTime: not measured e/us
+prefetch x123 NTA                                 UserTime: 38.82 e/us  KernelTime: not measured e/us
+prefetch-hard x123 NTA                            UserTime: 10.53 e/us  KernelTime: not measured e/us
+prefetch x123 E+NTA                               UserTime: 53.59 e/us  KernelTime: not measured e/us
+prefetch-hard x123 E+NTA                          UserTime: 19.07 e/us  KernelTime: not measured e/us
+prefetch x124                                     UserTime: 55.54 e/us  KernelTime: not measured e/us
+prefetch-hard x124                                UserTime: 18.86 e/us  KernelTime: not measured e/us
+prefetch x124 E                                   UserTime: 53.75 e/us  KernelTime: not measured e/us
+prefetch-hard x124 E                              UserTime: 18.78 e/us  KernelTime: not measured e/us
+prefetch x124 NTA                                 UserTime: 38.88 e/us  KernelTime: not measured e/us
+prefetch-hard x124 NTA                            UserTime: 11.03 e/us  KernelTime: not measured e/us
+prefetch x124 E+NTA                               UserTime: 53.86 e/us  KernelTime: not measured e/us
+prefetch-hard x124 E+NTA                          UserTime: 19.12 e/us  KernelTime: not measured e/us
+prefetch x125                                     UserTime: 55.91 e/us  KernelTime: not measured e/us
+prefetch-hard x125                                UserTime: 18.85 e/us  KernelTime: not measured e/us
+prefetch x125 E                                   UserTime: 52.94 e/us  KernelTime: not measured e/us
+prefetch-hard x125 E                              UserTime: 18.89 e/us  KernelTime: not measured e/us
+prefetch x125 NTA                                 UserTime: 39.39 e/us  KernelTime: not measured e/us
+prefetch-hard x125 NTA                            UserTime: 10.78 e/us  KernelTime: not measured e/us
+prefetch x125 E+NTA                               UserTime: 53.05 e/us  KernelTime: not measured e/us
+prefetch-hard x125 E+NTA                          UserTime: 18.96 e/us  KernelTime: not measured e/us
+prefetch x126                                     UserTime: 55.88 e/us  KernelTime: not measured e/us
+prefetch-hard x126                                UserTime: 18.82 e/us  KernelTime: not measured e/us
+prefetch x126 E                                   UserTime: 53.70 e/us  KernelTime: not measured e/us
+prefetch-hard x126 E                              UserTime: 18.84 e/us  KernelTime: not measured e/us
+prefetch x126 NTA                                 UserTime: 37.65 e/us  KernelTime: not measured e/us
+prefetch-hard x126 NTA                            UserTime: 10.49 e/us  KernelTime: not measured e/us
+prefetch x126 E+NTA                               UserTime: 54.06 e/us  KernelTime: not measured e/us
+prefetch-hard x126 E+NTA                          UserTime: 19.21 e/us  KernelTime: not measured e/us
+prefetch x127                                     UserTime: 55.17 e/us  KernelTime: not measured e/us
+prefetch-hard x127                                UserTime: 18.92 e/us  KernelTime: not measured e/us
+prefetch x127 E                                   UserTime: 53.86 e/us  KernelTime: not measured e/us
+prefetch-hard x127 E                              UserTime: 18.58 e/us  KernelTime: not measured e/us
+prefetch x127 NTA                                 UserTime: 38.69 e/us  KernelTime: not measured e/us
+prefetch-hard x127 NTA                            UserTime: 11.19 e/us  KernelTime: not measured e/us
+prefetch x127 E+NTA                               UserTime: 53.80 e/us  KernelTime: not measured e/us
+prefetch-hard x127 E+NTA                          UserTime: 18.81 e/us  KernelTime: not measured e/us
+prefetch x128                                     UserTime: 53.84 e/us  KernelTime: not measured e/us
+prefetch-hard x128                                UserTime: 18.79 e/us  KernelTime: not measured e/us
+prefetch x128 E                                   UserTime: 55.96 e/us  KernelTime: not measured e/us
+prefetch-hard x128 E                              UserTime: 18.81 e/us  KernelTime: not measured e/us
+prefetch x128 NTA                                 UserTime: 39.33 e/us  KernelTime: not measured e/us
+prefetch-hard x128 NTA                            UserTime: 10.64 e/us  KernelTime: not measured e/us
+prefetch x128 E+NTA                               UserTime: 53.84 e/us  KernelTime: not measured e/us
+prefetch-hard x128 E+NTA                          UserTime: 19.24 e/us  KernelTime: not measured e/us
 

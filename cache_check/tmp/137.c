@@ -38,7 +38,7 @@ int main()
         /* use SIZE/16 to speedup tests */
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
-            _mm_prefetch(array + ((pos + 1342177376) & SIZE_MASK), 4);
+            _mm_prefetch(array + ((pos + 1937768465) & SIZE_MASK), 4);
             #ifdef HARD
             array[pos] += 179 % (i + 1);
             array[pos] += 178 % (i + 1);

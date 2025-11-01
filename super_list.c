@@ -7,22 +7,51 @@
 #include "mylist.h"
 
 
-#define f_item 0
-#define u_item 1
-#define f_tail(lst) ((lst)->items[0].prev)
-#define f_head(lst) ((lst)->items[0].next)
-#define u_tail(lst) ((lst)->items[1].prev)
-#define u_head(lst) ((lst)->items[1].next)
+
+
+#define free_item(lst) 0
+#define used_item(lst) 1
+
+#define free_head(lst) ((lst)->items[free_item(lst)].next)
+#define free_tail(lst) ((lst)->items[free_item(lst)].prev)
+
+#define used_head(lst) ((lst)->items[used_item(lst)].next)
+#define used_tail(lst) ((lst)->items[used_item(lst)].prev)
+
+
 
 #define ITEM_SIZE 16
 #define ITEM_VALUES_COUNT (ITEM_SIZE - 3)
 #define ITEM_MIN_VALUES_COUNT (ITEM_VALUES_COUNT / 2)
 
-struct item
+#define ITERATOR_SHIFT 4
+
+__attribute__((force_inline)) __inline__ 
+void deconstruct_iterator(iterator_t it, int *block, int *item)
+{
+    *block = (it >> ITERATOR_SHIFT);
+    *item = (it & (-1 & ((1 << ITERATOR_SHIFT) - 1)));
+}
+
+__attribute__((force_inline)) __inline__ 
+iterator_t construct_iterator(int block, int item)
+{
+    return item | (block << 16);
+}
+
+
+struct item_header
 {
     int size, next, prev;
+};
+
+
+struct item
+{
+    struct item_header;
     int value[ITEM_VALUES_COUNT];
 };
+
 
 struct list_t
 {
@@ -38,15 +67,17 @@ struct list_t *list_create(int32_t capacity)
     struct list_t *lst = calloc(1, sizeof(*lst));
     
     lst->alloc = 2;
-    lst->items = calloc(2, sizeof(*lst->items));
+    lst->items = calloc(1, 2 * sizeof(*lst->items));
     lst->size = 0;
 
-    lst->items[f_item].size = 0;
-    lst->items[u_item].size = 0;
-    f_tail(lst) = f_head(lst) = f_item;
-    u_tail(lst) = u_head(lst) = u_item;
+    lst->items[free_item(lst)].next = 0;
+    lst->items[free_item(lst)].prev = 0;
+    lst->items[free_item(lst)].size = 0;
+    lst->items[used_item(lst)].next = 0;
+    lst->items[used_item(lst)].prev = 0;
+    lst->items[used_item(lst)].size = 0;
 
-    list_reserve(lst, capacity / ITEM_VALUES_COUNT);
+    list_reserve(lst, 2 * capacity / ITEM_VALUES_COUNT);
 
     return lst;
 }
@@ -85,13 +116,15 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
             return 1;
         }
         lst->items = new_ptr;
+        
         /* mark new nodes as free */
+        
         // first element
-        lst->items[prev_size].prev = f_tail(lst);
-        lst->items[f_tail(lst)].next = prev_size;
+        lst->items[prev_size].prev = free_tail(lst);
+        lst->items[free_tail(lst)].next = prev_size;
         // last element
-        lst->items[lst->alloc - 1].next = f_item;
-        lst->items[f_item].prev = lst->alloc - 1;
+        lst->items[lst->alloc - 1].next = free_item(lst);
+        lst->items[free_item(lst)].prev = lst->alloc - 1;
         // other links
         for (int i = prev_size; i < lst->alloc; ++i)
         {
@@ -103,9 +136,7 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
             {
                 lst->items[i].prev = i - 1;
             }
-            #ifndef NDEBUG
-            lst->items[i].value = -1;
-            #endif
+            lst->items[i].size = 0;
         }
     }
 }
