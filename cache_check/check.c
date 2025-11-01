@@ -25,33 +25,52 @@ int main()
     free(arr2);
 
     {
-        HANDLE hThr = GetCurrentThread();
-        
         /* measure loop with fetching */
-        FILETIME CreationTime, ExitTime, KernelTime, UserTime;
-        GetThreadTimes(hThr, &CreationTime, &ExitTime, &KernelTime, &UserTime);
+        LARGE_INTEGER t1, t2, t3;
+        QueryPerformanceCounter(&t1);
 
         
         long long pos = 0;
         /* use SIZE/16 to speedup tests */
-        for (long long i = 0; i < (SIZE/16); ++i)
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
             PREFETCH_POSITION;
+            #ifdef HARD
+            array[pos] += 179 % (i + 1);
+            array[pos] += 178 % (i + 1);
+            array[pos] += 177 % (i + 1);
+            array[pos] += 176 % (i + 1);
+            array[pos] += 175 % (i + 1);
+            array[pos] += 174 % (i + 1);
+            array[pos] += 173 % (i + 1);
+            array[pos] += 172 % (i + 1);
+            array[pos] += 171 % (i + 1);
+            array[pos] += 170 % (i + 1);
+            array[pos] += 169 % (i + 1);
+            array[pos] += 168 % (i + 1);
+            array[pos] += 167 % (i + 1);
+            array[pos] += 166 % (i + 1);
+            array[pos] += 165 % (i + 1);
+            array[pos] += 164 % (i + 1);
+            array[pos] += 163 % (i + 1);
+            array[pos] += 162 % (i + 1);
+            array[pos] += 161 % (i + 1);
+            array[pos] += 160 % (i + 1);
+            array[pos] += 159 % (i + 1);
+            array[pos] += 158 % (i + 1);
+            array[pos] +=  57 % (i + 1);
+            #else
             array[pos] = 179 % (i + 1);
+            #endif
             pos = (pos + 998244353LL) & SIZE_MASK;
         }
         
-        FILETIME CreationTime2, ExitTime2, KernelTime2, UserTime2;
-        GetThreadTimes(hThr, &CreationTime2, &ExitTime2, &KernelTime2, &UserTime2);
+        QueryPerformanceCounter(&t2);
+        QueryPerformanceFrequency(&t3);
 
         {
-            long long t1, t2;
-            t1 = *(long long *)&UserTime;
-            t2 = *(long long *)&UserTime2;
-            printf("UserTime: %.2lf e/us  ", (SIZE/16.0) / ((t2 - t1) / 10.0));
-            t1 = *(long long *)&KernelTime;
-            t2 = *(long long *)&KernelTime2;
-            printf("KernelTime: %.2lf e/us\n", (SIZE/16.0) / ((t2 - t1) / 10.0));
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
         }
     }
 }

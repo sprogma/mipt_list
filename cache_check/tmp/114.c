@@ -8,13 +8,8 @@
 #define SIZE_MASK 2147483647LL
 #define SIZE 2147483648LL
 
-INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, INT nCmdShow)
+int main()
 {
-    (void)hInstance;
-    (void)hPrevInstance;
-    (void)lpCmdLine;
-    (void)nCmdShow;
-    
     char *array = malloc(SIZE);
     
     /* allocate array from system */
@@ -74,7 +69,7 @@ INT WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
         QueryPerformanceFrequency(&t3);
 
         {
-            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart) * 1.0e6);
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
             printf("KernelTime: not measured e/us\n");
         }
     }

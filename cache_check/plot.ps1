@@ -1,18 +1,24 @@
-param([string]$file="input.txt")
+pushd $PSScriptRoot
+
+$file="result.txt"
 
 $text = Get-Content $file
 
 
 $rows = $text |? {$_.Trim()} |% {
-    $_ -match "^((No)\s*prefetching|prefetch\s+x(\d+)\s+([\w+]+)?).*UserTime:\s*([\d.]+)" >$null
-    $no, $mode, $count, $time = $Matches[2, 4, 3, 5]
+    $_ -match "^((No)\s*prefetch(-hard)?|prefetch(-hard)?\s+x(\d+)\s+([\w+]+)?).*UserTime:\s*([\d.]+)" >$null
+    $no, $h1, $h2, $mode, $count, $time = $Matches[2, 3, 4, 6, 5, 7]
+    $mode += $h1 + $h2
     $mode = "$($no ?? "prefetch")-$mode"
     [pscustomobject]@{mode=$mode;count=$count;time=$time}
 }
 
 $rows += $rows[0].PsObject.Copy()
+$rows += $rows[1].PsObject.Copy()
 $rows[0].count = 0
 $rows[-1].count = ($rows | % count | measure -Max).Maximum
+$rows[1].count = 0
+$rows[-2].count = ($rows | % count | measure -Max).Maximum
 
 $modes = $rows | s -exp mode -u
 
@@ -48,3 +54,5 @@ rm plot.gp
 rm modes/*
 
 see plot.png
+
+popd
