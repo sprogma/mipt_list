@@ -31,7 +31,7 @@ $rows | group mode |% {
 }
 
 $plot = @"
-set terminal pngcairo size 1600,900 background rgb 'black'
+set terminal pngcairo size 1600,900 background rgb '#222222'
 set output "plot.png"
 set datafile separator whitespace
 set key outside

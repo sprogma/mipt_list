@@ -25,11 +25,15 @@ int main()
     free(arr2);
 
     {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
         /* measure loop with fetching */
         LARGE_INTEGER t1, t2, t3;
         QueryPerformanceCounter(&t1);
 
-        
+            
         long long pos = 0;
         /* use SIZE/16 to speedup tests */
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)

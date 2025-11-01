@@ -4,8 +4,11 @@ $s = gc check.c -Raw
 
 $script:res = ""
 
+# num of threads at build stage
+$j = 128
 # less SIZE_DIV - more acuracy, less speed
-$DIV = 1024
+$div     = 32
+$divHard = 128
 
 function Run($obj)
 {
@@ -17,7 +20,6 @@ function Run($obj)
     Write-Host $s 
 }
 
-$j = 128
 
 $script:fid = 0
 function Check($message, $code)
@@ -29,7 +31,7 @@ function Check($message, $code)
         gcc "tmp/$id.c" -o "bin/$id.exe" -Ofast -march=native "-DSIZE_DIV=$DIV"
         [System.Console]::writeLine("Built [$message] bin/$id.exe")
         [pscustomobject]@{exe="bin/$id.exe";message=$message}
-    } -ArgumentList ($message, $script:fid, $DIV) -ThrottleLimit $j
+    } -ArgumentList ($message, $script:fid, $div) -ThrottleLimit $j
     
     $message = $message -replace "prefetch","prefetch-hard"
     
@@ -40,7 +42,7 @@ function Check($message, $code)
         gcc "tmp/$id.c" -o "bin/$id.exe" -Ofast -march=native "-DSIZE_DIV=$DIV" -DHARD
         [System.Console]::writeLine("Built [$message] bin/$id.exe")
         [pscustomobject]@{exe="bin/$id.exe";message=$message}
-    } -ArgumentList ($message, $script:fid, $DIV) -ThrottleLimit $j
+    } -ArgumentList ($message, $script:fid, $divHard) -ThrottleLimit $j
 }
 
 # check no prefetch
@@ -55,6 +57,8 @@ while ($i -le 128)
     $jobs += Check "prefetch x$i E"     ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_ET0)")
     $jobs += Check "prefetch x$i NTA"   ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_NTA)")
     $jobs += Check "prefetch x$i E+NTA" ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), 4)")
+    $i += 1
+    continue;
     if ($i -lt 8)
     {
         $i += 1
