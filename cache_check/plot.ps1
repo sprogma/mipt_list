@@ -1,8 +1,11 @@
+param(
+    [string]$imageFile, 
+    [string]$resultFile
+)
+
 pushd $PSScriptRoot
 
-$file="result.txt"
-
-$text = Get-Content $file
+$text = Get-Content $resultFile
 
 
 $rows = $text |? {$_.Trim()} |% {
@@ -14,11 +17,12 @@ $rows = $text |? {$_.Trim()} |% {
 }
 
 $rows += $rows[0].PsObject.Copy()
-$rows += $rows[1].PsObject.Copy()
 $rows[0].count = 0
 $rows[-1].count = ($rows | % count | measure -Max).Maximum
-$rows[1].count = 0
-$rows[-2].count = ($rows | % count | measure -Max).Maximum
+
+# $rows += $rows[1].PsObject.Copy()
+# $rows[1].count = 0
+# $rows[-1].count = ($rows | % count | measure -Max).Maximum
 
 $modes = $rows | s -exp mode -u
 
@@ -32,7 +36,7 @@ $rows | group mode |% {
 
 $plot = @"
 set terminal pngcairo size 1600,900 background rgb '#222222'
-set output "plot.png"
+set output "$imageFile"
 set datafile separator whitespace
 set key outside
 set grid
@@ -53,6 +57,6 @@ gnuplot -persist plot.gp
 rm plot.gp
 rm modes/*
 
-see plot.png
+see $imageFile
 
 popd

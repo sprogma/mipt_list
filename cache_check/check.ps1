@@ -1,14 +1,16 @@
+param(
+    [string]$inputFile
+)
 pushd $PSScriptRoot
 
-$s = gc check.c -Raw
+$s = gc $inputFile -Raw
 
 $script:res = ""
 
 # num of threads at build stage
 $j = 128
 # less SIZE_DIV - more acuracy, less speed
-$div     = 32
-$divHard = 128
+$div = 128
 
 function Run($obj)
 {
@@ -32,17 +34,6 @@ function Check($message, $code)
         [System.Console]::writeLine("Built [$message] bin/$id.exe")
         [pscustomobject]@{exe="bin/$id.exe";message=$message}
     } -ArgumentList ($message, $script:fid, $div) -ThrottleLimit $j
-    
-    $message = $message -replace "prefetch","prefetch-hard"
-    
-    $script:fid++
-    $code >"tmp/$($script:fid).c"
-    Start-ThreadJob -ScriptBlock {
-        param($message, $id, $DIV)
-        gcc "tmp/$id.c" -o "bin/$id.exe" -Ofast -march=native "-DSIZE_DIV=$DIV" -DHARD
-        [System.Console]::writeLine("Built [$message] bin/$id.exe")
-        [pscustomobject]@{exe="bin/$id.exe";message=$message}
-    } -ArgumentList ($message, $script:fid, $divHard) -ThrottleLimit $j
 }
 
 # check no prefetch
@@ -57,8 +48,6 @@ while ($i -le 128)
     $jobs += Check "prefetch x$i E"     ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_ET0)")
     $jobs += Check "prefetch x$i NTA"   ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_NTA)")
     $jobs += Check "prefetch x$i E+NTA" ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), 4)")
-    $i += 1
-    continue;
     if ($i -lt 8)
     {
         $i += 1
@@ -85,8 +74,11 @@ $jobs | Wait-Job | Out-Null
 
 $jobs | Receive-Job | % {Run $_}
 
-$script:res >result.txt
+$imageFile = "$(Split-Path $inputFile -LeafBase).png"
+$resultFile = "$(Split-Path $inputFile -LeafBase).txt"
 
-.\plot.ps1
+$script:res >$resultFile
+
+.\plot.ps1 $imageFile $resultFile
 
 popd

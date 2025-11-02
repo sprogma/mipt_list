@@ -1,0 +1,453 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8" />
+        <style>
+            body {
+                background-color: #131513;
+                color: #0e8;
+            }
+            h1 {
+                text-align: center;
+            }
+        </style>
+    <title>Cache line check</title>
+</head>
+<body>
+<div style="color:#0ff"><h1>ch_simple_read_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum: %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  35:	31 db                	xor    ebx,ebx
+  59:	31 c9                	xor    ecx,ecx
+  5b:	41 ba b3 00 00 00    	mov    r10d,0xb3
+  61:	44 0f be 04 0e       	movsx  r8d,BYTE PTR [rsi+rcx*1]
+  66:	44 89 d0             	mov    eax,r10d
+  69:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  70:	0f ae f0             	mfence 
+main():
+  73:	99                   	cdq    
+  74:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+  7a:	41 83 c0 01          	add    r8d,0x1
+  7e:	41 f7 f8             	idiv   r8d
+  81:	48 63 d2             	movsxd rdx,edx
+  84:	48 01 d3             	add    rbx,rdx
+  87:	49 83 e9 01          	sub    r9,0x1
+  8b:	75 d4                	jne    61 <main+0x61></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_read_barrier.png" alt="benchmark image for ch_simple_read_barrier.c" /> <div style="color:#0ff"><h1>ch_simple_read.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (array[pos] + 1);
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum = %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  35:	31 db                	xor    ebx,ebx
+  59:	31 c9                	xor    ecx,ecx
+  5b:	41 ba b3 00 00 00    	mov    r10d,0xb3
+  61:	44 0f be 04 0e       	movsx  r8d,BYTE PTR [rsi+rcx*1]
+  66:	44 89 d0             	mov    eax,r10d
+  69:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+  70:	99                   	cdq    
+  71:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+  77:	41 83 c0 01          	add    r8d,0x1
+  7b:	41 f7 f8             	idiv   r8d
+  7e:	48 63 d2             	movsxd rdx,edx
+  81:	48 01 d3             	add    rbx,rdx
+  84:	49 83 e9 01          	sub    r9,0x1
+  88:	75 d7                	jne    61 <main+0x61></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_read.png" alt="benchmark image for ch_simple_read.c" /> <div style="color:#0ff"><h1>ch_simple_readwrite_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  35:	bb b3 00 00 00       	mov    ebx,0xb3
+  5c:	31 c9                	xor    ecx,ecx
+  5e:	66 90                	xchg   ax,ax
+  60:	4c 8d 1c 0e          	lea    r11,[rsi+rcx*1]
+  64:	89 d8                	mov    eax,ebx
+  66:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+  6d:	45 0f be 0b          	movsx  r9d,BYTE PTR [r11]
+  71:	99                   	cdq    
+  72:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+  78:	45 89 c8             	mov    r8d,r9d
+  7b:	41 83 c1 01          	add    r9d,0x1
+  7f:	41 f7 f9             	idiv   r9d
+  82:	41 01 d0             	add    r8d,edx
+  85:	45 88 03             	mov    BYTE PTR [r11],r8b
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  88:	0f ae f0             	mfence 
+main():
+  8b:	49 83 ea 01          	sub    r10,0x1
+  8f:	75 cf                	jne    60 <main+0x60></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_readwrite_barrier.png" alt="benchmark image for ch_simple_readwrite_barrier.c" /> <div style="color:#0ff"><h1>ch_simple_readwrite.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  35:	bb b3 00 00 00       	mov    ebx,0xb3
+  5c:	31 c9                	xor    ecx,ecx
+  5e:	66 90                	xchg   ax,ax
+  60:	4c 8d 1c 0e          	lea    r11,[rsi+rcx*1]
+  64:	89 d8                	mov    eax,ebx
+  66:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+  6d:	45 0f be 0b          	movsx  r9d,BYTE PTR [r11]
+  71:	99                   	cdq    
+  72:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+  78:	45 89 c8             	mov    r8d,r9d
+  7b:	41 83 c1 01          	add    r9d,0x1
+  7f:	41 f7 f9             	idiv   r9d
+  82:	41 01 d0             	add    r8d,edx
+  85:	45 88 03             	mov    BYTE PTR [r11],r8b
+  88:	49 83 ea 01          	sub    r10,0x1
+  8c:	75 d2                	jne    60 <main+0x60></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_readwrite.png" alt="benchmark image for ch_simple_readwrite.c" /> <div style="color:#0ff"><h1>ch_simple_write_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+            
+            array[pos] = 179 % (i + 1);        
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  50:	45 31 c0             	xor    r8d,r8d
+  53:	31 c9                	xor    ecx,ecx
+  55:	41 b9 b3 00 00 00    	mov    r9d,0xb3
+  5b:	41 ba 00 00 00 80    	mov    r10d,0x80000000
+  61:	4c 89 c8             	mov    rax,r9
+  64:	49 83 c0 01          	add    r8,0x1
+  68:	48 99                	cqo    
+  6a:	49 f7 f8             	idiv   r8
+  6d:	88 14 0b             	mov    BYTE PTR [rbx+rcx*1],dl
+  70:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+  77:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  7d:	0f ae f0             	mfence 
+main():
+  80:	4d 39 d0             	cmp    r8,r10
+  83:	75 dc                	jne    61 <main+0x61></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_write_barrier.png" alt="benchmark image for ch_simple_write_barrier.c" /> <div style="color:#0ff"><h1>ch_simple_write.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+            
+            array[pos] = 179 % (i + 1);            
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  50:	45 31 c0             	xor    r8d,r8d
+  53:	31 c9                	xor    ecx,ecx
+  55:	41 b9 b3 00 00 00    	mov    r9d,0xb3
+  5b:	41 ba 00 00 00 80    	mov    r10d,0x80000000
+  61:	4c 89 c8             	mov    rax,r9
+  64:	49 83 c0 01          	add    r8,0x1
+  68:	48 99                	cqo    
+  6a:	49 f7 f8             	idiv   r8
+  6d:	88 14 0b             	mov    BYTE PTR [rbx+rcx*1],dl
+  70:	48 81 c1 01 00 80 3b 	add    rcx,0x3b800001
+  77:	81 e1 ff ff ff 7f    	and    ecx,0x7fffffff
+  7d:	4d 39 d0             	cmp    r8,r10
+  80:	75 df                	jne    61 <main+0x61></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_simple_write.png" alt="benchmark image for ch_simple_write.c" />
+</body>
+</html>
