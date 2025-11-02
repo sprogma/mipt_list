@@ -1,5 +1,7 @@
 param(
-    [string]$inputFile
+    [string]$inputFile,
+    # less SIZE_DIV - more acuracy, less speed
+    [long]$div=128
 )
 pushd $PSScriptRoot
 
@@ -9,8 +11,6 @@ $script:res = ""
 
 # num of threads at build stage
 $j = 128
-# less SIZE_DIV - more acuracy, less speed
-$div = 128
 
 function Run($obj)
 {

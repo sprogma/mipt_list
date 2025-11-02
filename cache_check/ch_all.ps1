@@ -1,9 +1,9 @@
 gci ch*.c | % {
     Write-Host "Running $($_.Name)" -ForegroundColor green
-    $t = 4
+    $t = 2
     if ($_.Name -match "barrier")
     {
-        $t = 8
+        $t = 4
     }
     if ($_.Name -match "hard")
     {    
