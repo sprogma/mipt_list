@@ -14,7 +14,1457 @@
     <title>Cache line check</title>
 </head>
 <body>
-<div style="color:#0ff"><h1>ch_simple_read_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+<div style="color:#0ff"><h1>ch_hard_read_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (sum + array[pos] + 1);
+            sum += 178 % (sum + array[pos] + 1);
+            sum += 177 % (sum + array[pos] + 1);
+            sum += 176 % (sum + array[pos] + 1);
+            sum += 175 % (sum + array[pos] + 1);
+            sum += 174 % (sum + array[pos] + 1);
+            sum += 173 % (sum + array[pos] + 1);
+            sum += 172 % (sum + array[pos] + 1);
+            sum += 171 % (sum + array[pos] + 1);
+            sum += 170 % (sum + array[pos] + 1);
+            sum += 57 % (sum + array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum: %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  49:	31 db                	xor    ebx,ebx
+  4b:	41 be b3 00 00 00    	mov    r14d,0xb3
+  54:	41 bc b2 00 00 00    	mov    r12d,0xb2
+  5a:	bd b1 00 00 00       	mov    ebp,0xb1
+  5f:	bf b0 00 00 00       	mov    edi,0xb0
+  6a:	be af 00 00 00       	mov    esi,0xaf
+  88:	45 31 c0             	xor    r8d,r8d
+  8b:	41 bb ae 00 00 00    	mov    r11d,0xae
+  91:	41 ba ad 00 00 00    	mov    r10d,0xad
+  97:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+  9e:	00 00 
+  a0:	4b 0f be 4c 05 00    	movsx  rcx,BYTE PTR [r13+r8*1+0x0]
+  a6:	4c 89 f0             	mov    rax,r14
+  a9:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  b0:	0f ae f0             	mfence 
+main():
+  b3:	48 99                	cqo    
+  b5:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  ba:	49 f7 ff             	idiv   r15
+  bd:	4c 89 e0             	mov    rax,r12
+  c0:	48 01 d3             	add    rbx,rdx
+  c3:	48 99                	cqo    
+  c5:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  ca:	49 f7 ff             	idiv   r15
+  cd:	48 89 e8             	mov    rax,rbp
+  d0:	48 01 d3             	add    rbx,rdx
+  d3:	48 99                	cqo    
+  d5:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  da:	49 f7 ff             	idiv   r15
+  dd:	48 89 f8             	mov    rax,rdi
+  e0:	48 01 d3             	add    rbx,rdx
+  e3:	48 99                	cqo    
+  e5:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  ea:	49 f7 ff             	idiv   r15
+  ed:	48 89 f0             	mov    rax,rsi
+  f0:	48 01 d3             	add    rbx,rdx
+  f3:	48 99                	cqo    
+  f5:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  fa:	49 f7 ff             	idiv   r15
+  fd:	4c 89 d8             	mov    rax,r11
+ 100:	48 01 d3             	add    rbx,rdx
+ 103:	48 99                	cqo    
+ 105:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 10a:	49 f7 ff             	idiv   r15
+ 10d:	4c 89 d0             	mov    rax,r10
+ 110:	48 01 d3             	add    rbx,rdx
+ 113:	48 99                	cqo    
+ 115:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 11a:	49 f7 ff             	idiv   r15
+ 11d:	b8 ac 00 00 00       	mov    eax,0xac
+ 122:	48 01 d3             	add    rbx,rdx
+ 125:	48 99                	cqo    
+ 127:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 12c:	49 f7 ff             	idiv   r15
+ 12f:	b8 ab 00 00 00       	mov    eax,0xab
+ 134:	48 01 d3             	add    rbx,rdx
+ 137:	48 99                	cqo    
+ 139:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 13e:	49 f7 ff             	idiv   r15
+ 141:	b8 aa 00 00 00       	mov    eax,0xaa
+ 146:	48 01 d3             	add    rbx,rdx
+ 149:	48 99                	cqo    
+ 14b:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 150:	49 f7 ff             	idiv   r15
+ 153:	b8 39 00 00 00       	mov    eax,0x39
+ 158:	4c 8d 3c 1a          	lea    r15,[rdx+rbx*1]
+ 15c:	48 99                	cqo    
+ 15e:	4a 8d 4c 39 01       	lea    rcx,[rcx+r15*1+0x1]
+ 163:	48 f7 f9             	idiv   rcx
+ 166:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+ 16d:	4a 8d 1c 3a          	lea    rbx,[rdx+r15*1]
+ 171:	49 83 e9 01          	sub    r9,0x1
+ 175:	0f 85 25 ff ff ff    	jne    a0 <main+0xa0></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_read_barrier.png" alt="benchmark image for ch_hard_read_barrier.c" /> <div style="color:#0ff"><h1>ch_hard_read.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (sum + array[pos] + 1);
+            sum += 178 % (sum + array[pos] + 1);
+            sum += 177 % (sum + array[pos] + 1);
+            sum += 176 % (sum + array[pos] + 1);
+            sum += 175 % (sum + array[pos] + 1);
+            sum += 174 % (sum + array[pos] + 1);
+            sum += 173 % (sum + array[pos] + 1);
+            sum += 172 % (sum + array[pos] + 1);
+            sum += 171 % (sum + array[pos] + 1);
+            sum += 170 % (sum + array[pos] + 1);
+            sum += 57 % (sum + array[pos] + 1);
+
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum = %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  49:	31 db                	xor    ebx,ebx
+  4b:	41 be b3 00 00 00    	mov    r14d,0xb3
+  54:	41 bc b2 00 00 00    	mov    r12d,0xb2
+  5a:	bd b1 00 00 00       	mov    ebp,0xb1
+  5f:	bf b0 00 00 00       	mov    edi,0xb0
+  6a:	be af 00 00 00       	mov    esi,0xaf
+  88:	45 31 c0             	xor    r8d,r8d
+  8b:	41 bb ae 00 00 00    	mov    r11d,0xae
+  91:	41 ba ad 00 00 00    	mov    r10d,0xad
+  97:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+  9e:	00 00 
+  a0:	4b 0f be 4c 05 00    	movsx  rcx,BYTE PTR [r13+r8*1+0x0]
+  a6:	4c 89 f0             	mov    rax,r14
+  a9:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  b0:	48 99                	cqo    
+  b2:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  b7:	49 f7 ff             	idiv   r15
+  ba:	4c 89 e0             	mov    rax,r12
+  bd:	48 01 d3             	add    rbx,rdx
+  c0:	48 99                	cqo    
+  c2:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  c7:	49 f7 ff             	idiv   r15
+  ca:	48 89 e8             	mov    rax,rbp
+  cd:	48 01 d3             	add    rbx,rdx
+  d0:	48 99                	cqo    
+  d2:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  d7:	49 f7 ff             	idiv   r15
+  da:	48 89 f8             	mov    rax,rdi
+  dd:	48 01 d3             	add    rbx,rdx
+  e0:	48 99                	cqo    
+  e2:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  e7:	49 f7 ff             	idiv   r15
+  ea:	48 89 f0             	mov    rax,rsi
+  ed:	48 01 d3             	add    rbx,rdx
+  f0:	48 99                	cqo    
+  f2:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  f7:	49 f7 ff             	idiv   r15
+  fa:	4c 89 d8             	mov    rax,r11
+  fd:	48 01 d3             	add    rbx,rdx
+ 100:	48 99                	cqo    
+ 102:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 107:	49 f7 ff             	idiv   r15
+ 10a:	4c 89 d0             	mov    rax,r10
+ 10d:	48 01 d3             	add    rbx,rdx
+ 110:	48 99                	cqo    
+ 112:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 117:	49 f7 ff             	idiv   r15
+ 11a:	b8 ac 00 00 00       	mov    eax,0xac
+ 11f:	48 01 d3             	add    rbx,rdx
+ 122:	48 99                	cqo    
+ 124:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 129:	49 f7 ff             	idiv   r15
+ 12c:	b8 ab 00 00 00       	mov    eax,0xab
+ 131:	48 01 d3             	add    rbx,rdx
+ 134:	48 99                	cqo    
+ 136:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 13b:	49 f7 ff             	idiv   r15
+ 13e:	b8 aa 00 00 00       	mov    eax,0xaa
+ 143:	48 01 d3             	add    rbx,rdx
+ 146:	48 99                	cqo    
+ 148:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+ 14d:	49 f7 ff             	idiv   r15
+ 150:	b8 39 00 00 00       	mov    eax,0x39
+ 155:	4c 8d 3c 1a          	lea    r15,[rdx+rbx*1]
+ 159:	48 99                	cqo    
+ 15b:	4a 8d 4c 39 01       	lea    rcx,[rcx+r15*1+0x1]
+ 160:	48 f7 f9             	idiv   rcx
+ 163:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+ 16a:	4a 8d 1c 3a          	lea    rbx,[rdx+r15*1]
+ 16e:	49 83 e9 01          	sub    r9,0x1
+ 172:	0f 85 28 ff ff ff    	jne    a0 <main+0xa0></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_read.png" alt="benchmark image for ch_hard_read.c" /> <div style="color:#0ff"><h1>ch_hard_readwrite_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            array[pos] += 178 % (array[pos] + 1);
+            array[pos] += 177 % (array[pos] + 1);
+            array[pos] += 176 % (array[pos] + 1);
+            array[pos] += 175 % (array[pos] + 1);
+            array[pos] += 174 % (array[pos] + 1);
+            array[pos] += 173 % (array[pos] + 1);
+            array[pos] += 172 % (array[pos] + 1);
+            array[pos] += 171 % (array[pos] + 1);
+            array[pos] += 170 % (array[pos] + 1);
+            array[pos] += 57 % (array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  49:	41 be b3 00 00 00    	mov    r14d,0xb3
+  4f:	41 bc b2 00 00 00    	mov    r12d,0xb2
+  58:	bd b1 00 00 00       	mov    ebp,0xb1
+  5d:	bf b0 00 00 00       	mov    edi,0xb0
+  62:	be af 00 00 00       	mov    esi,0xaf
+  6d:	bb ae 00 00 00       	mov    ebx,0xae
+  8b:	45 31 c0             	xor    r8d,r8d
+  8e:	41 bb ad 00 00 00    	mov    r11d,0xad
+  94:	4f 8d 54 05 00       	lea    r10,[r13+r8*1+0x0]
+  99:	44 89 f0             	mov    eax,r14d
+  9c:	45 0f be 3a          	movsx  r15d,BYTE PTR [r10]
+  a0:	99                   	cdq    
+  a1:	44 89 f9             	mov    ecx,r15d
+  a4:	41 83 c7 01          	add    r15d,0x1
+  a8:	41 f7 ff             	idiv   r15d
+  ab:	44 89 e0             	mov    eax,r12d
+  ae:	01 d1                	add    ecx,edx
+  b0:	99                   	cdq    
+  b1:	44 0f be f9          	movsx  r15d,cl
+  b5:	41 83 c7 01          	add    r15d,0x1
+  b9:	41 f7 ff             	idiv   r15d
+  bc:	89 e8                	mov    eax,ebp
+  be:	01 d1                	add    ecx,edx
+  c0:	99                   	cdq    
+  c1:	44 0f be f9          	movsx  r15d,cl
+  c5:	41 83 c7 01          	add    r15d,0x1
+  c9:	41 f7 ff             	idiv   r15d
+  cc:	89 f8                	mov    eax,edi
+  ce:	01 d1                	add    ecx,edx
+  d0:	99                   	cdq    
+  d1:	44 0f be f9          	movsx  r15d,cl
+  d5:	41 83 c7 01          	add    r15d,0x1
+  d9:	41 f7 ff             	idiv   r15d
+  dc:	89 f0                	mov    eax,esi
+  de:	01 d1                	add    ecx,edx
+  e0:	99                   	cdq    
+  e1:	44 0f be f9          	movsx  r15d,cl
+  e5:	41 83 c7 01          	add    r15d,0x1
+  e9:	41 f7 ff             	idiv   r15d
+  ec:	89 d8                	mov    eax,ebx
+  ee:	01 d1                	add    ecx,edx
+  f0:	99                   	cdq    
+  f1:	44 0f be f9          	movsx  r15d,cl
+  f5:	41 83 c7 01          	add    r15d,0x1
+  f9:	41 f7 ff             	idiv   r15d
+  fc:	44 89 d8             	mov    eax,r11d
+  ff:	01 d1                	add    ecx,edx
+ 101:	99                   	cdq    
+ 102:	44 0f be f9          	movsx  r15d,cl
+ 106:	41 83 c7 01          	add    r15d,0x1
+ 10a:	41 f7 ff             	idiv   r15d
+ 10d:	b8 ac 00 00 00       	mov    eax,0xac
+ 112:	01 d1                	add    ecx,edx
+ 114:	99                   	cdq    
+ 115:	44 0f be f9          	movsx  r15d,cl
+ 119:	41 83 c7 01          	add    r15d,0x1
+ 11d:	41 f7 ff             	idiv   r15d
+ 120:	b8 ab 00 00 00       	mov    eax,0xab
+ 125:	01 d1                	add    ecx,edx
+ 127:	44 0f be f9          	movsx  r15d,cl
+ 12b:	41 83 c7 01          	add    r15d,0x1
+ 12f:	99                   	cdq    
+ 130:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+ 137:	41 f7 ff             	idiv   r15d
+ 13a:	b8 aa 00 00 00       	mov    eax,0xaa
+ 13f:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+ 146:	01 d1                	add    ecx,edx
+ 148:	99                   	cdq    
+ 149:	44 0f be f9          	movsx  r15d,cl
+ 14d:	41 83 c7 01          	add    r15d,0x1
+ 151:	41 f7 ff             	idiv   r15d
+ 154:	b8 39 00 00 00       	mov    eax,0x39
+ 159:	01 d1                	add    ecx,edx
+ 15b:	99                   	cdq    
+ 15c:	44 0f be f9          	movsx  r15d,cl
+ 160:	41 83 c7 01          	add    r15d,0x1
+ 164:	41 f7 ff             	idiv   r15d
+ 167:	01 d1                	add    ecx,edx
+ 169:	41 88 0a             	mov    BYTE PTR [r10],cl
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+ 16c:	0f ae f0             	mfence 
+main():
+ 16f:	49 83 e9 01          	sub    r9,0x1
+ 173:	0f 85 1b ff ff ff    	jne    94 <main+0x94></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_readwrite_barrier.png" alt="benchmark image for ch_hard_readwrite_barrier.c" /> <div style="color:#0ff"><h1>ch_hard_readwrite.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            array[pos] += 178 % (array[pos] + 1);
+            array[pos] += 177 % (array[pos] + 1);
+            array[pos] += 176 % (array[pos] + 1);
+            array[pos] += 175 % (array[pos] + 1);
+            array[pos] += 174 % (array[pos] + 1);
+            array[pos] += 173 % (array[pos] + 1);
+            array[pos] += 172 % (array[pos] + 1);
+            array[pos] += 171 % (array[pos] + 1);
+            array[pos] += 170 % (array[pos] + 1);
+            array[pos] += 57 % (array[pos] + 1);
+
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  49:	41 be b3 00 00 00    	mov    r14d,0xb3
+  4f:	41 bc b2 00 00 00    	mov    r12d,0xb2
+  58:	bd b1 00 00 00       	mov    ebp,0xb1
+  5d:	bf b0 00 00 00       	mov    edi,0xb0
+  62:	be af 00 00 00       	mov    esi,0xaf
+  6d:	bb ae 00 00 00       	mov    ebx,0xae
+  8b:	45 31 c0             	xor    r8d,r8d
+  8e:	41 bb ad 00 00 00    	mov    r11d,0xad
+  94:	4f 8d 54 05 00       	lea    r10,[r13+r8*1+0x0]
+  99:	44 89 f0             	mov    eax,r14d
+  9c:	45 0f be 3a          	movsx  r15d,BYTE PTR [r10]
+  a0:	99                   	cdq    
+  a1:	44 89 f9             	mov    ecx,r15d
+  a4:	41 83 c7 01          	add    r15d,0x1
+  a8:	41 f7 ff             	idiv   r15d
+  ab:	44 89 e0             	mov    eax,r12d
+  ae:	01 d1                	add    ecx,edx
+  b0:	99                   	cdq    
+  b1:	44 0f be f9          	movsx  r15d,cl
+  b5:	41 83 c7 01          	add    r15d,0x1
+  b9:	41 f7 ff             	idiv   r15d
+  bc:	89 e8                	mov    eax,ebp
+  be:	01 d1                	add    ecx,edx
+  c0:	99                   	cdq    
+  c1:	44 0f be f9          	movsx  r15d,cl
+  c5:	41 83 c7 01          	add    r15d,0x1
+  c9:	41 f7 ff             	idiv   r15d
+  cc:	89 f8                	mov    eax,edi
+  ce:	01 d1                	add    ecx,edx
+  d0:	99                   	cdq    
+  d1:	44 0f be f9          	movsx  r15d,cl
+  d5:	41 83 c7 01          	add    r15d,0x1
+  d9:	41 f7 ff             	idiv   r15d
+  dc:	89 f0                	mov    eax,esi
+  de:	01 d1                	add    ecx,edx
+  e0:	99                   	cdq    
+  e1:	44 0f be f9          	movsx  r15d,cl
+  e5:	41 83 c7 01          	add    r15d,0x1
+  e9:	41 f7 ff             	idiv   r15d
+  ec:	89 d8                	mov    eax,ebx
+  ee:	01 d1                	add    ecx,edx
+  f0:	99                   	cdq    
+  f1:	44 0f be f9          	movsx  r15d,cl
+  f5:	41 83 c7 01          	add    r15d,0x1
+  f9:	41 f7 ff             	idiv   r15d
+  fc:	44 89 d8             	mov    eax,r11d
+  ff:	01 d1                	add    ecx,edx
+ 101:	99                   	cdq    
+ 102:	44 0f be f9          	movsx  r15d,cl
+ 106:	41 83 c7 01          	add    r15d,0x1
+ 10a:	41 f7 ff             	idiv   r15d
+ 10d:	b8 ac 00 00 00       	mov    eax,0xac
+ 112:	01 d1                	add    ecx,edx
+ 114:	99                   	cdq    
+ 115:	44 0f be f9          	movsx  r15d,cl
+ 119:	41 83 c7 01          	add    r15d,0x1
+ 11d:	41 f7 ff             	idiv   r15d
+ 120:	b8 ab 00 00 00       	mov    eax,0xab
+ 125:	01 d1                	add    ecx,edx
+ 127:	44 0f be f9          	movsx  r15d,cl
+ 12b:	41 83 c7 01          	add    r15d,0x1
+ 12f:	99                   	cdq    
+ 130:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+ 137:	41 f7 ff             	idiv   r15d
+ 13a:	b8 aa 00 00 00       	mov    eax,0xaa
+ 13f:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+ 146:	01 d1                	add    ecx,edx
+ 148:	99                   	cdq    
+ 149:	44 0f be f9          	movsx  r15d,cl
+ 14d:	41 83 c7 01          	add    r15d,0x1
+ 151:	41 f7 ff             	idiv   r15d
+ 154:	b8 39 00 00 00       	mov    eax,0x39
+ 159:	01 d1                	add    ecx,edx
+ 15b:	99                   	cdq    
+ 15c:	44 0f be f9          	movsx  r15d,cl
+ 160:	41 83 c7 01          	add    r15d,0x1
+ 164:	41 f7 ff             	idiv   r15d
+ 167:	01 d1                	add    ecx,edx
+ 169:	41 88 0a             	mov    BYTE PTR [r10],cl
+ 16c:	49 83 e9 01          	sub    r9,0x1
+ 170:	0f 85 1e ff ff ff    	jne    94 <main+0x94></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_readwrite.png" alt="benchmark image for ch_hard_readwrite.c" /> <div style="color:#0ff"><h1>ch_hard_write_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            long long tmp;
+            tmp = 179 % (i + 1);        
+            tmp = 178 % (tmp + i + 1);        
+            tmp = 177 % (tmp + i + 1);        
+            tmp = 176 % (tmp + i + 1);        
+            tmp = 175 % (tmp + i + 1);        
+            tmp = 174 % (tmp + i + 1);        
+            tmp = 173 % (tmp + i + 1);        
+            tmp = 172 % (tmp + i + 1);        
+            tmp = 171 % (tmp + i + 1);        
+            tmp = 170 % (tmp + i + 1);        
+            array[pos] = 57 % (tmp + i + 1);        
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  49:	41 bf b3 00 00 00    	mov    r15d,0xb3
+  4f:	41 bd b2 00 00 00    	mov    r13d,0xb2
+  58:	41 bc b1 00 00 00    	mov    r12d,0xb1
+  5e:	bd b0 00 00 00       	mov    ebp,0xb0
+  63:	bf af 00 00 00       	mov    edi,0xaf
+  6e:	be ae 00 00 00       	mov    esi,0xae
+  7f:	bb ad 00 00 00       	mov    ebx,0xad
+  8b:	31 c9                	xor    ecx,ecx
+  8d:	45 31 c0             	xor    r8d,r8d
+  90:	41 bb 00 00 00 80    	mov    r11d,0x80000000
+  96:	66 2e 0f 1f 84 00 00 	nop    WORD PTR cs:[rax+rax*1+0x0]
+  9d:	00 00 00 
+  a0:	4c 89 f8             	mov    rax,r15
+  a3:	4c 8d 49 01          	lea    r9,[rcx+0x1]
+  a7:	48 99                	cqo    
+  a9:	49 f7 f9             	idiv   r9
+  ac:	4c 89 e8             	mov    rax,r13
+  af:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  b4:	48 99                	cqo    
+  b6:	49 f7 fa             	idiv   r10
+  b9:	4c 89 e0             	mov    rax,r12
+  bc:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  c1:	48 99                	cqo    
+  c3:	49 f7 fa             	idiv   r10
+  c6:	48 89 e8             	mov    rax,rbp
+  c9:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  ce:	48 99                	cqo    
+  d0:	49 f7 fa             	idiv   r10
+  d3:	48 89 f8             	mov    rax,rdi
+  d6:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  db:	48 99                	cqo    
+  dd:	49 f7 fa             	idiv   r10
+  e0:	48 89 f0             	mov    rax,rsi
+  e3:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  e8:	48 99                	cqo    
+  ea:	49 f7 fa             	idiv   r10
+  ed:	48 89 d8             	mov    rax,rbx
+  f0:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  f5:	48 99                	cqo    
+  f7:	49 f7 fa             	idiv   r10
+  fa:	b8 ac 00 00 00       	mov    eax,0xac
+  ff:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 104:	48 99                	cqo    
+ 106:	49 f7 fa             	idiv   r10
+ 109:	b8 ab 00 00 00       	mov    eax,0xab
+ 10e:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 113:	48 99                	cqo    
+ 115:	49 f7 fa             	idiv   r10
+ 118:	b8 aa 00 00 00       	mov    eax,0xaa
+ 11d:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 122:	48 99                	cqo    
+ 124:	49 f7 fa             	idiv   r10
+ 127:	b8 39 00 00 00       	mov    eax,0x39
+ 12c:	48 8d 4c 11 01       	lea    rcx,[rcx+rdx*1+0x1]
+ 131:	48 99                	cqo    
+ 133:	48 f7 f9             	idiv   rcx
+ 136:	4c 89 c9             	mov    rcx,r9
+ 139:	43 88 14 06          	mov    BYTE PTR [r14+r8*1],dl
+ 13d:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+ 144:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+ 14b:	0f ae f0             	mfence 
+main():
+ 14e:	4d 39 d9             	cmp    r9,r11
+ 151:	0f 85 49 ff ff ff    	jne    a0 <main+0xa0></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_write_barrier.png" alt="benchmark image for ch_hard_write_barrier.c" /> <div style="color:#0ff"><h1>ch_hard_write.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+            
+            long long tmp;
+            tmp = 179 % (i + 1);        
+            tmp = 178 % (tmp + i + 1);        
+            tmp = 177 % (tmp + i + 1);        
+            tmp = 176 % (tmp + i + 1);        
+            tmp = 175 % (tmp + i + 1);        
+            tmp = 174 % (tmp + i + 1);        
+            tmp = 173 % (tmp + i + 1);        
+            tmp = 172 % (tmp + i + 1);        
+            tmp = 171 % (tmp + i + 1);        
+            tmp = 170 % (tmp + i + 1);        
+            array[pos] = 57 % (tmp + i + 1);        
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  49:	41 bf b3 00 00 00    	mov    r15d,0xb3
+  4f:	41 bd b2 00 00 00    	mov    r13d,0xb2
+  58:	41 bc b1 00 00 00    	mov    r12d,0xb1
+  5e:	bd b0 00 00 00       	mov    ebp,0xb0
+  63:	bf af 00 00 00       	mov    edi,0xaf
+  6e:	be ae 00 00 00       	mov    esi,0xae
+  7f:	bb ad 00 00 00       	mov    ebx,0xad
+  8b:	31 c9                	xor    ecx,ecx
+  8d:	45 31 c0             	xor    r8d,r8d
+  90:	41 bb 00 00 00 80    	mov    r11d,0x80000000
+  96:	66 2e 0f 1f 84 00 00 	nop    WORD PTR cs:[rax+rax*1+0x0]
+  9d:	00 00 00 
+  a0:	4c 89 f8             	mov    rax,r15
+  a3:	4c 8d 49 01          	lea    r9,[rcx+0x1]
+  a7:	48 99                	cqo    
+  a9:	49 f7 f9             	idiv   r9
+  ac:	4c 89 e8             	mov    rax,r13
+  af:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  b4:	48 99                	cqo    
+  b6:	49 f7 fa             	idiv   r10
+  b9:	4c 89 e0             	mov    rax,r12
+  bc:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  c1:	48 99                	cqo    
+  c3:	49 f7 fa             	idiv   r10
+  c6:	48 89 e8             	mov    rax,rbp
+  c9:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  ce:	48 99                	cqo    
+  d0:	49 f7 fa             	idiv   r10
+  d3:	48 89 f8             	mov    rax,rdi
+  d6:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  db:	48 99                	cqo    
+  dd:	49 f7 fa             	idiv   r10
+  e0:	48 89 f0             	mov    rax,rsi
+  e3:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  e8:	48 99                	cqo    
+  ea:	49 f7 fa             	idiv   r10
+  ed:	48 89 d8             	mov    rax,rbx
+  f0:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  f5:	48 99                	cqo    
+  f7:	49 f7 fa             	idiv   r10
+  fa:	b8 ac 00 00 00       	mov    eax,0xac
+  ff:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 104:	48 99                	cqo    
+ 106:	49 f7 fa             	idiv   r10
+ 109:	b8 ab 00 00 00       	mov    eax,0xab
+ 10e:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 113:	48 99                	cqo    
+ 115:	49 f7 fa             	idiv   r10
+ 118:	b8 aa 00 00 00       	mov    eax,0xaa
+ 11d:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+ 122:	48 99                	cqo    
+ 124:	49 f7 fa             	idiv   r10
+ 127:	b8 39 00 00 00       	mov    eax,0x39
+ 12c:	48 8d 4c 11 01       	lea    rcx,[rcx+rdx*1+0x1]
+ 131:	48 99                	cqo    
+ 133:	48 f7 f9             	idiv   rcx
+ 136:	4c 89 c9             	mov    rcx,r9
+ 139:	43 88 14 06          	mov    BYTE PTR [r14+r8*1],dl
+ 13d:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+ 144:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+ 14b:	4d 39 d9             	cmp    r9,r11
+ 14e:	0f 85 4c ff ff ff    	jne    a0 <main+0xa0></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_hard_write.png" alt="benchmark image for ch_hard_write.c" /> <div style="color:#0ff"><h1>ch_medium_read_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (sum + array[pos] + 1);
+            sum += 178 % (sum + array[pos] + 1);
+            sum += 177 % (sum + array[pos] + 1);
+            sum += 176 % (sum + array[pos] + 1);
+            sum += 57  % (sum + array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum: %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  44:	31 db                	xor    ebx,ebx
+  4b:	41 be b3 00 00 00    	mov    r14d,0xb3
+  54:	bd b2 00 00 00       	mov    ebp,0xb2
+  59:	bf b1 00 00 00       	mov    edi,0xb1
+  5e:	be b0 00 00 00       	mov    esi,0xb0
+  7e:	45 31 c0             	xor    r8d,r8d
+  81:	41 bb 39 00 00 00    	mov    r11d,0x39
+  87:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+  8e:	00 00 
+  90:	4b 0f be 0c 04       	movsx  rcx,BYTE PTR [r12+r8*1]
+  95:	4c 89 f0             	mov    rax,r14
+  98:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  9f:	0f ae f0             	mfence 
+main():
+  a2:	48 99                	cqo    
+  a4:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+  ab:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  b0:	49 f7 ff             	idiv   r15
+  b3:	48 89 e8             	mov    rax,rbp
+  b6:	48 01 d3             	add    rbx,rdx
+  b9:	48 99                	cqo    
+  bb:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  c0:	49 f7 ff             	idiv   r15
+  c3:	48 89 f8             	mov    rax,rdi
+  c6:	48 01 d3             	add    rbx,rdx
+  c9:	48 99                	cqo    
+  cb:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  d0:	49 f7 ff             	idiv   r15
+  d3:	48 89 f0             	mov    rax,rsi
+  d6:	48 01 d3             	add    rbx,rdx
+  d9:	48 99                	cqo    
+  db:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  e0:	49 f7 ff             	idiv   r15
+  e3:	4c 89 d8             	mov    rax,r11
+  e6:	4c 8d 0c 1a          	lea    r9,[rdx+rbx*1]
+  ea:	48 99                	cqo    
+  ec:	4a 8d 4c 09 01       	lea    rcx,[rcx+r9*1+0x1]
+  f1:	48 f7 f9             	idiv   rcx
+  f4:	4a 8d 1c 0a          	lea    rbx,[rdx+r9*1]
+  f8:	49 83 ea 01          	sub    r10,0x1
+  fc:	75 92                	jne    90 <main+0x90></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_read_barrier.png" alt="benchmark image for ch_medium_read_barrier.c" /> <div style="color:#0ff"><h1>ch_medium_read.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0, sum = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            sum += 179 % (sum + array[pos] + 1);
+            sum += 178 % (sum + array[pos] + 1);
+            sum += 177 % (sum + array[pos] + 1);
+            sum += 176 % (sum + array[pos] + 1);
+            sum += 57 % (sum + array[pos] + 1);
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us, sum = %lld\n", sum);
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  44:	31 db                	xor    ebx,ebx
+  4b:	41 be b3 00 00 00    	mov    r14d,0xb3
+  54:	bd b2 00 00 00       	mov    ebp,0xb2
+  59:	bf b1 00 00 00       	mov    edi,0xb1
+  5e:	be b0 00 00 00       	mov    esi,0xb0
+  7e:	45 31 c0             	xor    r8d,r8d
+  81:	41 bb 39 00 00 00    	mov    r11d,0x39
+  87:	66 0f 1f 84 00 00 00 	nop    WORD PTR [rax+rax*1+0x0]
+  8e:	00 00 
+  90:	4b 0f be 0c 04       	movsx  rcx,BYTE PTR [r12+r8*1]
+  95:	4c 89 f0             	mov    rax,r14
+  98:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  9f:	48 99                	cqo    
+  a1:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+  a8:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  ad:	49 f7 ff             	idiv   r15
+  b0:	48 89 e8             	mov    rax,rbp
+  b3:	48 01 d3             	add    rbx,rdx
+  b6:	48 99                	cqo    
+  b8:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  bd:	49 f7 ff             	idiv   r15
+  c0:	48 89 f8             	mov    rax,rdi
+  c3:	48 01 d3             	add    rbx,rdx
+  c6:	48 99                	cqo    
+  c8:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  cd:	49 f7 ff             	idiv   r15
+  d0:	48 89 f0             	mov    rax,rsi
+  d3:	48 01 d3             	add    rbx,rdx
+  d6:	48 99                	cqo    
+  d8:	4c 8d 7c 19 01       	lea    r15,[rcx+rbx*1+0x1]
+  dd:	49 f7 ff             	idiv   r15
+  e0:	4c 89 d8             	mov    rax,r11
+  e3:	4c 8d 0c 1a          	lea    r9,[rdx+rbx*1]
+  e7:	48 99                	cqo    
+  e9:	4a 8d 4c 09 01       	lea    rcx,[rcx+r9*1+0x1]
+  ee:	48 f7 f9             	idiv   rcx
+  f1:	4a 8d 1c 0a          	lea    rbx,[rdx+r9*1]
+  f5:	49 83 ea 01          	sub    r10,0x1
+  f9:	75 95                	jne    90 <main+0x90></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_read.png" alt="benchmark image for ch_medium_read.c" /> <div style="color:#0ff"><h1>ch_medium_readwrite_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = i;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            array[pos] += 178 % (array[pos] + 1);
+            array[pos] += 177 % (array[pos] + 1);
+            array[pos] += 176 % (array[pos] + 1);
+            array[pos] += 57 % (array[pos] + 1);
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  44:	41 bd b3 00 00 00    	mov    r13d,0xb3
+  4f:	bf b2 00 00 00       	mov    edi,0xb2
+  57:	be b1 00 00 00       	mov    esi,0xb1
+  5c:	bb b0 00 00 00       	mov    ebx,0xb0
+  7c:	45 31 c0             	xor    r8d,r8d
+  7f:	41 bb 39 00 00 00    	mov    r11d,0x39
+  85:	4e 8d 54 05 00       	lea    r10,[rbp+r8*1+0x0]
+  8a:	44 89 e8             	mov    eax,r13d
+  8d:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  94:	45 0f be 32          	movsx  r14d,BYTE PTR [r10]
+  98:	99                   	cdq    
+  99:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+  a0:	44 89 f1             	mov    ecx,r14d
+  a3:	41 83 c6 01          	add    r14d,0x1
+  a7:	41 f7 fe             	idiv   r14d
+  aa:	89 f8                	mov    eax,edi
+  ac:	01 d1                	add    ecx,edx
+  ae:	99                   	cdq    
+  af:	44 0f be f1          	movsx  r14d,cl
+  b3:	41 83 c6 01          	add    r14d,0x1
+  b7:	41 f7 fe             	idiv   r14d
+  ba:	89 f0                	mov    eax,esi
+  bc:	01 d1                	add    ecx,edx
+  be:	99                   	cdq    
+  bf:	44 0f be f1          	movsx  r14d,cl
+  c3:	41 83 c6 01          	add    r14d,0x1
+  c7:	41 f7 fe             	idiv   r14d
+  ca:	89 d8                	mov    eax,ebx
+  cc:	01 d1                	add    ecx,edx
+  ce:	99                   	cdq    
+  cf:	44 0f be f1          	movsx  r14d,cl
+  d3:	41 83 c6 01          	add    r14d,0x1
+  d7:	41 f7 fe             	idiv   r14d
+  da:	44 89 d8             	mov    eax,r11d
+  dd:	01 d1                	add    ecx,edx
+  df:	99                   	cdq    
+  e0:	44 0f be f1          	movsx  r14d,cl
+  e4:	41 83 c6 01          	add    r14d,0x1
+  e8:	41 f7 fe             	idiv   r14d
+  eb:	01 d1                	add    ecx,edx
+  ed:	41 88 0a             	mov    BYTE PTR [r10],cl
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  f0:	0f ae f0             	mfence 
+main():
+  f3:	49 83 e9 01          	sub    r9,0x1
+  f7:	75 8c                	jne    85 <main+0x85></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_readwrite_barrier.png" alt="benchmark image for ch_medium_readwrite_barrier.c" /> <div style="color:#0ff"><h1>ch_medium_readwrite.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            array[pos] += 179 % (array[pos] + 1);
+            array[pos] += 178 % (array[pos] + 1);
+            array[pos] += 177 % (array[pos] + 1);
+            array[pos] += 176 % (array[pos] + 1);
+            array[pos] += 57 % (array[pos] + 1);
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  44:	41 bd b3 00 00 00    	mov    r13d,0xb3
+  4f:	bf b2 00 00 00       	mov    edi,0xb2
+  57:	be b1 00 00 00       	mov    esi,0xb1
+  5c:	bb b0 00 00 00       	mov    ebx,0xb0
+  7c:	45 31 c0             	xor    r8d,r8d
+  7f:	41 bb 39 00 00 00    	mov    r11d,0x39
+  85:	4e 8d 54 05 00       	lea    r10,[rbp+r8*1+0x0]
+  8a:	44 89 e8             	mov    eax,r13d
+  8d:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  94:	45 0f be 32          	movsx  r14d,BYTE PTR [r10]
+  98:	99                   	cdq    
+  99:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+  a0:	44 89 f1             	mov    ecx,r14d
+  a3:	41 83 c6 01          	add    r14d,0x1
+  a7:	41 f7 fe             	idiv   r14d
+  aa:	89 f8                	mov    eax,edi
+  ac:	01 d1                	add    ecx,edx
+  ae:	99                   	cdq    
+  af:	44 0f be f1          	movsx  r14d,cl
+  b3:	41 83 c6 01          	add    r14d,0x1
+  b7:	41 f7 fe             	idiv   r14d
+  ba:	89 f0                	mov    eax,esi
+  bc:	01 d1                	add    ecx,edx
+  be:	99                   	cdq    
+  bf:	44 0f be f1          	movsx  r14d,cl
+  c3:	41 83 c6 01          	add    r14d,0x1
+  c7:	41 f7 fe             	idiv   r14d
+  ca:	89 d8                	mov    eax,ebx
+  cc:	01 d1                	add    ecx,edx
+  ce:	99                   	cdq    
+  cf:	44 0f be f1          	movsx  r14d,cl
+  d3:	41 83 c6 01          	add    r14d,0x1
+  d7:	41 f7 fe             	idiv   r14d
+  da:	44 89 d8             	mov    eax,r11d
+  dd:	01 d1                	add    ecx,edx
+  df:	99                   	cdq    
+  e0:	44 0f be f1          	movsx  r14d,cl
+  e4:	41 83 c6 01          	add    r14d,0x1
+  e8:	41 f7 fe             	idiv   r14d
+  eb:	01 d1                	add    ecx,edx
+  ed:	41 88 0a             	mov    BYTE PTR [r10],cl
+  f0:	49 83 e9 01          	sub    r9,0x1
+  f4:	75 8f                	jne    85 <main+0x85></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_readwrite.png" alt="benchmark image for ch_medium_readwrite.c" /> <div style="color:#0ff"><h1>ch_medium_write_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            long long tmp;
+            tmp = 179 % (i + 1);        
+            tmp = 178 % (tmp + i + 1);        
+            tmp = 177 % (tmp + i + 1);        
+            tmp = 176 % (tmp + i + 1);        
+            array[pos] = 57 % (tmp + i + 1);        
+            _mm_mfence();
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>main():
+  44:	bd b3 00 00 00       	mov    ebp,0xb3
+  4e:	bf b2 00 00 00       	mov    edi,0xb2
+  56:	be b1 00 00 00       	mov    esi,0xb1
+  5b:	bb b0 00 00 00       	mov    ebx,0xb0
+  60:	41 be 00 00 00 80    	mov    r14d,0x80000000
+  7b:	31 c9                	xor    ecx,ecx
+  7d:	45 31 c0             	xor    r8d,r8d
+  80:	41 bb 39 00 00 00    	mov    r11d,0x39
+  86:	66 2e 0f 1f 84 00 00 	nop    WORD PTR cs:[rax+rax*1+0x0]
+  8d:	00 00 00 
+  90:	48 89 e8             	mov    rax,rbp
+  93:	4c 8d 49 01          	lea    r9,[rcx+0x1]
+  97:	48 99                	cqo    
+  99:	49 f7 f9             	idiv   r9
+  9c:	48 89 f8             	mov    rax,rdi
+  9f:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  a4:	48 99                	cqo    
+  a6:	49 f7 fa             	idiv   r10
+  a9:	48 89 f0             	mov    rax,rsi
+  ac:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  b1:	48 99                	cqo    
+  b3:	49 f7 fa             	idiv   r10
+  b6:	48 89 d8             	mov    rax,rbx
+  b9:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  be:	48 99                	cqo    
+  c0:	49 f7 fa             	idiv   r10
+  c3:	4c 89 d8             	mov    rax,r11
+  c6:	48 8d 4c 11 01       	lea    rcx,[rcx+rdx*1+0x1]
+  cb:	48 99                	cqo    
+  cd:	48 f7 f9             	idiv   rcx
+  d0:	4c 89 c9             	mov    rcx,r9
+  d3:	43 88 14 04          	mov    BYTE PTR [r12+r8*1],dl
+  d7:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  de:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+_mm_mfence():
+C:/Program Files/CodeBlocks/MinGW/lib/gcc/x86_64-w64-mingw32/8.1.0/include/emmintrin.h:1497
+  e5:	0f ae f0             	mfence 
+main():
+  e8:	4d 39 f1             	cmp    r9,r14
+  eb:	75 a3                	jne    90 <main+0x90></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_write_barrier.png" alt="benchmark image for ch_medium_write_barrier.c" /> <div style="color:#0ff"><h1>ch_medium_write.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
+#include "immintrin.h"
+#include "stdio.h"
+#include "malloc.h"
+#include "string.h"
+#include "windows.h"
+
+#define SIZE_MASK 2147483647LL
+#define SIZE 2147483648LL
+
+int main()
+{
+    char *array = malloc(SIZE);
+    
+    /* allocate array from system */
+    for (long long i = 0; i < SIZE; i += 4096)
+    {
+        array[i] = 1;
+    }
+
+    /* clear cache */
+    char *arr2 = malloc(256 * 1024 * 1024);
+    memset(arr2, 0xCC, 256 * 1024 * 1024);
+    memcpy(arr2 + 128 * 1024 * 1024, arr2, 128 * 1024 * 1024);
+    free(arr2);
+
+    {
+        HANDLE hCurrentThread = GetCurrentThread();
+        DWORD_PTR newAffinityMask = 0x00000001;
+        SetThreadAffinityMask(hCurrentThread, newAffinityMask);
+        
+        /* measure loop with fetching */
+        LARGE_INTEGER t1, t2, t3;</div>
+        QueryPerformanceCounter(&t1);
+
+            
+        long long pos = 0;
+        /* use SIZE/16 to speedup tests */
+        for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
+        {
+            PREFETCH_POSITION;
+
+            long long tmp;
+            tmp = 179 % (i + 1);            
+            tmp = 178 % (tmp + i + 1);            
+            tmp = 177 % (tmp + i + 1);            
+            tmp = 176 % (tmp + i + 1);            
+            array[pos] = 57 % (tmp + i + 1);            
+            
+            pos = (pos + 998244353LL) & SIZE_MASK;
+        }
+        
+        QueryPerformanceCounter(&t2);
+<div style="color:#ccc">        QueryPerformanceFrequency(&t3);
+
+        {
+            printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
+            printf("KernelTime: not measured e/us\n");
+        }
+    }
+}
+</div></code></pre></details> <details open><summary>View Assembly</summary><pre><code>  44:	bd b3 00 00 00       	mov    ebp,0xb3
+  4e:	bf b2 00 00 00       	mov    edi,0xb2
+  56:	be b1 00 00 00       	mov    esi,0xb1
+  5b:	bb b0 00 00 00       	mov    ebx,0xb0
+  60:	41 be 00 00 00 80    	mov    r14d,0x80000000
+  7b:	31 c9                	xor    ecx,ecx
+  7d:	45 31 c0             	xor    r8d,r8d
+  80:	41 bb 39 00 00 00    	mov    r11d,0x39
+  86:	66 2e 0f 1f 84 00 00 	nop    WORD PTR cs:[rax+rax*1+0x0]
+  8d:	00 00 00 
+  90:	48 89 e8             	mov    rax,rbp
+  93:	4c 8d 49 01          	lea    r9,[rcx+0x1]
+  97:	48 99                	cqo    
+  99:	49 f7 f9             	idiv   r9
+  9c:	48 89 f8             	mov    rax,rdi
+  9f:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  a4:	48 99                	cqo    
+  a6:	49 f7 fa             	idiv   r10
+  a9:	48 89 f0             	mov    rax,rsi
+  ac:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  b1:	48 99                	cqo    
+  b3:	49 f7 fa             	idiv   r10
+  b6:	48 89 d8             	mov    rax,rbx
+  b9:	4c 8d 54 11 01       	lea    r10,[rcx+rdx*1+0x1]
+  be:	48 99                	cqo    
+  c0:	49 f7 fa             	idiv   r10
+  c3:	4c 89 d8             	mov    rax,r11
+  c6:	48 8d 4c 11 01       	lea    rcx,[rcx+rdx*1+0x1]
+  cb:	48 99                	cqo    
+  cd:	48 f7 f9             	idiv   rcx
+  d0:	4c 89 c9             	mov    rcx,r9
+  d3:	43 88 14 04          	mov    BYTE PTR [r12+r8*1],dl
+  d7:	49 81 c0 01 00 80 3b 	add    r8,0x3b800001
+  de:	41 81 e0 ff ff ff 7f 	and    r8d,0x7fffffff
+  e5:	4d 39 f1             	cmp    r9,r14
+  e8:	75 a6                	jne    90 <main+0x90></code></pre></details>                 <img style="max-width:100%;max-height:100%;" src="./ch_medium_write.png" alt="benchmark image for ch_medium_write.c" /> <div style="color:#0ff"><h1>ch_simple_read_barrier.c</h1></div> <details ><summary>View Code</summary><pre><code><div style="color:#ccc">#define __USE_MINGW_ANSI_STDIO 1
 #include "immintrin.h"
 #include "stdio.h"
 #include "malloc.h"
