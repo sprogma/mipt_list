@@ -12,7 +12,7 @@ $l | %{
     }
     else
     {
-        gcc test.cpp $_ -o "a$id.exe" -Ofast -DNDEBUG -flto -lstdc++
+        gcc test.cpp $_ -o "a$id.exe" -Ofast -DNDEBUG -flto -lstdc++ -march=native
     }
     Write-Host "built $_" -ForegroundColor green
 }

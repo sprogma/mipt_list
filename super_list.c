@@ -265,6 +265,9 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
     /* to right insert to leftmost node */
     int size_to_copy = ((lst->items[block].size + (!!block)) >> 1);
     int remain_size = lst->items[block].size - size_to_copy;
+
+    /* memcpy is really called by gcc :( */
+    /* TODO: write inlined analog */
     memcpy(lst->items[node].value, lst->items[block].value + remain_size, sizeof(*lst->items[node].value) * size_to_copy);
 
     /* update node sizes */
@@ -352,7 +355,55 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 
     /* now - insert element to array */
     DPRINTF("insert at: %d of %d, block %d\n", index, ITEM_VALUES_COUNT, block);
-    memmove(lst->items[block].value + index + 1, lst->items[block].value + index, sizeof(*lst->items[block].value) * (size - index));
+    /* memmove is too slow :( */
+    // memmove(lst->items[block].value + index + 1, lst->items[block].value + index, sizeof(*lst->items[block].value) * (size - index));
+    {
+        int32_t *ptr = lst->items[block].value + index;
+        uint32_t mvsize = (size - index);
+        int32_t *ptr_e = ptr + mvsize;
+        /* 1. move first element  */
+        #if ITEM_VALUES_COUNT >= 8
+        while (ptr_e >= ptr + 8)
+        {
+            ptr_e -= 8;
+            __m256i ymm0;
+            ymm0 = _mm256_loadu_si256((__m256i *)ptr_e);
+            _mm256_storeu_si256((__m256i *)(ptr_e + 1), ymm0);
+        }
+        #endif
+        #if ITEM_VALUES_COUNT >= 4
+        while (ptr_e >= ptr + 4)
+        {
+            ptr_e -= 4;
+            __m128i ymm0;
+            ymm0 = _mm_loadu_si128((__m128i *)ptr_e);
+            _mm_storeu_si128((__m128i *)(ptr_e + 1), ymm0);
+        }
+        #endif
+        /* Sadly, clever gcc optimize this loop to memmove call =( */
+        // while (ptr_e > ptr)
+        // {
+        //     ptr_e--;
+        //     ptr_e[1] = ptr_e[0];
+        // }
+        asm volatile(
+            ".intel_syntax noprefix\n\t"
+            "cmp rsi, rdi\n\t"
+            "jle loop_end\n\t"
+            "loop:\n\t"
+            "mov edx, DWORD PTR [rsi - 4]\n\t" // move element
+            "mov dword ptr [rsi], edx\n\t"
+            "sub rsi, 4\n\t" // sub after moving to execute parallely?
+            "cmp rsi, rdi\n\t"
+            "jg loop\n\t"
+            "loop_end:\n\t"
+            ".att_syntax prefix\n\t"
+            : /* no outputs */
+            : "D"(ptr), "S"(ptr_e)
+            : "rdx", "memory"
+        );
+    }
+    
     lst->items[block].value[index] = value;
 
     lst->size++;
