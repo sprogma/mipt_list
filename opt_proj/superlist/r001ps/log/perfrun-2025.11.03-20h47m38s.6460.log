@@ -1,0 +1,161 @@
+46 [4564] INFO perfrun.launcher <> - Launcher main begin
+49 [4564] INFO perfrun.launcher <> - MessageCatalogInit finished
+49 [4564] INFO perfrun.launcher <> - Launcher instance created
+49 [4564] INFO perfrun.launcher <> - argc = 7; cmdline = C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\amplxe-runss.exe --ui-output-format xml --ui-output-fd 1156 --option-file D:\mipt\list\opt_proj\superlist\r001ps\config\runsa.options 
+57 [4564] INFO perfrun.launcher <> - New signal handler callback was added
+83 [4564] INFO perfrun.perfcollector <> - SEP tool path: C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\sep.exe
+92 [4564] INFO perfrun.launcher <> - create msngr2::ICliToolContext
+93 [4564] INFO perfrun.launcher <> - create file finder object
+93 [4564] INFO perfrun.launcher <> - create a result directory: pattern = D:\mipt\list\opt_proj\superlist\r001ps pid = 4294967295
+95 [4564] INFO perfrun.launcher <> - create data directory = D:\mipt\list\opt_proj\superlist\r001ps\data.0
+96 [4564] INFO perfrun.launcher <> - Creating the master collection flag
+99 [4564] INFO perfrun.launcher <> - Done creating the master collection flag
+99 [5044] INFO perfrun.launcher <> - plugin [remoteplug] was disabled because it doesn't support the given collection type.
+99 [5044] INFO perfrun.sdk <> - Allocating TMU :D:\mipt\list\opt_proj\superlist\r001ps\data.0\systemcollector-6460-DESKTOP-07MDIV5.sc
+99 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+99 [5044] INFO perfrun.launcher <> - plugin [itt] was disabled because it doesn't support the given collection type.
+99 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+123 [5044] INFO perfrun.launcher <> - plugin [etw.kernel] was disabled because it doesn't support the given collection type.
+123 [5044] INFO perfrun.launcher <> - plugin [etw.dx] was disabled because it doesn't support the given collection type.
+123 [5044] INFO perfrun.launcher <> - plugin [etw.wsa] was disabled because it doesn't support the given collection type.
+123 [5044] INFO perfrun.mrte <> - system-wide mode is 0
+123 [5044] INFO perfrun.mrte <> - Getting  mrte profiling environment ...
+140 [5044] INFO perfrun.mrte <> - INTEL_MRTE_DATA_DIR=D:\mipt\list\opt_proj\superlist\r001ps\data.0
+140 [5044] INFO perfrun.mrte <> - INTEL_MRTE_HOST_NAME=DESKTOP-07MDIV5
+140 [5044] INFO perfrun.mrte <> - JAVA_TOOL_OPTIONS=-agentlib:amplxe_samplingmrte_javaprof_1.0
+140 [5044] INFO perfrun.mrte <> - PATH=C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin32\runtime;C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\runtime;C:\Program Files\Common Files\Oracle\Java\javapath;D:\C\vulkanSDK\Bin;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\User\AppData\Local\Programs\Python\Python310;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Program Files\CodeBlocks\MinGW\bin;C:\WINDOWS\system32;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\CMake\bin;C:\Program Files\dotnet\;C:\Users\User\AppData\Local\Programs\Python\Python310\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\LLVM\bin;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\ffmpeg\bin;C:\Program Files\ffmpeg\include;C:\Program Files\Go\bin;C:\Program Files\gnuplot\bin;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\PowerShell\7\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\path_dir;C:\Program Files\7-Zip;C:\Users\User\.dotnet\tools;C:\path_dir\php;D:\C\SDL2\x86_64-w64-mingw32\include;D:\C\OCL\include;C:\Program Files\Microsoft VS Code\bin;C:\Users\User\go\bin
+140 [5044] INFO perfrun.mrte <> - COR_ENABLE_PROFILING=1
+140 [5044] INFO perfrun.mrte <> - COR_PROFILER={AA5E4821-E3B1-479c-B7FF-5AD047D22CED}
+140 [5044] INFO perfrun.mrte <> - COMPLUS_ProfAPI_ProfilerCompatibilitySetting=EnableV2Profiler
+141 [5044] INFO perfrun.mrte <> - CORECLR_ENABLE_PROFILING=1
+141 [5044] INFO perfrun.mrte <> - CORECLR_PROFILER={AA5E4821-E3B1-479c-B7FF-5AD047D22CED}
+141 [5044] INFO perfrun.mrte <> - CORECLR_PROFILER_PATH=C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64/amplxe_samplingmrte_clrprof_1.0.dll
+141 [5044] INFO perfrun.mrte <> - INTEL_MRTE_PROFILER_MODE=mixed
+141 [5044] INFO perfrun.mrte <> - Data directory: D:\mipt\list\opt_proj\superlist\r001ps\data.0
+141 [5044] INFO perfrun.mrte <> - Mrte plugin is initialized
+141 [5044] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\emon.exe" -v
+143 [5044] INFO perfrun.sdk <> - runCmd started PID 1980
+362 [5044] INFO perfrun.emon <> - Extracted TSC Frequency = 3.3024e+09 from emon -v
+362 [5044] INFO perfrun.metrics <> - PMU type is alderlake_goldencove
+364 [5044] INFO perfrun.launcher <> - plugin [cuscol] was disabled because it doesn't support the given collection type.
+364 [5044] INFO perfrun.launcher <> - plugin [stdsrc] was disabled because it doesn't support the given collection type.
+364 [5044] INFO perfrun.launcher <> - plugin [sep] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [vtsspp] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [perf] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [aoclprofile] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.tpss <> - initialize tpss controller
+365 [5044] INFO perfrun.launcher <> - plugin [tpss] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+365 [5044] INFO perfrun.launcher <> - plugin [power] was disabled because it doesn't support the given collection type.
+366 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+366 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+366 [5044] INFO perfrun.launcher <> - plugin [] was disabled because it doesn't support the given collection type.
+366 [5044] INFO perfrun.launcher <> - plugin [l0_metrics] was disabled because it doesn't support the given collection type.
+366 [5044] INFO perfrun.launcher <> - plugin [stall_reasons] was disabled because it doesn't support the given collection type.
+367 [4564] INFO perfrun.launcher <> - set environment variable: INTEL_MRTE_DATA_DIR = D:\mipt\list\opt_proj\superlist\r001ps\data.0
+368 [4564] INFO perfrun.launcher <> - set environment variable: INTEL_MRTE_HOST_NAME = DESKTOP-07MDIV5
+368 [4564] INFO perfrun.launcher <> - set environment variable: JAVA_TOOL_OPTIONS = -agentlib:amplxe_samplingmrte_javaprof_1.0
+369 [4564] INFO perfrun.launcher <> - set environment variable: PATH = C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin32\runtime;C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\runtime;C:\Program Files\Common Files\Oracle\Java\javapath;D:\C\vulkanSDK\Bin;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Users\User\AppData\Local\Programs\Python\Python310;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\Git\cmd;C:\Program Files\CodeBlocks\MinGW\bin;C:\WINDOWS\system32;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\Program Files\CMake\bin;C:\Program Files\dotnet\;C:\Users\User\AppData\Local\Programs\Python\Python310\Scripts;C:\WINDOWS\system32;C:\WINDOWS;C:\Program Files\LLVM\bin;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Windows\Microsoft.NET\Framework64\v4.0.30319;C:\Program Files\ffmpeg\bin;C:\Program Files\ffmpeg\include;C:\Program Files\Go\bin;C:\Program Files\gnuplot\bin;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\PowerShell\7\;C:\Users\User\AppData\Local\Microsoft\WindowsApps;C:\path_dir;C:\Program Files\7-Zip;C:\Users\User\.dotnet\tools;C:\path_dir\php;D:\C\SDL2\x86_64-w64-mingw32\include;D:\C\OCL\include;C:\Program Files\Microsoft VS Code\bin;C:\Users\User\go\bin
+369 [4564] INFO perfrun.launcher <> - set environment variable: COR_ENABLE_PROFILING = 1
+369 [4564] INFO perfrun.launcher <> - set environment variable: COR_PROFILER = {AA5E4821-E3B1-479c-B7FF-5AD047D22CED}
+369 [4564] INFO perfrun.launcher <> - set environment variable: COMPLUS_ProfAPI_ProfilerCompatibilitySetting = EnableV2Profiler
+370 [4564] INFO perfrun.launcher <> - set environment variable: CORECLR_ENABLE_PROFILING = 1
+370 [4564] INFO perfrun.launcher <> - set environment variable: CORECLR_PROFILER = {AA5E4821-E3B1-479c-B7FF-5AD047D22CED}
+370 [4564] INFO perfrun.launcher <> - set environment variable: CORECLR_PROFILER_PATH = C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64/amplxe_samplingmrte_clrprof_1.0.dll
+371 [4564] INFO perfrun.launcher <> - set environment variable: INTEL_MRTE_PROFILER_MODE = mixed
+371 [4564] INFO perfrun.launcher <> - RpcServer: run RPC server to handle requests
+414 [4564] INFO perfrun.sdk <> - IProcessUtil: the given executable 'D:\mipt\list\opt_proj\a.exe' is valid.
+414 [4564] INFO perfrun.launcher <> - Launcher: command line to start before modification = D:\mipt\list\opt_proj\a.exe
+414 [4564] INFO perfrun.launcher <> - Launcher: command line to start after modification = D:\mipt\list\opt_proj\a.exe
+414 [4564] INFO perfrun.launcher <> - ProcessCreator object was created
+416 [4564] INFO perfrun.launcher <> - Launcher: the process was started in suspend mode
+444 [5044] INFO perfrun.launcher <> - Messenger::say: Peak bandwidth measurement started.
+4630 [5044] INFO perfrun.launcher <> - Messenger::say: Peak bandwidth measurement finished.
+4644 [5044] INFO perfrun.sdk <> - Allocating TMU :D:\mipt\list\opt_proj\superlist\r001ps\data.0\gen_metrics0.0.2.0.0.oa.0.cfg
+4645 [5044] INFO perfrun.sdk <> - De-allocating TMU: D:\mipt\list\opt_proj\superlist\r001ps\data.0\gen_metrics0.0.2.0.0.oa.0.cfg
+4659 [5044] INFO perfrun.gpu <> - GPU counting mode: initialization successful
+4699 [2648] INFO perfrun.sdk <> - Allocating TMU :D:\mipt\list\opt_proj\superlist\r001ps\data.0\gen_metrics0.0.2.0.0.oa.0.vtss
+4701 [2648] INFO perfrun.gpu <> - Open stream for subdevice 0
+4703 [5044] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\emon.exe" -M
+4708 [5044] INFO perfrun.sdk <> - runCmd started PID 5888
+4853 [5044] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\emon.exe" -v
+4854 [5044] INFO perfrun.sdk <> - runCmd started PID 13180
+4929 [5044] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\sep.exe" -dry-run -ec CPU_CLK_UNHALTED.THREAD:sa=3302000,CPU_CLK_UNHALTED.REF_TSC:sample:sa=3302000,INST_RETIRED.ANY:sample:sa=3302000,CPU_CLK_UNHALTED.DISTRIBUTED:sa=3302000,TOPDOWN.SLOTS:perf_metrics:sample:sa=2000003,FP_ARITH_INST_RETIRED.SCALAR_SINGLE:sa=2000003,FP_ARITH_INST_RETIRED.128B_PACKED_SINGLE:sa=2000003,FP_ARITH_INST_RETIRED.256B_PACKED_SINGLE:sa=2000003,FP_ARITH_INST_RETIRED.SCALAR_DOUBLE:sa=2000003,FP_ARITH_INST_RETIRED.128B_PACKED_DOUBLE:sa=2000003,FP_ARITH_INST_RETIRED.256B_PACKED_DOUBLE:sa=2000003,UOPS_EXECUTED.X87:sa=2000003,UOPS_RETIRED.SLOTS:sa=2000003,UOPS_EXECUTED.THREAD:sa=2000003,CPU_CLK_UNHALTED.THREAD_P,FRONTEND_RETIRED.LATENCY_GE_4,IDQ_BUBBLES.CORE,INT_MISC.UOP_DROPPING,TOPDOWN.BACKEND_BOUND_SLOTS,TOPDOWN.MEMORY_BOUND_SLOTS,TOPDOWN.SLOTS,TOPDOWN.SLOTS_P,EXE_ACTIVITY.BOUND_ON_LOADS,MEMORY_ACTIVITY.STALLS_L1D_MISS,MEMORY_ACTIVITY.STALLS_L2_MISS,MEMORY_ACTIVITY.STALLS_L3_MISS,MEM_LOAD_RETIRED.L1_HIT,MEM_LOAD_RETIRED.L2_HIT,MEM_LOAD_RETIRED.L3_HIT,MEM_LOAD_RETIRED.L3_MISS,MEM_INST_RETIRED.ALL_STORES:sa=100003,MEM_INST_RETIRED.ALL_LOADS:sa=100003,CYCLE_ACTIVITY.CYCLES_MEM_ANY,DTLB_LOAD_MISSES.STLB_HIT:cmask=1,DTLB_LOAD_MISSES.WALK_ACTIVE,DTLB_LOAD_MISSES.WALK_COMPLETED_1G,DTLB_LOAD_MISSES.WALK_COMPLETED_2M_4M,DTLB_LOAD_MISSES.WALK_COMPLETED_4K,DTLB_STORE_MISSES.STLB_HIT:cmask=1,DTLB_STORE_MISSES.WALK_ACTIVE,DTLB_STORE_MISSES.WALK_COMPLETED_1G,DTLB_STORE_MISSES.WALK_COMPLETED_2M_4M,DTLB_STORE_MISSES.WALK_COMPLETED_4K,EXE_ACTIVITY.BOUND_ON_STORES,L1D_PEND_MISS.FB_FULL,L1D_PEND_MISS.L2_STALLS,L1D_PEND_MISS.PENDING,L2_RQSTS.ALL_RFO,L2_RQSTS.RFO_HIT,LD_BLOCKS.NO_SR,LD_BLOCKS.STORE_FORWARD,MEMORY_ACTIVITY.CYCLES_L1D_MISS,MEM_INST_RETIRED.LOCK_LOADS,MEM_INST_RETIRED.SPLIT_LOADS,MEM_INST_RETIRED.SPLIT_STORES,MEM_INST_RETIRED.STLB_MISS_LOADS,MEM_INST_RETIRED.STLB_MISS_STORES,MEM_LOAD_COMPLETED.L1_MISS_ANY,MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD,MEM_LOAD_L3_HIT_RETIRED.XSNP_MISS,MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD,MEM_LOAD_RETIRED.FB_HIT,MEM_LOAD_RETIRED.L1_MISS,MEM_STORE_RETIRED.L2_HIT,OFFCORE_REQUESTS_OUTSTANDING.ALL_DATA_RD:cmask=4,OFFCORE_REQUESTS_OUTSTANDING.CYCLES_WITH_DATA_RD,OFFCORE_REQUESTS_OUTSTANDING.CYCLES_WITH_DEMAND_RFO,XQ.FULL_CYCLES,UNC_M_CAS_COUNT_RD,UNC_M_CAS_COUNT_WR -experimental
+4932 [5044] INFO perfrun.sdk <> - runCmd started PID 6956
+5062 [5044] INFO perfrun.emon <> - Spawned collector thread
+5063 [2120] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\emon.exe" -u -t 0.010 -l0 -C CPU_CLK_UNHALTED.DISTRIBUTED,CPU_CLK_UNHALTED.REF_TSC,CPU_CLK_UNHALTED.THREAD,CPU_CLK_UNHALTED.THREAD_P,CYCLE_ACTIVITY.CYCLES_MEM_ANY,DTLB_LOAD_MISSES.STLB_HIT:c1,DTLB_LOAD_MISSES.WALK_ACTIVE,DTLB_LOAD_MISSES.WALK_COMPLETED_1G,DTLB_LOAD_MISSES.WALK_COMPLETED_2M_4M,DTLB_LOAD_MISSES.WALK_COMPLETED_4K,DTLB_STORE_MISSES.STLB_HIT:c1,DTLB_STORE_MISSES.WALK_ACTIVE,DTLB_STORE_MISSES.WALK_COMPLETED_1G,DTLB_STORE_MISSES.WALK_COMPLETED_2M_4M,DTLB_STORE_MISSES.WALK_COMPLETED_4K,EXE_ACTIVITY.BOUND_ON_LOADS,EXE_ACTIVITY.BOUND_ON_STORES,FP_ARITH_INST_RETIRED.128B_PACKED_DOUBLE,FP_ARITH_INST_RETIRED.128B_PACKED_SINGLE,FP_ARITH_INST_RETIRED.256B_PACKED_DOUBLE,FP_ARITH_INST_RETIRED.256B_PACKED_SINGLE,FP_ARITH_INST_RETIRED.SCALAR_DOUBLE,FP_ARITH_INST_RETIRED.SCALAR_SINGLE,FRONTEND_RETIRED.LATENCY_GE_4,IDQ_BUBBLES.CORE,INST_RETIRED.ANY,INT_MISC.UOP_DROPPING,L1D_PEND_MISS.FB_FULL,L1D_PEND_MISS.L2_STALLS,L1D_PEND_MISS.PENDING,L2_RQSTS.ALL_RFO,L2_RQSTS.RFO_HIT,LD_BLOCKS.NO_SR,LD_BLOCKS.STORE_FORWARD,MEMORY_ACTIVITY.CYCLES_L1D_MISS,MEMORY_ACTIVITY.STALLS_L1D_MISS,MEMORY_ACTIVITY.STALLS_L2_MISS,MEMORY_ACTIVITY.STALLS_L3_MISS,MEM_INST_RETIRED.ALL_LOADS,MEM_INST_RETIRED.ALL_STORES,MEM_INST_RETIRED.LOCK_LOADS,MEM_INST_RETIRED.SPLIT_LOADS,MEM_INST_RETIRED.SPLIT_STORES,MEM_INST_RETIRED.STLB_MISS_LOADS,MEM_INST_RETIRED.STLB_MISS_STORES,MEM_LOAD_COMPLETED.L1_MISS_ANY,MEM_LOAD_L3_HIT_RETIRED.XSNP_FWD,MEM_LOAD_L3_HIT_RETIRED.XSNP_MISS,MEM_LOAD_L3_HIT_RETIRED.XSNP_NO_FWD,MEM_LOAD_RETIRED.FB_HIT,MEM_LOAD_RETIRED.L1_HIT,MEM_LOAD_RETIRED.L1_MISS,MEM_LOAD_RETIRED.L2_HIT,MEM_LOAD_RETIRED.L3_HIT,MEM_LOAD_RETIRED.L3_MISS,MEM_STORE_RETIRED.L2_HIT,OFFCORE_REQUESTS_OUTSTANDING.ALL_DATA_RD:c4,OFFCORE_REQUESTS_OUTSTANDING.CYCLES_WITH_DATA_RD,OFFCORE_REQUESTS_OUTSTANDING.CYCLES_WITH_DEMAND_RFO,TOPDOWN.BACKEND_BOUND_SLOTS,TOPDOWN.MEMORY_BOUND_SLOTS,TOPDOWN.SLOTS,TOPDOWN.SLOTS:perf_metrics,TOPDOWN.SLOTS_P,UNC_M_CAS_COUNT_RD,UNC_M_CAS_COUNT_WR,UOPS_EXECUTED.THREAD,UOPS_EXECUTED.X87,UOPS_RETIRED.SLOTS,XQ.FULL_CYCLES -experimental
+5065 [2120] INFO perfrun.sdk <> - runCmd started PID 8404
+5153 [2120] WARN perfrun.launcher <> - Messenger::say: EMON Collector Message: Event TOPDOWN.SLOTS discarded since the event is invalid or the device does not exist.
+5153 [2120] WARN perfrun.launcher <> - Messenger::say: EMON Collector Message: Event TOPDOWN.SLOTS:perf_metrics discarded since the event is invalid or the device does not exist.
+5252 [2648] INFO perfrun.gpu <> - Next report we'll be handling the low-power state
+5253 [2648] INFO perfrun.gpu <> - Entered handling of low-power state
+5296 [4564] INFO perfrun.launcher <> - Launcher: all plugins were started
+5296 [4564] INFO perfrun.launcher <> - DirectoryMonitor object was created
+5296 [4564] INFO perfrun.launcher <> - DirectoryMonitor: a callback was added
+5297 [4564] INFO perfrun.launcher <> - DirectoryMonitor was started with pingTime = 1000
+5297 [4564] INFO perfrun.launcher <> - DeadlineTimer is going to be constructed
+5298 [4564] INFO perfrun.launcher <> - DeadlineTimer: a callback was added
+5315 [4564] INFO perfrun.launcher <> - Launcher: resume the profiled application and  wait its termination or stop command
+5421 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+5429 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+5429 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+6218 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+6813 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+7661 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+7847 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+8141 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+8141 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+8412 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+8565 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+8880 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+9146 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+9298 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+9579 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+10749 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+11577 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+11578 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+11864 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+12114 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+12376 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+12548 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+12786 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+13558 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+13695 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+13983 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+14098 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+14384 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+14628 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+14771 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15180 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15181 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15269 [4564] INFO perfrun.launcher <> - Launcher: the profiled application was terminated  with exit code = 0
+15274 [5044] INFO perfrun.gpu <> - Waiting for data collection thread to finish
+15468 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15470 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15471 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15666 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15667 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15668 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15669 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+15783 [2648] INFO perfrun.gpu <> - Writing dual vector buffer
+15793 [2648] INFO perfrun.sdk <> - De-allocating TMU: D:\mipt\list\opt_proj\superlist\r001ps\data.0\gen_metrics0.0.2.0.0.oa.0.vtss
+15817 [5044] INFO perfrun.gpu <> - Data collection thread finished, shutting down the session
+15818 [5044] INFO perfrun.sdk <> - runCmd: "C:\Program Files (x86)\Intel\oneAPI\vtune\2025.7\bin64\emon.exe" -stop
+15835 [5044] INFO perfrun.sdk <> - runCmd started PID 2044
+15915 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+16089 [5044] INFO perfrun.emon <> - EMON collector successfully stopped.
+
+16128 [2120] WARN perfrun.emon_output <> - TimeKeeper: the time is being asked while the time keeper object is armed. This may mean that the time for the last group is getting reused as the time for this group
+16128 [2120] INFO perfrun.emon_output <> - Collector process exited successfully
+16147 [5044] INFO perfrun.sdk <> - De-allocating TMU: D:\mipt\list\opt_proj\superlist\r001ps\data.0\systemcollector-6460-DESKTOP-07MDIV5.sc
+16160 [5044] INFO perfrun.system <> - closed the system trace file: D:\mipt\list\opt_proj\superlist\r001ps\data.0\systemcollector-6460-DESKTOP-07MDIV5.sc
+16160 [4564] INFO perfrun.launcher <> - Launcher: all plugins were stopped.
+16160 [4564] INFO perfrun.launcher <> - DeadlineTimer is going to be destroyed
+16161 [4564] INFO perfrun.launcher <> - DeadlineTimer was destroyed
+16161 [4564] INFO perfrun.launcher <> - DirectoryMonitor object was destroyed
+16161 [4564] WARN perfrun.launcher <> - Stop command is ignored because it is received when collection is already stopped, at file: vcs\perfrun1\launcher\src\command_handler.cpp:226
+16162 [4564] INFO perfrun.launcher <> - Application exit code: 0
+16162 [4564] INFO perfrun.launcher <> - Exit code: 0
