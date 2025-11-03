@@ -73,7 +73,6 @@ struct list_t
     struct item *items;
     int alloc;
     int size;
-    int block_size;
 };
 
 
@@ -85,7 +84,6 @@ struct list_t *list_create(int32_t capacity)
     lst->alloc = 2;
     lst->items = calloc(1, 2 * sizeof(*lst->items));
     lst->size = 0;
-    lst->block_size = 2;
 
     lst->items[free_item(lst)].next = free_item(lst);
     lst->items[free_item(lst)].prev = free_item(lst);
@@ -143,7 +141,6 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
         lst->items[lst->alloc - 1].next = free_item(lst);
         lst->items[free_item(lst)].prev = lst->alloc - 1;
         // other links
-        /* TODO: optimize this loop, becouse compilers doen't */
         for (int i = prev_size; i < lst->alloc; ++i)
         {
             if (i != lst->alloc - 1)
@@ -240,8 +237,7 @@ int32_t list_get(struct list_t *lst, iterator_t it)
 /* duplicates block, and return index of first one + it is 100% not full */
 struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int index)
 {
-    list_reserve(lst, lst->block_size + 2);
-    lst->block_size++;
+    list_reserve(lst, lst->size + 2);
     
     // int prev = lst->items[block].prev;
     int next = lst->items[block].next;
@@ -288,8 +284,6 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
 /* remove block, return pointer on next block */
 int remove_block(struct list_t *lst, int block)
 {
-    lst->block_size--;
-
     int next = lst->items[block].next;
     int prev = lst->items[block].prev;
     
