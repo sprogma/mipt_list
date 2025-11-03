@@ -39,8 +39,13 @@ int main()
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
             _mm_prefetch(array + ((pos + 545259527) & SIZE_MASK), _MM_HINT_ET0);
-            
-            array[pos] = 179 % (i + 1);            
+
+            long long tmp;
+            tmp = 179 % (i + 1);            
+            tmp = 178 % (tmp + i + 1);            
+            tmp = 177 % (tmp + i + 1);            
+            tmp = 176 % (tmp + i + 1);            
+            array[pos] = 57 % (tmp + i + 1);            
             
             pos = (pos + 998244353LL) & SIZE_MASK;
         }

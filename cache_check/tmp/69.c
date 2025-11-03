@@ -38,9 +38,14 @@ int main()
         /* use SIZE/16 to speedup tests */
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
-            _mm_prefetch(array + ((pos + 1342177376) & SIZE_MASK), 4);
-            
-            array[pos] = 179 % (i + 1);            
+            __builtin_prefetch(array + ((pos + 1342177376) & SIZE_MASK), 1, 0);
+
+            long long tmp;
+            tmp = 179 % (i + 1);            
+            tmp = 178 % (tmp + i + 1);            
+            tmp = 177 % (tmp + i + 1);            
+            tmp = 176 % (tmp + i + 1);            
+            array[pos] = 57 % (tmp + i + 1);            
             
             pos = (pos + 998244353LL) & SIZE_MASK;
         }

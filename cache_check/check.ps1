@@ -30,7 +30,7 @@ function Check($message, $code)
     $code >"tmp/$($script:fid).c"
     Start-ThreadJob -ScriptBlock {
         param($message, $id, $DIV)
-        gcc "tmp/$id.c" -o "bin/$id.exe" -Ofast -march=native "-DSIZE_DIV=$DIV"
+        gcc "tmp/$id.c" -o "bin/$id.exe" -Ofast -mprfchw -march=native "-DSIZE_DIV=$DIV"
         [System.Console]::writeLine("Built [$message] bin/$id.exe")
         [pscustomobject]@{exe="bin/$id.exe";message=$message}
     } -ArgumentList ($message, $script:fid, $div) -ThrottleLimit $j
@@ -47,7 +47,9 @@ while ($i -le 128)
     $jobs += Check "prefetch x$i"       ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_T0)")
     $jobs += Check "prefetch x$i E"     ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_ET0)")
     $jobs += Check "prefetch x$i NTA"   ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_NTA)")
-    $jobs += Check "prefetch x$i E+NTA" ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), 4)")
+    # not found _MM_HINT_ENTA
+    # $jobs += Check "prefetch x$i E+NTA" ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_ENTA)")
+    $jobs += Check "prefetch x$i W"     ($s-replace"PREFETCH_POSITION","__builtin_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), 1, 0)")
     if ($i -lt 8)
     {
         $i += 1
