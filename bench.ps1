@@ -8,7 +8,7 @@ $l | %{
     Write-Progress -Activity "building" -Status "$_" -PercentComplete ([int](100*($id-1)/$l.Count))
     if ($_-match"\.cpp$")
     {
-        g++ test.cpp $_ -o "a$id.exe" -DTEST_CPP_REALIZATION -DNDEBUG -Ofast -flto
+        g++ test.cpp $_ -o "a$id.exe" -DTEST_CPP_REALIZATION -DNDEBUG -Ofast -march=native -flto
     }
     else
     {

@@ -322,10 +322,14 @@ list_t *build_nonlinear_list(int size)
                 del.push_back(list_get(lst, it));
                 it = list_remove(lst, it);
             }
+            else
+            {
+                it = list_next(lst, it);
+            }
         }
-        for (int i : del)
+        for (int i = del.size() - 1; i >= 0; --i)
         {
-            list_insert(lst, list_head(lst), i);
+            list_insert(lst, list_head(lst), del[i]);
         }
     }
     // for (int i = 0; i < size; ++i)

@@ -24,11 +24,11 @@
 // #define DPRINTF printf
 
 
-#define ITEM_SIZE 32
+#define ITEM_SIZE 16
 #define ITEM_VALUES_COUNT (ITEM_SIZE - 3)
 #define ITEM_MIN_VALUES_COUNT (ITEM_VALUES_COUNT / 2)
 
-#define ITERATOR_SHIFT 5
+#define ITERATOR_SHIFT 4
 
 struct expanded_iterator_t
 {
@@ -39,7 +39,7 @@ __attribute__((always_inline)) __inline__
 void deconstruct_iterator(iterator_t it, int *block, int *item)
 {
     *block = (it >> ITERATOR_SHIFT);
-    *item = (it & (-1 & ((1 << ITERATOR_SHIFT) - 1)));
+    *item = (it & ((1 << ITERATOR_SHIFT) - 1));
 }
 
 __attribute__((always_inline)) __inline__ 
@@ -184,6 +184,7 @@ iterator_t list_next(struct list_t *lst, iterator_t it)
     int block, index;
     deconstruct_iterator(it, &block, &index);
     index++;
+    assert(index <= lst->items[block].size);
     if (index == lst->items[block].size)
     {
         return construct_iterator(lst->items[block].next, 0);
@@ -195,6 +196,7 @@ iterator_t list_prev(struct list_t *lst, iterator_t it)
 {
     int block, index;
     deconstruct_iterator(it, &block, &index);
+    assert(index <= lst->items[block].size);
     if (index == 0)
     {
         return construct_iterator(lst->items[block].prev, lst->items[lst->items[block].prev].size - 1);
@@ -370,11 +372,22 @@ iterator_t list_remove(struct list_t *lst, iterator_t it)
 
     /* remove element from node */
     int size = lst->items[block].size;
-    memmove(lst->items[block].value + index, lst->items[block].value + index + 1, sizeof(*lst->items[block].value) * (size - index));
 
+    assert(size > 1);
+    assert(index < size);
+    
     /* update sizes */
     lst->size--;
     lst->items[block].size--;
+    
+    /* return next iterator */
+    if (index + 1 == size)
+    {
+        return construct_iterator(lst->items[block].next, 0);
+    }
+    
+    memmove(lst->items[block].value + index, lst->items[block].value + index + 1, sizeof(*lst->items[block].value) * (size - index));
+
     DPRINTF("new size of %d is %d\n", block, lst->items[block].size);
     DPRINTF("items %d %d [%d]\n", lst->items[block].value[0], lst->items[block].value[1], lst->items[block].value[2]);
     
