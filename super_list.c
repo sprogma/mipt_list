@@ -3,40 +3,55 @@
 #include "stdlib.h"
 #include "inttypes.h"
 #include "stdio.h"
+#include "immintrin.h"
 
 #include "mylist.h"
 
 
 
 
-#define free_item(lst) 0
-#define used_item(lst) 1
-
-#define free_head(lst) ((lst)->items[free_item(lst)].next)
-#define free_tail(lst) ((lst)->items[free_item(lst)].prev)
+#define used_item(lst) 0
+#define free_item(lst) 1
 
 #define used_head(lst) ((lst)->items[used_item(lst)].next)
 #define used_tail(lst) ((lst)->items[used_item(lst)].prev)
 
+#define free_head(lst) ((lst)->items[free_item(lst)].next)
+#define free_tail(lst) ((lst)->items[free_item(lst)].prev)
 
 
-#define ITEM_SIZE 16
+#define DPRINTF(...)
+// #define DPRINTF printf
+
+
+#define ITEM_SIZE 32
 #define ITEM_VALUES_COUNT (ITEM_SIZE - 3)
 #define ITEM_MIN_VALUES_COUNT (ITEM_VALUES_COUNT / 2)
 
-#define ITERATOR_SHIFT 4
+#define ITERATOR_SHIFT 5
 
-__attribute__((force_inline)) __inline__ 
+struct expanded_iterator_t
+{
+    int block, index;
+};
+
+__attribute__((always_inline)) __inline__ 
 void deconstruct_iterator(iterator_t it, int *block, int *item)
 {
     *block = (it >> ITERATOR_SHIFT);
     *item = (it & (-1 & ((1 << ITERATOR_SHIFT) - 1)));
 }
 
-__attribute__((force_inline)) __inline__ 
+__attribute__((always_inline)) __inline__ 
 iterator_t construct_iterator(int block, int item)
 {
-    return item | (block << 16);
+    return item | (block << ITERATOR_SHIFT);
+}
+
+
+int is_correct(iterator_t it)
+{
+    return it != 0;
 }
 
 
@@ -70,12 +85,12 @@ struct list_t *list_create(int32_t capacity)
     lst->items = calloc(1, 2 * sizeof(*lst->items));
     lst->size = 0;
 
-    lst->items[free_item(lst)].next = 0;
-    lst->items[free_item(lst)].prev = 0;
-    lst->items[free_item(lst)].size = 0;
-    lst->items[used_item(lst)].next = 0;
-    lst->items[used_item(lst)].prev = 0;
-    lst->items[used_item(lst)].size = 0;
+    lst->items[free_item(lst)].next = free_item(lst);
+    lst->items[free_item(lst)].prev = free_item(lst);
+    lst->items[free_item(lst)].size = 1;
+    lst->items[used_item(lst)].next = used_item(lst);
+    lst->items[used_item(lst)].prev = used_item(lst);
+    lst->items[used_item(lst)].size = 1;
 
     list_reserve(lst, 2 * capacity / ITEM_VALUES_COUNT);
 
@@ -141,33 +156,50 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
     }
 }
 
-
 /* helping functions */
 int32_t list_size(struct list_t *lst)
 {
     return lst->size;
 }
 
-
 /* iterators */
 iterator_t list_head(struct list_t *lst)
 {
-    return u_head(lst);
+    iterator_t res = construct_iterator(used_head(lst), 0);
+    DPRINTF("ret head=%d\n", res);
+    DPRINTF(": head_next=%d\n", used_head(lst));
+    DPRINTF(": alloc=%d\n", lst->alloc);
+    return res;
 }
 
 iterator_t list_tail(struct list_t *lst)
 {
-    return u_tail(lst);
+    iterator_t res = construct_iterator(used_tail(lst), lst->items[used_tail(lst)].size - 1);
+    DPRINTF("ret tail=%d\n", res);
+    return res;
 }
 
 iterator_t list_next(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].next;
+    int block, index;
+    deconstruct_iterator(it, &block, &index);
+    index++;
+    if (index == lst->items[block].size)
+    {
+        return construct_iterator(lst->items[block].next, 0);
+    }
+    return construct_iterator(block, index);
 }
 
 iterator_t list_prev(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].prev;
+    int block, index;
+    deconstruct_iterator(it, &block, &index);
+    if (index == 0)
+    {
+        return construct_iterator(lst->items[block].prev, lst->items[lst->items[block].prev].size - 1);
+    }
+    return construct_iterator(block, index - 1);
 }
 
 iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps)
@@ -194,144 +226,166 @@ iterator_t list_move(struct list_t *lst, iterator_t it, int32_t steps)
 
 int32_t list_get(struct list_t *lst, iterator_t it)
 {
-    return lst->items[it].value;
+    int block, index;
+    deconstruct_iterator(it, &block, &index);
+    return lst->items[block].value[index];
+}
+
+
+/* duplicates block, and return index of first one + it is 100% not full */
+struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int index)
+{
+    list_reserve(lst, lst->size + 2);
+    
+    // int prev = lst->items[block].prev;
+    int next = lst->items[block].next;
+    int node = free_head(lst);
+
+    /* update free list */
+    lst->items[free_item(lst)].next = lst->items[node].next;
+    lst->items[lst->items[node].next].prev = free_item(lst);
+
+    /* array pointers */
+    lst->items[block].next = node;
+    lst->items[next].prev = node;
+    
+    /* update new node */
+    lst->items[node].prev = block;
+    lst->items[node].next = next;
+    
+    /* copy 1/2 of block to new block */
+    /* MEGA OPTIMIZATION: !!block is 1 if block != 0 -> than we shouldn't */
+    /* remove one fictive element from fitst node - else we need to remove one more */
+    /* to right insert to leftmost node */
+    int size_to_copy = ((lst->items[block].size + (!!block)) >> 1);
+    int remain_size = lst->items[block].size - size_to_copy;
+    memcpy(lst->items[node].value, lst->items[block].value + remain_size, sizeof(*lst->items[node].value) * size_to_copy);
+
+    /* update node sizes */
+    lst->items[node].size = size_to_copy;
+    lst->items[block].size = remain_size;
+
+    assert(lst->items[used_item(lst)].size == 1);
+    assert(lst->items[free_item(lst)].size == 1);
+
+    /* size_to_copy == block size / 2 < block size <= ITEM_VALUES_COUNT */
+    assert(lst->items[block].size < ITEM_VALUES_COUNT || 
+          (block == used_item(lst) && lst->items[next].size == ITEM_VALUES_COUNT));
+
+    if (index < remain_size)
+    {
+        return (struct expanded_iterator_t){block, index};
+    }
+    return (struct expanded_iterator_t){node, index - remain_size};
+}
+
+/* remove block, return pointer on next block */
+int remove_block(struct list_t *lst, int block)
+{
+    int next = lst->items[block].next;
+    int prev = lst->items[block].prev;
+    
+    DPRINTF("RM {%d} %d {%d}\n", prev, block, next);
+    
+    /* update free list */
+    lst->items[block].next = free_head(lst);
+    lst->items[block].prev = free_item(lst);
+    lst->items[free_head(lst)].prev = block; // not swap this string with next one
+    lst->items[free_item(lst)].next = block;
+
+    /* update next + prev */
+    lst->items[prev].next = next;
+    lst->items[next].prev = prev;
+
+    DPRINTF("RETURN %d {%d}\n", next, prev);
+    
+    return next;
 }
 
 
 /* insertion and deletion of elements */
 iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
 {
-    list_reserve(lst, lst->size + 2);
+    DPRINTF("insert %d before IT=%d\n", value, it);
+    /* insert to block by iterator */
+    int block, index;
+    deconstruct_iterator(it, &block, &index);
 
-    #ifndef NO_PRINF
-    printf("insert %d at %d\n", value, it);
-    #endif
-    dump_to_image(lst);
-    
-    int new_item = f_head(lst);
-    lst->items[lst->items[f_head(lst)].next].prev = f_item;
-    f_head(lst) = lst->items[f_head(lst)].next;
+    if (block == 0)
+    {
+        if (used_tail(lst) == 0)
+        {
+            struct expanded_iterator_t exp = duplicate_block(lst, block, 1);
+            block = exp.block;
+            index = exp.index;
+        }
+        else
+        {
+            block = used_tail(lst);
+        }
+        assert(block == used_tail(lst));
+        assert(index == 0);
+    }
+    else if (lst->items[block].size == ITEM_VALUES_COUNT)
+    {
+        /* split node */
+        /* no clever things: simply split node */
+        /* TODO: optimize */
+        struct expanded_iterator_t exp = duplicate_block(lst, block, index);
+        block = exp.block;
+        index = exp.index;
+    }
 
-    int before = lst->items[it].prev;
 
-    // x Y z: x next = Y
-    lst->items[before].next = new_item;
-    // x Y z: z prev = Y
-    lst->items[it].prev = new_item;
-    // x Y z: Y next = z
-    lst->items[new_item].next = it;
-    // x Y z: Y prev = x
-    lst->items[new_item].prev = before;
-    // set value
-    lst->items[new_item].value = value;
-    
-    #ifndef NO_PRINF
-    printf("after insert:\n");
-    #endif
-    dump_to_image(lst);
+    int size = lst->items[block].size;
+
+    assert(size < ITEM_VALUES_COUNT);
+    assert(index <= size);
+
+    /* now - insert element to array */
+    DPRINTF("insert at: %d of %d, block %d\n", index, ITEM_VALUES_COUNT, block);
+    memmove(lst->items[block].value + index + 1, lst->items[block].value + index, sizeof(*lst->items[block].value) * (size - index));
+    lst->items[block].value[index] = value;
 
     lst->size++;
+    lst->items[block].size++;
 
-    return new_item;
+    return construct_iterator(block, index);
 }
 
-result_t list_remove(struct list_t *lst, iterator_t it)
+iterator_t list_remove(struct list_t *lst, iterator_t it)
 {
-    int after = lst->items[it].next;
-    int before = lst->items[it].prev;
-    // x Y z: x next = z
-    lst->items[before].next = after;
-    // x Y z: z prev = x
-    lst->items[after].prev = before;
+    int block, index;
+    deconstruct_iterator(it, &block, &index);
+    DPRINTF("rm iterator: %d\n", it);
+    DPRINTF("removing... from %d [%d]\n", block, index);
     
-    // free node
-    lst->items[it].prev = f_tail(lst);
-    lst->items[it].next = f_item;
-    lst->items[f_tail(lst)].next = it;
-    f_tail(lst) = it;
+    /* no clever: if node is empty: remove it */
+    /* TODO: strongly optimize */
+    if (lst->items[block].size == 1)
+    {
+        lst->size--;
+        return construct_iterator(remove_block(lst, block), 0);
+    }
 
+    /* remove element from node */
+    int size = lst->items[block].size;
+    memmove(lst->items[block].value + index, lst->items[block].value + index + 1, sizeof(*lst->items[block].value) * (size - index));
+
+    /* update sizes */
     lst->size--;
-        
-    return 0;
-}
-
-/* call this function at free time, to optimizate structure */
-
-static void swap_items(struct list_t *lst, iterator_t a, iterator_t b)
-{
-    if (a == b)
-    {
-        return;
-    }
-    iterator_t pa, na, pb, nb;
-    if (lst->items[b].next == a)
-    {
-        iterator_t tmp = b;
-        b = a;
-        a = tmp;
-    }
-    pa = lst->items[a].prev;
-    na = lst->items[a].next;
-    pb = lst->items[b].prev;
-    nb = lst->items[b].next;
-    if (na == b)
-    {
-        // pa a b nb -> pa b a nb
-        lst->items[pa].next = b;
-        lst->items[b].next = a;
-        lst->items[a].next = nb;
-
-        lst->items[b].prev = pa;
-        lst->items[a].prev = b;
-        lst->items[nb].prev = a;
-    }
-    else
-    {
-        /* swap a and b */
-        lst->items[a].next = nb;
-        lst->items[a].prev = pb;
-        lst->items[b].next = na;
-        lst->items[b].prev = pa;
-
-        lst->items[pa].next = b;
-        lst->items[na].prev = b;
-        lst->items[pb].next = a;
-        lst->items[nb].prev = a;
-    }
+    lst->items[block].size--;
+    DPRINTF("new size of %d is %d\n", block, lst->items[block].size);
+    DPRINTF("items %d %d [%d]\n", lst->items[block].value[0], lst->items[block].value[1], lst->items[block].value[2]);
     
-    int tmp = lst->items[a].value;
-    lst->items[a].value = lst->items[b].value;
-    lst->items[b].value = tmp;
+    /* return same iterator - now it points on next element */
+    return it;
 }
-
 
 /* call this function at free time, to optimizate structure */
 result_t list_optimize(struct list_t *lst)
 {
-    if (list_is_wrong(lst))
-    {
-        printf("structure is bad.\n");
-        abort();
-    }
-    iterator_t it = list_head(lst);
-    for (int i = 0; i < lst->size; ++i)
-    {
-        swap_items(lst, it, i + 2);
-        int new_it = list_next(lst, i + 2);
-        assert(new_it > 1 || i == lst->size - 1);
-        it = new_it;
-    }
-    if (list_is_wrong(lst))
-    {
-        printf("structure is bad.\n");
-        abort();
-    }
-    #ifndef NO_VERIFY
-    for (int i = 0; i + 1 < lst->size; ++i)
-    {
-        assert(lst->next[2 + i] == 2 + i + 1);
-    }
-    #endif
+    (void)lst;
     return 0;
 }
 
@@ -340,6 +394,6 @@ result_t list_optimize(struct list_t *lst)
 /* get element by index */
 int32_t list_at(struct list_t *lst, int32_t index)
 {
-    iterator_t it = list_move(lst, u_head(lst), index);
-    return lst->items[it].value;
+    iterator_t it = list_move(lst, used_head(lst), index);
+    return list_get(lst, it);
 }

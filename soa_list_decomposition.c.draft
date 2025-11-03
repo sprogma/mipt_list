@@ -17,7 +17,10 @@
 #define u_head(lst) ((lst)->next[1])
 
 #define BLOCK_SIZE_LG2 8
-
+int is_correct(iterator_t it)
+{
+    return it > 1;
+}
 void deconstruct_iterator(iterator_t it, int *block, int *item)
 {
     *block = (it >> BLOCK_SIZE_LG2);

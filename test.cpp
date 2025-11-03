@@ -70,6 +70,64 @@ void test_behaviour()
     assert(list_size(lst) == 0);
 
     list_free(lst);
+
+    /* build list + clear list */
+    lst = list_create(0);
+    #define N 3
+    for (int i = 0, t = 0; t < N; i = (i + 7) % N, t++)
+    {
+        // printf("------------------- Insert %d at begin!\n", i);
+        list_insert(lst, list_head(lst), i);
+    }
+    for (int i = 0; i < N; ++i)
+    {
+        int t = 0;
+        if (i % 2 == 0)
+        {
+            // printf("         ------------------------------ forward\n");
+            iterator_t it = list_head(lst);
+            while (is_correct(it))
+            {
+                if (list_get(lst, it) == i)
+                {
+                    // printf("------------------- Find %d at position %d!\n", i, t);
+                    list_remove(lst, it);
+                    break;
+                }
+                t++;
+                // printf("-------------------- was it = %d [%d]\n", it, list_get(lst, it));
+                it = list_next(lst, it);
+                // printf("-------------------- new it = %d [?]\n", it);
+            }
+        }
+        else
+        {
+            // printf("         ------------------------------ backwards\n");
+            iterator_t it = list_tail(lst);
+            while (is_correct(it))
+            {
+                if (list_get(lst, it) == i)
+                {
+                    // printf("------------------- Find %d at position %d!\n", i, t);
+                    list_remove(lst, it);
+                    break;
+                }
+                t++;
+                // printf("-------------------- was it = %d [%d]\n", it, list_get(lst, it));
+                it = list_prev(lst, it);
+                // printf("-------------------- new it = %d [?]\n", it);
+            } 
+        }
+    }
+    #undef N
+
+    // printf("At end size == %d\n", list_size(lst));
+
+    assert(list_size(lst) == 0);
+
+    list_free(lst);
+    
+    
     #endif
 }
 
@@ -105,7 +163,7 @@ void test1()
         int v = q.begin()->second;
         q.erase(q.begin());
         iterator_t x = list_head(graph[v]);
-        while (IS_CORRECT(x))
+        while (is_correct(x))
         {
             int value = list_get(graph[v], x);
             if (dst[value] > dst[v] + 1)
@@ -161,7 +219,7 @@ void test2()
         int v = list_get(queue, list_head(queue));
         list_remove(queue, list_head(queue));
         iterator_t x = list_head(graph[v]);
-        while (IS_CORRECT(x))
+        while (is_correct(x))
         {
             int value = list_get(graph[v], x);
             if (dst[value] == -1)
@@ -203,7 +261,7 @@ void test31()
         int v = list_get(lst, h);
         if (v != ArrayReverseSize - i - 1)
         {
-            fprintf(stderr, "ERROR: list behaviour is broken.\n");
+            fprintf(stderr, "ERROR: list behaviour is broken. get %d instead of %d [i=%d]\n", v, ArrayReverseSize - i - 1, i);
             return;
         }
         list_remove(lst, h);
@@ -247,28 +305,51 @@ const int ArrayReadSize = 10000000; // 3e7
 list_t *build_nonlinear_list(int size)
 { 
     list_t *lst = list_create(0);
+
     for (int i = 0; i < size; ++i)
     {
-        #ifdef TEST_CPP_REALIZATION
-        if (i % 2 == 0)
+        list_insert(lst, list_head(lst), i);
+    }
+    for (int t = 0; t < 5; ++t)
+    {
+        vector<int> del;
+        del.reserve(size / 2);
+        iterator_t it = list_head(lst);
+        while (is_correct(it))
+        {
+            if (rand() % 2 == 0)
+            {
+                del.push_back(list_get(lst, it));
+                it = list_remove(lst, it);
+            }
+        }
+        for (int i : del)
         {
             list_insert(lst, list_head(lst), i);
         }
-        else
-        {
-            list_insert(lst, list_tail(lst), i);
-        }
-        #else
-        if (i <= 1)
-        {
-            list_insert(lst, list_tail(lst), i);
-        }
-        else
-        {
-            list_insert(lst, 2 + rand() % i, i);
-        }
-        #endif
     }
+    // for (int i = 0; i < size; ++i)
+    // {
+    //     #ifdef TEST_CPP_REALIZATION
+    //     if (i % 2 == 0)
+    //     {
+    //         list_insert(lst, list_head(lst), i);
+    //     }
+    //     else
+    //     {
+    //         list_insert(lst, list_tail(lst), i);
+    //     }
+    //     #else
+    //     if (i <= 1)
+    //     {
+    //         list_insert(lst, list_tail(lst), i);
+    //     }
+    //     else
+    //     {
+    //         list_insert(lst, 2 + rand() % i, i);
+    //     }
+    //     #endif
+    // }
     return lst;
 }
 
@@ -277,10 +358,10 @@ void print_avr_jump_size(list_t *lst)
     #ifndef TEST_CPP_REALIZATION
     iterator_t h = list_head(lst);
     double sum = 0;
-    while (IS_CORRECT(h))
+    while (is_correct(h))
     {
         int nh = list_next(lst, h);
-        if (IS_CORRECT(nh))
+        if (is_correct(nh))
         {
             sum += fabs(h - nh);
         }
@@ -305,7 +386,7 @@ void test4()
         iterator_t h = list_head(lst);
         int x = ArrayReadSize;
         int res = 0;
-        while (IS_CORRECT(h))
+        while (is_correct(h))
         {
             int v = list_get(lst, h);
             res += v * v * v;
@@ -343,7 +424,7 @@ void test5()
         iterator_t h = list_head(lst);
         int x = ArrayReadSize;
         int res = 0;
-        while (IS_CORRECT(h))
+        while (is_correct(h))
         {
             int v = list_get(lst, h);
             res += v * v * v;

@@ -13,6 +13,10 @@ struct list_t
     std::list<int32_t> x;
 };
 
+int is_correct(iterator_t it)
+{
+    return ((it).it != ((it).lst->end()));
+}
 
 /* standart initializators */
 list_t *list_create(int32_t capacity) 
@@ -112,10 +116,11 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
     return {std::next(it.it), &lst->x};
 }
 
-result_t list_remove(struct list_t *lst, iterator_t it) 
+iterator_t list_remove(struct list_t *lst, iterator_t it) 
 {
+    iterator_t res = list_next(lst, it);
     lst->x.erase(it.it);
-    return 0;
+    return res;
 }
 
 /* call this function at free time, to optimizate structure */

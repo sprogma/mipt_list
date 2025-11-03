@@ -6,11 +6,10 @@
 #ifdef TEST_CPP_REALIZATION
     #include <list>
     typedef struct {std::list<int32_t>::iterator it; std::list<int32_t> *lst; } iterator_t;
-    #define IS_CORRECT(x) ((x).it != ((x).lst->end()))
 #else
     typedef int32_t iterator_t;
-    #define IS_CORRECT(x) ((x) > 1)
 #endif
+
 
 
 #ifndef TEST_CPP_REALIZATION
@@ -23,6 +22,8 @@ extern "C" {
 struct list_t;
 
 typedef uint64_t result_t;
+
+int is_correct(iterator_t it);
 
 /* standart initializators */
 struct list_t * list_create(int32_t capacity);
@@ -50,7 +51,7 @@ int32_t list_get(struct list_t *, iterator_t);
 /* insertion and deletion of elements */
 iterator_t list_insert(struct list_t *, iterator_t, int32_t);
 
-result_t list_remove(struct list_t *, iterator_t);
+iterator_t list_remove(struct list_t *lst, iterator_t it);
 
 
 /* call this function at free time, to optimizate structure */

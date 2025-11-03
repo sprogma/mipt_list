@@ -16,6 +16,11 @@
 #define u_tail(lst) ((lst)->items[1].prev)
 #define u_head(lst) ((lst)->items[1].next)
 
+int is_correct(iterator_t it)
+{
+    return it > 1;
+}
+
 struct item
 {
     int value, next, prev;
@@ -246,7 +251,7 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
     return new_item;
 }
 
-result_t list_remove(struct list_t *lst, iterator_t it)
+iterator_t list_remove(struct list_t *lst, iterator_t it)
 {
     int after = lst->items[it].next;
     int before = lst->items[it].prev;
@@ -263,7 +268,7 @@ result_t list_remove(struct list_t *lst, iterator_t it)
 
     lst->size--;
         
-    return 0;
+    return after;
 }
 
 /* call this function at free time, to optimizate structure */
