@@ -57,7 +57,7 @@ int is_correct(iterator_t it)
 
 struct item_header
 {
-    int size, next, prev;
+    int size, prev, next;
 };
 
 
@@ -148,17 +148,39 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
         lst->items[free_item(lst)].prev = lst->alloc - 1;
         // other links
         /* TODO: optimize this loop, becouse compilers doen't */
-        for (int i = prev_size; i < lst->alloc; ++i)
+        /* ??? why gcc dont extract if's from loop? */
+        // for (int i = prev_size; i < lst->alloc; ++i)
+        // {
+        //     if (i != lst->alloc - 1)
+        //     {
+        //         lst->items[i].next = i + 1;
+        //     }
+        //     if (i != prev_size)
+        //     {
+        //         lst->items[i].prev = i - 1;
+        //     }
+        //     lst->items[i].size = 0;
+        // }
+        lst->items[prev_size].next = prev_size + 1;
+        lst->items[prev_size].size = 0;
+        lst->items[lst->alloc - 1].prev = lst->alloc - 2;
+        lst->items[lst->alloc - 1].size = 0;
+        /* why don't vectorize loop? */
+        // for (int i = prev_size + 1; i < lst->alloc - 1; ++i)
+        // {
+        //     lst->items[i].size = 0;
+        //     lst->items[i].prev = i - 1;
+        //     lst->items[i].next = i + 1;
+        // }
+        assert(prev_size != 0);
+        __m128i set = _mm_setr_epi32(0, prev_size, prev_size + 2, 0);
+        __m128i dec = _mm_setr_epi32(0, -1, -1, 0);
+        // not working:
+        // __m128i dec = _mm_castps_si128(_mm_cmpneq_ps(_mm_castsi128_ps(set), _mm_setzero_ps()));
+        for (int i = prev_size + 1; i < lst->alloc - 1; ++i)
         {
-            if (i != lst->alloc - 1)
-            {
-                lst->items[i].next = i + 1;
-            }
-            if (i != prev_size)
-            {
-                lst->items[i].prev = i - 1;
-            }
-            lst->items[i].size = 0;
+            _mm_storeu_si128((__m128i *)&lst->items[i], set);
+            set = _mm_sub_epi32(set, dec);
         }
         
         // to not add 2 at each iteration check
