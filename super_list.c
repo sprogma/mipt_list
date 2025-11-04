@@ -99,20 +99,6 @@ struct list_t *list_create(int32_t capacity)
     return lst;
 }
 
-struct list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capacity)
-{
-    (void)array;
-    (void)array_len;
-    (void)capacity;
-    return NULL;
-    // struct list_t *lst = list_create(capacity);
-    // for (int i = 0; i < array_len; ++i)
-    // {
-    //     list_insert(lst, 2 + i, array[i]);
-    // }
-    // return lst;
-}
-
 result_t list_free(struct list_t *lst)
 {
     free(lst->items);
@@ -552,11 +538,93 @@ iterator_t list_remove(struct list_t *lst, iterator_t it)
     return it;
 }
 
+
+void fill_from_array(struct list_t *lst, int *arr, int size)
+{
+    /* make right block form, and fill them */
+    assert(size <= lst->alloc * ITEM_VALUES_COUNT);
+    assert(lst->alloc > 2);
+
+    int full_blocks_used = size / ITEM_VALUES_COUNT;
+    
+    for (int b = 2; b < 2 + full_blocks_used; ++b)
+    {
+        lst->items[b].prev = b - 1;
+        lst->items[b].next = b + 1;
+        lst->items[b].size = ITEM_VALUES_COUNT;
+        memcpy(lst->items[b].value, arr, sizeof(*arr) * ITEM_VALUES_COUNT);
+        arr += ITEM_VALUES_COUNT;
+    }
+    
+    lst->items[2].prev = used_item(lst);
+    
+    int first_free_block = 2 + full_blocks_used;
+    if (full_blocks_used * ITEM_VALUES_COUNT == size)
+    {
+        lst->items[2 + full_blocks_used - 1].next = used_item(lst);
+        first_free_block = 2 + full_blocks_used;
+    }
+    else
+    {
+        lst->items[2 + full_blocks_used].prev = 2 + full_blocks_used - 1;
+        lst->items[2 + full_blocks_used].next = used_item(lst);
+        lst->items[2 + full_blocks_used].size = size - full_blocks_used * ITEM_VALUES_COUNT;
+        memcpy(lst->items[2 + full_blocks_used].value, arr, sizeof(*arr) * (size - full_blocks_used * ITEM_VALUES_COUNT));
+        first_free_block = 2 + full_blocks_used + 1;
+    }
+
+    /* update free blocks */
+    if (first_free_block < lst->alloc + 2)
+    {
+        lst->items[first_free_block].prev = free_item(lst);
+        lst->items[lst->alloc + 1].next = free_item(lst);
+        for (int b = first_free_block + 1; b < lst->alloc + 1; ++b)
+        {
+            lst->items[b].prev = b - 1;
+            lst->items[b].next = b + 1;
+            lst->items[b].size = 0;
+        }
+        
+        lst->items[free_item(lst)].next = first_free_block;
+        lst->items[free_item(lst)].prev = lst->alloc + 1;
+    }
+    else
+    {
+        lst->items[free_item(lst)].next = free_item(lst);
+        lst->items[free_item(lst)].prev = free_item(lst);
+    }
+
+    lst->items[used_item(lst)].next = 2;
+    lst->items[used_item(lst)].prev = first_free_block - 1;
+}
+
+
 /* call this function at free time, to optimizate structure */
 result_t list_optimize(struct list_t *lst)
 {
-    (void)lst;
+    /* 1. load to array */
+    int *arr = malloc(sizeof(*arr) * lst->size), id = 0;
+    iterator_t it = list_head(lst);
+    while (is_correct(it))
+    {
+        arr[id++] = list_get(lst, it);
+        it = list_next(lst, it);
+    }
+    /* 2. build from array */
+    fill_from_array(lst, arr, id);
     return 0;
+}
+
+
+struct list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capacity)
+{
+    if (capacity < ITEM_VALUES_COUNT * array_len + 10)
+    {
+        capacity = ITEM_VALUES_COUNT * array_len + 10;
+    }
+    struct list_t *lst = list_create(capacity);
+    fill_from_array(lst, array, array_len);
+    return lst;
 }
 
 
