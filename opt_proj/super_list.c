@@ -222,6 +222,7 @@ iterator_t list_next(struct list_t *lst, iterator_t it)
         int next = lst->items[block].next;
         
         int next_of_next = lst->items[next].next;
+        // int next_of_next_of_next = lst->items[next_of_next].next;
         _mm_prefetch(&lst->items[next_of_next] + 0, _MM_HINT_T0);
         _mm_prefetch(&lst->items[next_of_next] + 1, _MM_HINT_T0);
         
@@ -240,8 +241,9 @@ iterator_t list_prev(struct list_t *lst, iterator_t it)
         int prev = lst->items[block].prev;
         
         int prev_of_prev = lst->items[prev].prev;
-        _mm_prefetch(&lst->items[prev_of_prev] + 0, _MM_HINT_T0);
-        _mm_prefetch(&lst->items[prev_of_prev] + 1, _MM_HINT_T0);
+        int prev_of_prev_of_prev = lst->items[prev_of_prev].prev;
+        _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 0, _MM_HINT_T0);
+        _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 1, _MM_HINT_T0);
         
         return construct_iterator(lst->items[block].prev, lst->items[lst->items[block].prev].size - 1);
     }
@@ -320,7 +322,11 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
         int32_t *dst_e = dst + mvsize;
         
         #if ITEM_VALUES_COUNT >= 8
+        #if ITEM_VALUES_COUNT < 16
+        if (dst <= dst_e - 8)
+        #else
         while (dst <= dst_e - 8)
+        #endif
         {
             __m256i ymm0;
             ymm0 = _mm256_loadu_si256((__m256i *)src);
@@ -346,15 +352,15 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
         asm volatile(
             ".intel_syntax noprefix\n\t"
             "cmp rax, rbx\n\t"
-            "jge duplicate_block_skip\n\t"
-            "duplicate_block_loop:\n\t"
+            "jge 2f\n\t"
+            "1:\n\t"
             "mov edx, DWORD PTR [rcx]\n\t"
             "mov DWORD PTR [rax], edx\n\t"
             "add rcx, 4\n\t"
             "add rax, 4\n\t"
             "cmp rax, rbx\n\t"
-            "jl duplicate_block_loop\n\t"
-            "duplicate_block_skip:\n\t"
+            "jl 1b\n\t"
+            "2:\n\t"
             ".att_syntax prefix\n\t"
             :
             : "a" (dst), "b" (dst_e), "c" (src)
@@ -453,7 +459,11 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         int32_t *ptr_e = ptr + mvsize;
         /* 1. move first element  */
         #if ITEM_VALUES_COUNT >= 8
+        #if ITEM_VALUES_COUNT < 16
+        if (ptr_e >= ptr + 8)
+        #else
         while (ptr_e >= ptr + 8)
+        #endif
         {
             ptr_e -= 8;
             __m256i ymm0;
@@ -479,14 +489,14 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         asm volatile(
             ".intel_syntax noprefix\n\t"
             "cmp rsi, rdi\n\t"
-            "jle list_insert_loop_end\n\t"
-            "list_insert_loop:\n\t"
+            "jle 2f\n\t"
+            "1:\n\t"
             "mov edx, DWORD PTR [rsi - 4]\n\t" // move element
             "mov dword ptr [rsi], edx\n\t"
             "sub rsi, 4\n\t" // sub after moving to execute parallely?
             "cmp rsi, rdi\n\t"
-            "jg list_insert_loop\n\t"
-            "list_insert_loop_end:\n\t"
+            "jg 1b\n\t"
+            "2:\n\t"
             ".att_syntax prefix\n\t"
             : /* no outputs */
             : "D"(ptr), "S"(ptr_e)

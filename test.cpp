@@ -39,7 +39,7 @@ int not_optimize = 0;
 using namespace std;
 
 
-void test_behaviour()
+void __attribute__ ((noinline)) test_behaviour()
 {
     #ifndef TEST_CPP_REALIZATION
     list_t *lst = list_create(0);
@@ -136,7 +136,7 @@ const int GraphNodes = 5000;
 
 
 /* graph representation */
-void test1()
+void __attribute__ ((noinline)) test1()
 {
     srand(179);
     
@@ -189,7 +189,7 @@ const int BfsGraphNodes = 5000;
 
 
 /* graph representation */
-void test2()
+void __attribute__ ((noinline)) test2()
 {
     srand(179);
     
@@ -245,7 +245,7 @@ const int ArrayReverseSize = 10000000;
 
 
 /* graph representation */
-void test31()
+void __attribute__ ((noinline)) test31()
 {
     srand(179);
 
@@ -272,7 +272,7 @@ void test31()
 }
 
 /* graph representation */
-void test32()
+void __attribute__ ((noinline)) test32()
 {
     srand(179);
 
@@ -302,7 +302,7 @@ void test32()
 const int ArrayReadSize = 10000000; // 3e7
 
 
-list_t *build_nonlinear_list(int size)
+list_t * __attribute__ ((noinline)) build_nonlinear_list(int size)
 { 
     list_t *lst = list_create(0);
 
@@ -360,7 +360,7 @@ list_t *build_nonlinear_list(int size)
     return lst;
 }
 
-void print_avr_jump_size(list_t *lst)
+void __attribute__ ((noinline)) print_avr_jump_size(list_t *lst)
 {
     #ifndef TEST_CPP_REALIZATION
     iterator_t h = list_head(lst);
@@ -379,7 +379,7 @@ void print_avr_jump_size(list_t *lst)
 }
 
 /* graph representation */
-void test4()
+void __attribute__ ((noinline)) test4()
 {
     srand(179);
     list_t *lst = build_nonlinear_list(ArrayReadSize);
