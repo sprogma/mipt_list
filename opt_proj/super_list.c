@@ -24,11 +24,11 @@
 // #define DPRINTF printf
 
 
-#define ITEM_SIZE 16
+#define ITEM_SIZE 32
 #define ITEM_VALUES_COUNT (ITEM_SIZE - 3)
 #define ITEM_MIN_VALUES_COUNT (ITEM_VALUES_COUNT / 2)
 
-#define ITERATOR_SHIFT 4
+#define ITERATOR_SHIFT 5
 
 struct expanded_iterator_t
 {
@@ -82,7 +82,7 @@ struct list_t *list_create(int32_t capacity)
 {    
     struct list_t *lst = calloc(1, sizeof(*lst));
     
-    lst->alloc = 2;
+    lst->alloc = 0;
     lst->items = calloc(1, 2 * sizeof(*lst->items));
     lst->size = 0;
     lst->block_size = 2;
@@ -101,12 +101,16 @@ struct list_t *list_create(int32_t capacity)
 
 struct list_t *list_create_from_array(int32_t *array, int32_t array_len, int32_t capacity)
 {
-    struct list_t *lst = list_create(capacity);
-    for (int i = 0; i < array_len; ++i)
-    {
-        list_insert(lst, 2 + i, array[i]);
-    }
-    return lst;
+    (void)array;
+    (void)array_len;
+    (void)capacity;
+    return NULL;
+    // struct list_t *lst = list_create(capacity);
+    // for (int i = 0; i < array_len; ++i)
+    // {
+    //     list_insert(lst, 2 + i, array[i]);
+    // }
+    // return lst;
 }
 
 result_t list_free(struct list_t *lst)
@@ -118,10 +122,10 @@ result_t list_free(struct list_t *lst)
 
 result_t list_reserve(struct list_t *lst, int32_t capacity)
 {
-    capacity += 2; // add u_item and f_item
     if (capacity > lst->alloc)
     {
-        int prev_size = lst->alloc;
+        capacity += 2;
+        int prev_size = lst->alloc + 2;
         lst->alloc = 1;
         while (lst->alloc < capacity)
         {
@@ -156,6 +160,9 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
             }
             lst->items[i].size = 0;
         }
+        
+        // to not add 2 at each iteration check
+        lst->alloc -= 2;
     }
 }
 
@@ -190,7 +197,13 @@ iterator_t list_next(struct list_t *lst, iterator_t it)
     assert(index <= lst->items[block].size);
     if (index == lst->items[block].size)
     {
-        return construct_iterator(lst->items[block].next, 0);
+        int next = lst->items[block].next;
+        
+        int next_of_next = lst->items[next].next;
+        _mm_prefetch(&lst->items[next_of_next] + 0, _MM_HINT_T0);
+        _mm_prefetch(&lst->items[next_of_next] + 1, _MM_HINT_T0);
+        
+        return construct_iterator(next, 0);
     }
     return construct_iterator(block, index);
 }
@@ -202,6 +215,12 @@ iterator_t list_prev(struct list_t *lst, iterator_t it)
     assert(index <= lst->items[block].size);
     if (index == 0)
     {
+        int prev = lst->items[block].prev;
+        
+        int prev_of_prev = lst->items[prev].prev;
+        _mm_prefetch(&lst->items[prev_of_prev] + 0, _MM_HINT_T0);
+        _mm_prefetch(&lst->items[prev_of_prev] + 1, _MM_HINT_T0);
+        
         return construct_iterator(lst->items[block].prev, lst->items[lst->items[block].prev].size - 1);
     }
     return construct_iterator(block, index - 1);
@@ -240,7 +259,7 @@ int32_t list_get(struct list_t *lst, iterator_t it)
 /* duplicates block, and return index of first one + it is 100% not full */
 struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int index)
 {
-    list_reserve(lst, lst->block_size + 2);
+    list_reserve(lst, lst->block_size);
     lst->block_size++;
     
     // int prev = lst->items[block].prev;
@@ -248,8 +267,12 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
     int node = free_head(lst);
 
     /* update free list */
-    lst->items[free_item(lst)].next = lst->items[node].next;
-    lst->items[lst->items[node].next].prev = free_item(lst);
+    assert(node != free_item(lst));
+    assert(block != free_item(lst));
+    assert(next != free_item(lst));
+    int node_next = lst->items[node].next;
+    lst->items[free_item(lst)].next = node_next;
+    lst->items[node_next].prev = free_item(lst);
 
     /* array pointers */
     lst->items[block].next = node;
@@ -266,10 +289,57 @@ struct expanded_iterator_t duplicate_block(struct list_t *lst, int block, int in
     int size_to_copy = ((lst->items[block].size + (!!block)) >> 1);
     int remain_size = lst->items[block].size - size_to_copy;
 
-    /* memcpy is really called by gcc :( */
-    /* TODO: write inlined analog */
-    memcpy(lst->items[node].value, lst->items[block].value + remain_size, sizeof(*lst->items[node].value) * size_to_copy);
-
+    /* memcpy is really called by gcc ??? :( */
+    // memcpy(lst->items[node].value, lst->items[block].value + remain_size, sizeof(*lst->items[node].value) * size_to_copy);
+    {
+        int32_t *dst = lst->items[node].value;
+        int32_t *src = lst->items[block].value + remain_size;
+        uint32_t mvsize = size_to_copy;
+        int32_t *dst_e = dst + mvsize;
+        
+        #if ITEM_VALUES_COUNT >= 8
+        while (dst <= dst_e - 8)
+        {
+            __m256i ymm0;
+            ymm0 = _mm256_loadu_si256((__m256i *)src);
+            _mm256_storeu_si256((__m256i *)dst, ymm0);
+            dst += 8;
+            src += 8;
+        }
+        #endif
+        #if ITEM_VALUES_COUNT >= 4
+        if (dst <= dst_e - 4)
+        {
+            __m128i xmm0;
+            xmm0 = _mm_loadu_si128((__m128i *)src);
+            _mm_storeu_si128((__m128i *)dst, xmm0);
+            dst += 4;
+            src += 4;
+        }
+        #endif
+        // while (dst < dst_e)
+        // {
+        //     *dst++ = *src++;
+        // }
+        asm volatile(
+            ".intel_syntax noprefix\n\t"
+            "cmp rax, rbx\n\t"
+            "jge duplicate_block_skip\n\t"
+            "duplicate_block_loop:\n\t"
+            "mov edx, DWORD PTR [rcx]\n\t"
+            "mov DWORD PTR [rax], edx\n\t"
+            "add rcx, 4\n\t"
+            "add rax, 4\n\t"
+            "cmp rax, rbx\n\t"
+            "jl duplicate_block_loop\n\t"
+            "duplicate_block_skip:\n\t"
+            ".att_syntax prefix\n\t"
+            :
+            : "a" (dst), "b" (dst_e), "c" (src)
+            : "rdx", "memory"
+        );
+    }
+    
     /* update node sizes */
     lst->items[node].size = size_to_copy;
     lst->items[block].size = remain_size;
@@ -370,12 +440,12 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         }
         #endif
         #if ITEM_VALUES_COUNT >= 4
-        while (ptr_e >= ptr + 4)
+        if (ptr_e >= ptr + 4)
         {
             ptr_e -= 4;
-            __m128i ymm0;
-            ymm0 = _mm_loadu_si128((__m128i *)ptr_e);
-            _mm_storeu_si128((__m128i *)(ptr_e + 1), ymm0);
+            __m128i xmm0;
+            xmm0 = _mm_loadu_si128((__m128i *)ptr_e);
+            _mm_storeu_si128((__m128i *)(ptr_e + 1), xmm0);
         }
         #endif
         /* Sadly, clever gcc optimize this loop to memmove call =( */
@@ -387,14 +457,14 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         asm volatile(
             ".intel_syntax noprefix\n\t"
             "cmp rsi, rdi\n\t"
-            "jle loop_end\n\t"
-            "loop:\n\t"
+            "jle list_insert_loop_end\n\t"
+            "list_insert_loop:\n\t"
             "mov edx, DWORD PTR [rsi - 4]\n\t" // move element
             "mov dword ptr [rsi], edx\n\t"
             "sub rsi, 4\n\t" // sub after moving to execute parallely?
             "cmp rsi, rdi\n\t"
-            "jg loop\n\t"
-            "loop_end:\n\t"
+            "jg list_insert_loop\n\t"
+            "list_insert_loop_end:\n\t"
             ".att_syntax prefix\n\t"
             : /* no outputs */
             : "D"(ptr), "S"(ptr_e)
