@@ -34,24 +34,13 @@ int main()
         QueryPerformanceCounter(&t1);
 
             
-        long long pos = 0, sum = 0;
+        long long pos = 0;
         /* use SIZE/16 to speedup tests */
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
-            _mm_prefetch(array + ((pos + 1241513996) & SIZE_MASK), _MM_HINT_NTA);
-
-            sum += 179 % (sum + array[pos] + 1);
-            sum += 178 % (sum + array[pos] + 1);
-            sum += 177 % (sum + array[pos] + 1);
-            sum += 176 % (sum + array[pos] + 1);
-            sum += 175 % (sum + array[pos] + 1);
-            sum += 174 % (sum + array[pos] + 1);
-            sum += 173 % (sum + array[pos] + 1);
-            sum += 172 % (sum + array[pos] + 1);
-            sum += 171 % (sum + array[pos] + 1);
-            sum += 170 % (sum + array[pos] + 1);
-            sum += 57 % (sum + array[pos] + 1);
-
+            _mm_prefetch(array + ((pos + 1392508938) & SIZE_MASK), _MM_HINT_NTA);
+            
+            array[pos] = 179 % (i + 1);            
             
             pos = (pos + 998244353LL) & SIZE_MASK;
         }
@@ -61,7 +50,7 @@ int main()
 
         {
             printf("UserTime: %.2lf e/us  ", ((double)SIZE/SIZE_DIV) / ((t2.QuadPart - t1.QuadPart) / (double)t3.QuadPart * 1.0e6));
-            printf("KernelTime: not measured e/us, sum = %lld\n", sum);
+            printf("KernelTime: not measured e/us\n");
         }
     }
 }

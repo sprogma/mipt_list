@@ -81,21 +81,18 @@ struct list_t
 struct list_t *list_create(int32_t capacity)
 {    
     struct list_t *lst = calloc(1, sizeof(*lst));
-    
+
     lst->alloc = 0;
-    lst->items = calloc(1, 2 * sizeof(*lst->items));
+    lst->items = NULL; //calloc(1, 2 * sizeof(*lst->items));
+    list_reserve(lst, 2 * capacity / ITEM_VALUES_COUNT + 20);
+
     lst->size = 0;
     lst->block_size = 2;
 
-    lst->items[free_item(lst)].next = free_item(lst);
-    lst->items[free_item(lst)].prev = free_item(lst);
     lst->items[free_item(lst)].size = 1;
     lst->items[used_item(lst)].next = used_item(lst);
     lst->items[used_item(lst)].prev = used_item(lst);
     lst->items[used_item(lst)].size = 1;
-
-    list_reserve(lst, 2 * capacity / ITEM_VALUES_COUNT + 100);
-
     return lst;
 }
 
@@ -112,15 +109,17 @@ result_t list_reserve(struct list_t *lst, int32_t capacity)
     {
         capacity += 2;
         int prev_size = lst->alloc + 2;
-        lst->alloc = 1;
-        while (lst->alloc < capacity)
-        {
-            lst->alloc *= 2;
-        }
+        lst->alloc = 1 << (33 - __builtin_clz(capacity));
         struct item *new_ptr = realloc(lst->items, sizeof(*lst->items) * lst->alloc);
         if (new_ptr == NULL)
         {
             return 1;
+        }
+        if (lst->items == 0)
+        {   
+            /* called from constructor */
+            new_ptr[free_item(lst)].next = free_item(lst);
+            new_ptr[free_item(lst)].prev = free_item(lst);
         }
         lst->items = new_ptr;
         
@@ -210,7 +209,15 @@ iterator_t list_next(struct list_t *lst, iterator_t it)
         int next_of_next = lst->items[next].next;
         // int next_of_next_of_next = lst->items[next_of_next].next;
         _mm_prefetch(&lst->items[next_of_next] + 0, _MM_HINT_T0);
+        #if ITEM_SIZE > 16
         _mm_prefetch(&lst->items[next_of_next] + 1, _MM_HINT_T0);
+        #endif
+        #if ITEM_SIZE > 32
+        _mm_prefetch(&lst->items[next_of_next] + 2, _MM_HINT_T0);
+        #endif
+        #if ITEM_SIZE > 48
+        _mm_prefetch(&lst->items[next_of_next] + 3, _MM_HINT_T0);
+        #endif
         
         return construct_iterator(next, 0);
     }
@@ -229,7 +236,15 @@ iterator_t list_prev(struct list_t *lst, iterator_t it)
         int prev_of_prev = lst->items[prev].prev;
         int prev_of_prev_of_prev = lst->items[prev_of_prev].prev;
         _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 0, _MM_HINT_T0);
+        #if ITEM_SIZE > 16
         _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 1, _MM_HINT_T0);
+        #endif
+        #if ITEM_SIZE > 32
+        _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 2, _MM_HINT_T0);
+        #endif
+        #if ITEM_SIZE > 48
+        _mm_prefetch(&lst->items[prev_of_prev_of_prev] + 3, _MM_HINT_T0);
+        #endif
         
         return construct_iterator(lst->items[block].prev, lst->items[lst->items[block].prev].size - 1);
     }
@@ -612,6 +627,7 @@ result_t list_optimize(struct list_t *lst)
     }
     /* 2. build from array */
     fill_from_array(lst, arr, id);
+    free(arr);
     return 0;
 }
 

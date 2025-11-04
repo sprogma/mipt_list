@@ -38,34 +38,10 @@ int main()
         /* use SIZE/16 to speedup tests */
         for (long long i = 0; i < (SIZE/SIZE_DIV); ++i)
         {
-            _mm_prefetch(array + ((pos + 335544344) & SIZE_MASK), 4);
-            #ifdef HARD
-            array[pos] += 179 % (i + 1);
-            array[pos] += 178 % (i + 1);
-            array[pos] += 177 % (i + 1);
-            array[pos] += 176 % (i + 1);
-            array[pos] += 175 % (i + 1);
-            array[pos] += 174 % (i + 1);
-            array[pos] += 173 % (i + 1);
-            array[pos] += 172 % (i + 1);
-            array[pos] += 171 % (i + 1);
-            array[pos] += 170 % (i + 1);
-            array[pos] += 169 % (i + 1);
-            array[pos] += 168 % (i + 1);
-            array[pos] += 167 % (i + 1);
-            array[pos] += 166 % (i + 1);
-            array[pos] += 165 % (i + 1);
-            array[pos] += 164 % (i + 1);
-            array[pos] += 163 % (i + 1);
-            array[pos] += 162 % (i + 1);
-            array[pos] += 161 % (i + 1);
-            array[pos] += 160 % (i + 1);
-            array[pos] += 159 % (i + 1);
-            array[pos] += 158 % (i + 1);
-            array[pos] +=  57 % (i + 1);
-            #else
-            array[pos] = 179 % (i + 1);
-            #endif
+            __builtin_prefetch(array + ((pos + 1342177376) & SIZE_MASK), 1, 0);
+            
+            array[pos] = 179 % (i + 1);            
+            
             pos = (pos + 998244353LL) & SIZE_MASK;
         }
         
