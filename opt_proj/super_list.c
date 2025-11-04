@@ -321,8 +321,11 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
     /* insert to block by iterator */
     int block, index;
     deconstruct_iterator(it, &block, &index);
+    int size = lst->items[block].size;
 
-    if (block == 0)
+
+    // printf("INS\n");
+    if (__builtin_expect(block == 0, 0))
     {
         if (used_tail(lst) == 0)
         {
@@ -337,7 +340,7 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         assert(block == used_tail(lst));
         assert(index == 0);
     }
-    else if (lst->items[block].size == ITEM_VALUES_COUNT)
+    else if (size == ITEM_VALUES_COUNT)
     {
         /* split node */
         /* no clever things: simply split node */
@@ -347,9 +350,7 @@ iterator_t list_insert(struct list_t *lst, iterator_t it, int32_t value)
         index = exp.index;
     }
 
-
-    int size = lst->items[block].size;
-
+    size = lst->items[block].size;
     assert(size < ITEM_VALUES_COUNT);
     assert(index <= size);
 
