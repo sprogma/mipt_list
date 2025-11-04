@@ -612,6 +612,7 @@ result_t list_optimize(struct list_t *lst)
     }
     /* 2. build from array */
     fill_from_array(lst, arr, id);
+    free(arr);
     return 0;
 }
 
