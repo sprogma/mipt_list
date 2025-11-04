@@ -7,14 +7,14 @@ gci ch*.c | % {
     }
     if ($_.Name -match "hard")
     {    
-        .\check.ps1 $_ -Div (512*$t)
+        .\check.ps1 $_ -Div (64*$t)
     }
     elseif ($_.Name -match "medium")
     {    
-        .\check.ps1 $_ -Div (256*$t)
+        .\check.ps1 $_ -Div (32*$t)
     }
     else
     {
-        .\check.ps1 $_ -Div (128*$t)
+        .\check.ps1 $_ -Div (16*$t)
     }
 }

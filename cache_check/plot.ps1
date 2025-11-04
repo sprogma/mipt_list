@@ -9,20 +9,22 @@ $text = Get-Content $resultFile
 
 
 $rows = $text |? {$_.Trim()} |% {
-    $_ -match "^((No)\s*prefetch(-hard)?|prefetch(-hard)?\s+x(\d+)\s+([\w+]+)?).*UserTime:\s*([\d.]+)" >$null
+    $_ -match "^((No)\s*prefetch(-hard|-direct)?|prefetch(-hard)?\s+x(\d+)\s+([\w+]+)?).*UserTime:\s*([\d.]+)" >$null
     $no, $h1, $h2, $mode, $count, $time = $Matches[2, 3, 4, 6, 5, 7]
     $mode += $h1 + $h2
     $mode = "$($no ?? "prefetch")-$mode"
     [pscustomobject]@{mode=$mode;count=$count;time=$time}
 }
 
+$rows
+
 $rows += $rows[0].PsObject.Copy()
 $rows[0].count = 0
 $rows[-1].count = ($rows | % count | measure -Max).Maximum
 
-# $rows += $rows[1].PsObject.Copy()
-# $rows[1].count = 0
-# $rows[-1].count = ($rows | % count | measure -Max).Maximum
+$rows += $rows[1].PsObject.Copy()
+$rows[1].count = 0
+$rows[-1].count = ($rows | % count | measure -Max).Maximum
 
 $modes = $rows | s -exp mode -u
 

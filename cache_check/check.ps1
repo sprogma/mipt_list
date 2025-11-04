@@ -42,6 +42,7 @@ $i = 1
 $jobs = @()
 
 $jobs += Check "No prefetch" ($s-replace"PREFETCH_POSITION")
+$jobs += Check "No prefetch-direct" ($s-replace"PREFETCH_POSITION","pos = i")
 while ($i -le 128)
 {
     $jobs += Check "prefetch x$i"       ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_T0)")
@@ -50,25 +51,17 @@ while ($i -le 128)
     # not found _MM_HINT_ENTA
     # $jobs += Check "prefetch x$i E+NTA" ($s-replace"PREFETCH_POSITION","_mm_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), _MM_HINT_ENTA)")
     $jobs += Check "prefetch x$i W"     ($s-replace"PREFETCH_POSITION","__builtin_prefetch(array + ((pos + $((998244353n * $i) % $size)) & SIZE_MASK), 1, 0)")
-    if ($i -lt 8)
+    if ($i -lt 16)
     {
         $i += 1
     }
-    elseif ($i -lt 16)
+    elseif ($i -lt 64)
     {
         $i += 2
     }
-    elseif ($i -lt 32)
-    {
-        $i += 8
-    }
-    elseif ($i -lt 64)
-    {
-        $i += 16
-    }
     else
     {
-        $i += 32
+        $i += 4
     }
 }
 
